@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import InvRegionVue from './InvRegion.vue'
+</script>
 
 <template>
-  <div>Kenshi Inventory</div>
+  <InvRegionVue :w="8" :h="10" />
 </template>
 
 <style scoped></style>

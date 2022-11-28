@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import InventoryMenu from './components/InventoryMenu.vue'
+import InvMenu from './components/InvMenu.vue'
 </script>
 
 <template>
-  <InventoryMenu />
+  <InvMenu />
 </template>
 
 <style scoped></style>

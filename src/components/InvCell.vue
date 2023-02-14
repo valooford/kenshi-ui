@@ -21,7 +21,6 @@ export default {
   <div
     :class="['cell', isOver && 'hover']"
     @dragenter.prevent="onDragEnter"
-    @dragover.prevent
     @dragleave="onDragLeave"
   />
 </template>

@@ -7,6 +7,7 @@ export default {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
   },
+  emits: ['dragstart', 'drop', 'dragend'],
   data() {
     const emptyImage = new Image()
     emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
@@ -37,6 +38,7 @@ export default {
     onMouseDown(e: MouseEvent) {
       const el = e.target as HTMLElement
       const rect = el.getBoundingClientRect()
+      // find out what cell of an item are meant to be dragged
       const x = Math.floor((e.clientX - rect.left) / CELL_SIZE)
       const y = Math.floor((e.clientY - rect.top) / CELL_SIZE)
       this.isPreview = true
@@ -59,20 +61,31 @@ export default {
         e.dataTransfer.setData(`dnd/h;value=${this.h}`, '')
         e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
         e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
+        e.dataTransfer.setData(`dnd/img;value=${this.img}`, '')
         // removes ghost
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
       }
+
+      document.body.addEventListener('drop', this.onDrop)
 
       requestAnimationFrame(() => {
         // prevents immediate 'dragend' event
         this.isDragging = true
       })
+
+      this.$emit('dragstart')
+    },
+    onDrop(e: DragEvent) {
+      if (e.defaultPrevented) {
+        this.$emit('drop')
+      }
     },
     onDragEnd() {
       this.isDragging = false
-      this.isPreview = false
       this.onMouseUp()
-      document.body.removeEventListener('mouseup', this.onMouseUp)
+      document.body.removeEventListener('drop', this.onDrop)
+
+      this.$emit('dragend')
     },
     onMouseUp() {
       this.isPreview = false
@@ -94,7 +107,7 @@ export default {
   <img
     :src="img"
     alt=""
-    draggable
+    draggable="true"
     @mousedown="onMouseDown"
     @dragstart="onDragStart"
     @drag="onDrag"
@@ -127,7 +140,8 @@ export default {
   user-select: none;
 }
 .preview {
-  position: absolute;
+  position: fixed;
   pointer-events: none;
+  z-index: 1;
 }
 </style>

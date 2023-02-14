@@ -20,10 +20,6 @@ export default {
     document.removeEventListener('dragover', this.emulateDefaultCursorEverywhere)
   },
 }
-
-document.addEventListener('dragover', (event) => {
-  event.preventDefault()
-})
 </script>
 
 <template>

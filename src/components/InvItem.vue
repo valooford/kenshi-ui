@@ -26,6 +26,7 @@ export default {
       cY: 0,
       pX: -1000,
       pY: -1000,
+      amountDragging: null as number | null,
     }
   },
   computed: {
@@ -40,15 +41,15 @@ export default {
       const y = this.pY - this.cY * CELL_SIZE - CELL_HALF_SIZE
       return { x, y }
     },
-    notEnoughAmountToShowItem() {
-      return !this.amount || this.amount <= 1
-    },
-    enoughAmountToShowCount() {
-      return this.amount && this.amount > 1 + +this.isPreview
-    },
     count() {
       if (!this.amount) return undefined
-      return Math.ceil(this.amount - +this.isPreview)
+      return Math.ceil(this.amount - Number(this.amountDragging))
+    },
+    notEnoughToShowCount() {
+      return !this.count || this.count <= 1
+    },
+    notEnoughAmountToShowItem() {
+      return !this.count || this.count === 0
     },
     progressValue() {
       if (!this.amount) return undefined
@@ -88,7 +89,13 @@ export default {
         e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
         e.dataTransfer.setData(`dnd/img;value=${this.img}`, '')
         if (this.type) e.dataTransfer.setData(`dnd/type;value=${this.type}`, '')
-        e.dataTransfer.setData(`dnd/amount;value=${this.amount ? this.amount % 1 || 1 : 1}`, '')
+        let amount = 1
+        if (this.amount) {
+          if (e.shiftKey) amount = this.amount
+          else amount = this.amount % 1 || 1
+        }
+        this.amountDragging = amount
+        e.dataTransfer.setData(`dnd/amount;value=${amount}`, '')
         if (this.scrap) e.dataTransfer.setData(`dnd/scrap;value=${+this.scrap}`, '')
         // removes ghost
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
@@ -111,6 +118,7 @@ export default {
     },
     onDragEnd() {
       this.isDragging = false
+      this.amountDragging = null
       this.onMouseUp()
       document.body.removeEventListener('drop', this.onDrop)
 
@@ -155,7 +163,7 @@ export default {
       }"
     />
     <progress v-if="scrap && amount" :value="progressValue" max="100" class="scrap"></progress>
-    <div v-if="enoughAmountToShowCount" class="count">
+    <div v-if="!notEnoughToShowCount" class="count">
       {{ count }}
     </div>
   </div>
@@ -179,7 +187,9 @@ export default {
         }"
       />
       <progress v-if="scrap && amount" :value="progressScrap" max="100" class="scrap"></progress>
-      <!-- <div v-if="amount && amount > 1" class="count">{{ Math.ceil(amount) }}</div> -->
+      <div v-if="amountDragging && amountDragging > 1" class="count">
+        {{ Math.ceil(amountDragging) }}
+      </div>
     </div>
   </div>
 </template>

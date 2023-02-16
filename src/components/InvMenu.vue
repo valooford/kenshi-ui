@@ -38,7 +38,7 @@ export default {
         :h="1"
         img="src/assets/52295-rebirth.mod.913-gamedata.base.png"
       />
-      <InvItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="3.4" :scrap="true" />
+      <InvItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="1.4" :scrap="true" />
     </div>
   </div>
 </template>

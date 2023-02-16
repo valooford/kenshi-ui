@@ -4,6 +4,12 @@ import InvRegion from './InvRegion.vue'
 
 export default {
   components: { InvWindow, InvRegion },
+  methods: {
+    onInventoryArrange() {
+      const ref = this.$refs.inventory as InstanceType<typeof InvRegion>
+      ref.arrange()
+    },
+  },
 }
 </script>
 
@@ -66,10 +72,10 @@ export default {
         <div class="common__info">INFO</div>
         <div class="common_inventory">
           <div>INVENTORY</div>
-          <InvRegion :w="8" :h="10" :stack="[{ type: 'misc', max: 5 }]" />
+          <InvRegion :w="8" :h="10" :stack="[{ type: 'misc', max: 5 }]" ref="inventory" />
         </div>
         <div class="common_buttons">
-          <button>ARRANGE</button>
+          <button @click="onInventoryArrange">ARRANGE</button>
         </div>
       </div>
     </div>

@@ -26,6 +26,7 @@ export default {
     type: { type: String },
     stack: { type: Array<{ type: string; max: number }> },
   },
+  expose: ['arrange'],
   data() {
     return {
       hvrI: null as number | null,
@@ -208,6 +209,60 @@ export default {
         }
       }
       return overlappedItemsIndexes
+    },
+    arrange() {
+      const itemsList = [...this.items]
+      const items: IItem[] = []
+
+      const mapSize = this.w * this.h
+      const flatItemsMap = Array(mapSize).fill(false)
+      flatItemsMap.forEach((isOccupied, i, map) => {
+        if (isOccupied) return
+        const [itemToPlaceIndex, occupiedIndexes] =
+          itemsList.reduce((res: [number, number[]] | undefined, item, itemIndex) => {
+            if (res) return res
+
+            const itemCellsIndexes = this.getItemCellsIndexes(item, i)
+            if (
+              itemCellsIndexes.length !== item.w * item.h ||
+              itemCellsIndexes.some((ci) => map[ci])
+            ) {
+              return undefined
+            }
+
+            return [itemIndex, itemCellsIndexes]
+          }, undefined) || []
+        if (occupiedIndexes && typeof itemToPlaceIndex === 'number') {
+          occupiedIndexes.forEach((ci) => {
+            map[ci] = true
+          })
+          const [placedItem] = itemsList.splice(itemToPlaceIndex, 1)
+          items.push({
+            ...placedItem,
+            x: i % this.w,
+            y: Math.floor(i / this.w),
+          })
+        }
+      })
+      if (!itemsList.length) {
+        this.items = items
+      }
+    },
+    getItemCellsIndexes(item: IItem, cornerIndex: number) {
+      const cornerX = cornerIndex % this.w
+      const cornerY = Math.floor(cornerIndex / this.w)
+      const indexes: number[] = []
+      outer: for (let i = cornerY; i < cornerY + item.h; i++) {
+        for (let j = cornerX; j < cornerX + item.w; j++) {
+          const index = i * this.w + j
+          if (index / this.w >= i + 1) {
+            // do not fit in this position
+            break outer
+          }
+          indexes.push(index)
+        }
+      }
+      return indexes
     },
   },
 }

@@ -26,9 +26,19 @@ export default {
   <div class="menu" :style="{ '--cell-size': `${cellSize}px` }">
     <InvInventory />
     <div class="itemsContainer">
-      <InvItem :w="3" :h="3" img="src/assets/1288-gamedata.base.686-gamedata.base.png" />
-      <InvItem :w="7" :h="1" img="src/assets/52295-rebirth.mod.913-gamedata.base.png" />
-      <InvItem :w="1" :h="3" img="src/assets/Dried Fish.png" />
+      <InvItem
+        :type="'backpack'"
+        :w="3"
+        :h="3"
+        img="src/assets/1288-gamedata.base.686-gamedata.base.png"
+      />
+      <InvItem
+        :type="'weapon'"
+        :w="7"
+        :h="1"
+        img="src/assets/52295-rebirth.mod.913-gamedata.base.png"
+      />
+      <InvItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="3.4" :scrap="true" />
     </div>
   </div>
 </template>
@@ -39,8 +49,9 @@ export default {
 }
 .itemsContainer {
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  gap: 10px;
   width: calc(var(--cell-size) * 9);
   overflow-y: scroll;
   background-color: #f8f8f8;

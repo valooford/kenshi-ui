@@ -18,46 +18,46 @@ export default {
           </div>
           <div>
             <div>-BACKPACK-</div>
-            <InvRegion :w="5" :h="4" />
+            <InvRegion :type="'backpack'" :w="5" :h="4" />
           </div>
         </div>
         <div>
           <div>WEAPON I</div>
-          <InvRegion :w="10" :h="2" />
+          <InvRegion :type="'weapon'" :w="10" :h="2" />
         </div>
         <div class="stuff__row">
           <div>
             <div>WEAPON II</div>
-            <InvRegion :w="7" :h="1" />
+            <InvRegion :type="'weapon'" :w="7" :h="1" />
           </div>
           <div>
             <div>BELT</div>
-            <InvRegion :w="2" :h="2" />
+            <InvRegion :type="'belt'" :w="2" :h="2" />
           </div>
         </div>
         <div class="stuff__row">
           <div>
             <div>
               <div>SHIRT</div>
-              <InvRegion :w="4" :h="2" />
+              <InvRegion :type="'shirt'" :w="4" :h="2" />
             </div>
             <div>
               <div>PANTS</div>
-              <InvRegion :w="4" :h="5" />
+              <InvRegion :type="'pants'" :w="4" :h="5" />
             </div>
             <div>
               <div>BOOTS</div>
-              <InvRegion :w="4" :h="2" />
+              <InvRegion :type="'boots'" :w="4" :h="2" />
             </div>
           </div>
           <div>
             <div>
               <div>HEAD</div>
-              <InvRegion :w="4" :h="3" />
+              <InvRegion :type="'head'" :w="4" :h="3" />
             </div>
             <div>
               <div>ARMOR</div>
-              <InvRegion :w="4" :h="6" />
+              <InvRegion :type="'armor'" :w="4" :h="6" />
             </div>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default {
         <div class="common__info">INFO</div>
         <div class="common_inventory">
           <div>INVENTORY</div>
-          <InvRegion :w="8" :h="10" />
+          <InvRegion :w="8" :h="10" :stack="[{ type: 'misc', max: 5 }]" />
         </div>
         <div class="common_buttons">
           <button>ARRANGE</button>

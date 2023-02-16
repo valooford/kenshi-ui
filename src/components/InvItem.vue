@@ -1,13 +1,20 @@
 <script lang="ts">
-import { CELL_SIZE, CELL_HALF_SIZE } from './constants'
+import { CELL_SIZE, CELL_HALF_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
 
 export default {
   props: {
     img: { type: String, required: true },
     w: { type: Number, required: true },
     h: { type: Number, required: true },
+    type: { type: String },
+    amount: { type: Number },
+    scrap: { type: Boolean },
   },
-  emits: ['dragstart', 'drop', 'dragend'],
+  emits: {
+    dragstart: null,
+    drop: (dragPayload: any) => !!dragPayload,
+    dragend: null,
+  },
   data() {
     const emptyImage = new Image()
     emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
@@ -32,6 +39,24 @@ export default {
       const x = this.pX - this.cX * CELL_SIZE - CELL_HALF_SIZE
       const y = this.pY - this.cY * CELL_SIZE - CELL_HALF_SIZE
       return { x, y }
+    },
+    notEnoughAmountToShowItem() {
+      return !this.amount || this.amount <= 1
+    },
+    enoughAmountToShowCount() {
+      return this.amount && this.amount > 1 + +this.isPreview
+    },
+    count() {
+      if (!this.amount) return undefined
+      return Math.ceil(this.amount - +this.isPreview)
+    },
+    progressValue() {
+      if (!this.amount) return undefined
+      return this.isPreview || this.isDragging ? 100 : (this.amount % 1 || 1) * 100
+    },
+    progressScrap() {
+      if (!this.amount) return undefined
+      return (this.amount % 1 || 1) * 100
     },
   },
   methods: {
@@ -62,6 +87,9 @@ export default {
         e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
         e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
         e.dataTransfer.setData(`dnd/img;value=${this.img}`, '')
+        if (this.type) e.dataTransfer.setData(`dnd/type;value=${this.type}`, '')
+        e.dataTransfer.setData(`dnd/amount;value=${this.amount ? this.amount % 1 || 1 : 1}`, '')
+        if (this.scrap) e.dataTransfer.setData(`dnd/scrap;value=${+this.scrap}`, '')
         // removes ghost
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
       }
@@ -77,7 +105,8 @@ export default {
     },
     onDrop(e: DragEvent) {
       if (e.defaultPrevented) {
-        this.$emit('drop')
+        const dragPayload = Object.getOwnPropertyDescriptor(e, DRAG_PAYLOAD_SYMBOL)?.value
+        this.$emit('drop', dragPayload)
       }
     },
     onDragEnd() {
@@ -104,44 +133,100 @@ export default {
 </script>
 
 <template>
-  <img
-    :src="img"
-    alt=""
-    draggable="true"
-    @mousedown="onMouseDown"
-    @dragstart="onDragStart"
-    @drag="onDrag"
-    @dragend="onDragEnd"
-    class="item"
-    :style="{
-      width,
-      height,
-      visibility: isDragging ? 'hidden' : undefined,
-      opacity: isPreview ? 0 : 1,
-    }"
-  />
-  <img
-    v-if="isPreview"
-    :src="img"
-    alt=""
-    draggable="false"
+  <!-- ITEM -->
+  <div
+    :class="[
+      'item',
+      isDragging && notEnoughAmountToShowItem && 'item_dragging',
+      isPreview && notEnoughAmountToShowItem && 'item_preview',
+    ]"
+  >
+    <img
+      :src="img"
+      alt=""
+      draggable="true"
+      @mousedown="onMouseDown"
+      @dragstart="onDragStart"
+      @drag="onDrag"
+      @dragend="onDragEnd"
+      :style="{
+        width,
+        height,
+      }"
+    />
+    <progress v-if="scrap && amount" :value="progressValue" max="100" class="scrap"></progress>
+    <div v-if="enoughAmountToShowCount" class="count">
+      {{ count }}
+    </div>
+  </div>
+  <!-- ITEM PREVIEW -->
+  <div
     class="preview"
     :style="{
-      width,
-      height,
       left: `${pivot.x}px`,
       top: `${pivot.y}px`,
     }"
-  />
+  >
+    <div class="preview__content">
+      <img
+        v-if="isPreview"
+        :src="img"
+        alt=""
+        draggable="false"
+        :style="{
+          width,
+          height,
+        }"
+      />
+      <progress v-if="scrap && amount" :value="progressScrap" max="100" class="scrap"></progress>
+      <!-- <div v-if="amount && amount > 1" class="count">{{ Math.ceil(amount) }}</div> -->
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .item {
   user-select: none;
 }
+.item_dragging {
+  visibility: hidden;
+}
+.item_preview {
+  opacity: 0;
+}
 .preview {
   position: fixed;
   pointer-events: none;
   z-index: 1;
+}
+.item,
+.preview__content {
+  position: relative;
+  background-color: rgb(0 0 0 / 0.4);
+}
+.scrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+}
+.scrap::-webkit-progress-bar {
+  background-color: #000;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+  border-top: none;
+}
+.scrap::-webkit-progress-value {
+  background-color: #fff;
+}
+.count {
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  color: #fff;
+  font-weight: 600;
 }
 </style>

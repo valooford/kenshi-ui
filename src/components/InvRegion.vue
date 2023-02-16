@@ -1,6 +1,7 @@
 <script lang="ts">
 import InvCell from './InvCell.vue'
 import InvItem from './InvItem.vue'
+import { DRAG_PAYLOAD_SYMBOL } from './constants'
 
 interface IItem {
   w: number
@@ -8,6 +9,13 @@ interface IItem {
   x: number
   y: number
   img: string
+  amount: number
+  type?: string
+  scrap?: boolean
+}
+
+interface IDragPayload {
+  amount: number
 }
 
 export default {
@@ -15,6 +23,8 @@ export default {
   props: {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
+    type: { type: String },
+    stack: { type: Array<{ type: string; max: number }> },
   },
   data() {
     return {
@@ -26,6 +36,9 @@ export default {
       iX: null as number | null,
       iY: null as number | null,
       iImg: null as string | null,
+      iType: null as string | null,
+      iAmount: null as number | null,
+      iScrap: null as boolean | null,
       items: [] as IItem[],
       draggingItemIndex: null as number | null,
     }
@@ -63,24 +76,14 @@ export default {
       setTimeout(() => {
         types?.forEach((t) => {
           const [, prop, value] = paramsRegex.exec(t) || []
-          switch (prop) {
-            case 'w':
-              this.iW = +value
-              break
-            case 'h':
-              this.iH = +value
-              break
-            case 'x':
-              this.iX = +value
-              break
-            case 'y':
-              this.iY = +value
-              break
-            case 'img':
-              this.iImg = value
-              break
-            default:
-          }
+          if (prop === 'w') this.iW = +value
+          if (prop === 'h') this.iH = +value
+          if (prop === 'x') this.iX = +value
+          if (prop === 'y') this.iY = +value
+          if (prop === 'img') this.iImg = value
+          if (prop === 'type') this.iType = value
+          if (prop === 'amount') this.iAmount = +value
+          if (prop === 'scrap') this.iScrap = !!+value
         })
       }, 0)
     },
@@ -114,13 +117,22 @@ export default {
       this.iX = null
       this.iY = null
       this.iImg = null
+      this.iType = null
+      this.iAmount = null
+      this.iScrap = null
     },
     onItemDragStart(itemIndex: number) {
       this.draggingItemIndex = itemIndex
     },
-    onItemDrop(itemIndex: number) {
+    onItemDrop(itemIndex: number, data: IDragPayload) {
       // local item is being dragged somewhere
-      this.items.splice(itemIndex, 1)
+      const amount = this.items[itemIndex].amount - data.amount
+      if (amount > 0) {
+        this.items[itemIndex].amount = amount
+      } else {
+        this.items.splice(itemIndex, 1)
+      }
+      this.onItemDragEnd()
     },
     onItemDragEnd() {
       this.draggingItemIndex = null
@@ -132,16 +144,55 @@ export default {
         x: this.hvrX! - this.iX!,
         y: this.hvrY! - this.iY!,
         img: this.iImg!,
+        amount: this.iAmount!,
       }
-      this.onDragLeaveCell()
+      if (this.iType) item.type = this.iType
+      if (this.iScrap) item.scrap = this.iScrap
+      this.onDragLeaveCell() // this.iXXX properties are reset, don't use them below
       if (item.x < 0 || item.y < 0 || item.x + item.w > this.w || item.y + item.h > this.h) {
         return
       }
+      if (this.type && item.type !== this.type) return
 
       const overlap = this.getItemOverlap(item)
-      if (overlap.size) {
+      if (overlap.size > 1) {
         return
       }
+      if (overlap.size === 1) {
+        const overlappedItemIndex = overlap.values().next().value
+        const overlappedItem = this.items[overlappedItemIndex]
+        if (this.stack) {
+          const typeStackRestriction = this.stack.find(({ type }) =>
+            overlappedItem.type ? type === overlappedItem.type : type === 'misc'
+          )
+          if (
+            typeStackRestriction &&
+            overlappedItem.img === item.img &&
+            overlappedItem.amount <= typeStackRestriction.max
+          ) {
+            let amount = overlappedItem.amount + item.amount
+            const excess = Math.max(0, amount - typeStackRestriction.max)
+            if (excess) {
+              amount = typeStackRestriction.max
+            }
+
+            if (amount === overlappedItem.amount) {
+              return
+            }
+
+            const dragPayload: IDragPayload = { amount: item.amount - excess }
+            Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
+
+            e.preventDefault() // mark drop as successful
+            const newItem = { ...overlappedItem, amount }
+            this.items[overlappedItemIndex] = newItem
+          }
+        }
+        return
+      }
+
+      const dragPayload: IDragPayload = { amount: item.amount }
+      Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
 
       e.preventDefault() // mark drop as successful
       this.items.push(item)
@@ -193,8 +244,11 @@ export default {
         :w="item.w"
         :h="item.h"
         :img="item.img"
+        :type="item.type"
+        :amount="item.amount"
+        :scrap="item.scrap"
         @dragstart="onItemDragStart(i)"
-        @drop="onItemDrop(i)"
+        @drop="onItemDrop(i, $event)"
         @dragend="onItemDragEnd"
       />
     </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 import InvCell from './InvCell.vue'
 import InvItem from './InvItem.vue'
-import { DRAG_PAYLOAD_SYMBOL } from './constants'
+import { CELL_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
 
 interface IItem {
   w: number
@@ -40,6 +40,7 @@ export default {
       iType: null as string | null,
       iAmount: null as number | null,
       iScrap: null as boolean | null,
+      iWillRelease: null as boolean | null,
       items: [] as IItem[],
       draggingItemIndex: null as number | null,
     }
@@ -85,6 +86,7 @@ export default {
           if (prop === 'type') this.iType = value
           if (prop === 'amount') this.iAmount = +value
           if (prop === 'scrap') this.iScrap = !!+value
+          if (prop === 'button-will-release') this.iWillRelease = !!+value
         })
       }, 0)
     },
@@ -121,6 +123,7 @@ export default {
       this.iType = null
       this.iAmount = null
       this.iScrap = null
+      this.iWillRelease = null
     },
     onItemDragStart(itemIndex: number) {
       this.draggingItemIndex = itemIndex
@@ -138,6 +141,23 @@ export default {
     onItemDragEnd() {
       this.draggingItemIndex = null
     },
+    getItemOverlap(item: IItem) {
+      const overlappedItemsIndexes = new Set<number>()
+      const overlappedCellsShift: Array<{ x: number; y: number }> = []
+      for (let i = 0; i < item.h; i++) {
+        for (let j = 0; j < item.w; j++) {
+          const itemIndex = this.itemsMap[item.y + i][item.x + j]
+          if (typeof itemIndex === 'number' && this.draggingItemIndex !== itemIndex) {
+            overlappedItemsIndexes.add(itemIndex)
+            overlappedCellsShift.push({
+              x: item.x + j - this.hvrX!,
+              y: item.y + i - this.hvrY!,
+            })
+          }
+        }
+      }
+      return { indexes: overlappedItemsIndexes, cellsShift: overlappedCellsShift }
+    },
     onDrop(e: DragEvent) {
       const item: IItem = {
         w: this.iW!,
@@ -149,20 +169,36 @@ export default {
       }
       if (this.iType) item.type = this.iType
       if (this.iScrap) item.scrap = this.iScrap
-      this.onDragLeaveCell() // this.iXXX properties are reset, don't use them below
-      if (item.x < 0 || item.y < 0 || item.x + item.w > this.w || item.y + item.h > this.h) {
-        return
-      }
-      if (this.type && item.type !== this.type) return
 
-      const overlap = this.getItemOverlap(item)
-      if (overlap.size > 1) {
+      if (
+        (this.type && item.type !== this.type) ||
+        item.x < 0 ||
+        item.y < 0 ||
+        item.x + item.w > this.w ||
+        item.y + item.h > this.h
+      ) {
+        this.onDragLeaveCell()
         return
       }
-      if (overlap.size === 1) {
-        const overlappedItemIndex = overlap.values().next().value
+
+      const iWillRelease = this.iWillRelease
+      const overlap = this.getItemOverlap(item)
+
+      this.onDragLeaveCell() // this.iXXX properties are reset, don't use them below
+
+      if (overlap.indexes.size > 1) {
+        //! todo: try to place an item with the current items arrangement first
+        if (this.arrange([...this.items, item])) {
+          e.preventDefault() // mark drop as successful
+        }
+        return
+      }
+      if (overlap.indexes.size === 1) {
+        const overlappedItemIndex = overlap.indexes.values().next()
+          .value as typeof overlap.indexes extends Set<infer T> ? T : never
         const overlappedItem = this.items[overlappedItemIndex]
         if (this.stack) {
+          // try to stack
           const typeStackRestriction = this.stack.find(({ type }) =>
             overlappedItem.type ? type === overlappedItem.type : type === 'misc'
           )
@@ -187,10 +223,92 @@ export default {
             e.preventDefault() // mark drop as successful
             const newItem = { ...overlappedItem, amount }
             this.items[overlappedItemIndex] = newItem
+            return
           }
         }
-        return
+
+        // replace
+
+        const cellRealShift = {
+          x: overlap.cellsShift[0].x * CELL_SIZE,
+          y: overlap.cellsShift[0].y * CELL_SIZE,
+        }
+
+        const overlappedItemElement = (this.$refs.itemWrappers as HTMLDivElement[])[
+          overlappedItemIndex
+        ]
+        overlappedItemElement.style.pointerEvents = 'all'
+        //! todo: select most appropriate cell index
+        const overlappedItemInnerElement = document.elementFromPoint(
+          e.clientX + cellRealShift.x,
+          e.clientY + cellRealShift.y
+        )
+        overlappedItemElement.style.pointerEvents = ''
+
+        const dataTransfer = new DataTransfer()
+        dataTransfer.setData(`dnd/button-will-release;value=${iWillRelease ? 0 : 1}`, '')
+
+        let elementToOver: Element | null
+        const onMouseMove = (e: MouseEvent) => {
+          const clientX = e.clientX
+          const clientY = e.clientY
+          overlappedItemInnerElement?.dispatchEvent(
+            new DragEvent('drag', { clientX, clientY, bubbles: true })
+          )
+          const newElementToOver = document.elementFromPoint(clientX, clientY)
+          if (elementToOver !== newElementToOver) {
+            elementToOver?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
+            newElementToOver?.dispatchEvent(
+              new DragEvent('dragenter', { dataTransfer, bubbles: true })
+            )
+            //! fix: overlapping over items but not cells
+            // const a = newElementToOver as HTMLElement
+            // a.style.border = '1px solid red'
+            elementToOver = newElementToOver
+          }
+          elementToOver?.dispatchEvent(
+            new DragEvent('dragover', { clientX, clientY, bubbles: true })
+          )
+        }
+
+        const mouseDropEvent = iWillRelease ? 'mouseup' : 'mousedown'
+        const onMouseDropEvent = (e: MouseEvent) => {
+          const elementToDrop = document.elementFromPoint(e.clientX, e.clientY)
+          elementToDrop?.dispatchEvent(
+            new DragEvent('drop', {
+              clientX: e.clientX,
+              clientY: e.clientY,
+              bubbles: true,
+              cancelable: true, // setting cancelable=true is crucial because it allows to check defaultPrevented property to see if the drop was successful
+            })
+          )
+          overlappedItemInnerElement?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
+          document.removeEventListener('mousemove', onMouseMove)
+          document.removeEventListener(mouseDropEvent, onMouseDropEvent)
+        }
+
+        setTimeout(() => {
+          // let the previous item to catch the 'drop' event on the document
+          overlappedItemInnerElement?.dispatchEvent(
+            new MouseEvent('mousedown', {
+              clientX: e.clientX + cellRealShift.x,
+              clientY: e.clientY + cellRealShift.y,
+              bubbles: true,
+              detail: +!!iWillRelease, // 0 - drag ends when button  pressed, 1 - when released
+            })
+          )
+          overlappedItemInnerElement?.dispatchEvent(
+            new DragEvent('dragstart', { dataTransfer, bubbles: true, shiftKey: true })
+          )
+          setTimeout(() => {
+            // prevent handling the freshly programmatically triggered 'mousedown' event
+            document.addEventListener('mousemove', onMouseMove)
+            document.addEventListener(mouseDropEvent, onMouseDropEvent)
+          }, 0)
+        }, 0)
       }
+
+      // place the item (same when replacing)
 
       const dragPayload: IDragPayload = { amount: item.amount }
       Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
@@ -198,20 +316,9 @@ export default {
       e.preventDefault() // mark drop as successful
       this.items.push(item)
     },
-    getItemOverlap(item: IItem) {
-      const overlappedItemsIndexes = new Set<number>()
-      for (let i = 0; i < item.h; i++) {
-        for (let j = 0; j < item.w; j++) {
-          const itemIndex = this.itemsMap[item.y + i][item.x + j]
-          if (typeof itemIndex === 'number' && this.draggingItemIndex !== itemIndex) {
-            overlappedItemsIndexes.add(itemIndex)
-          }
-        }
-      }
-      return overlappedItemsIndexes
-    },
-    arrange() {
-      const itemsList = [...this.items]
+    /** @returns {boolean} was items arrangement successful or not */
+    arrange(possibleItems?: IItem[]) {
+      const itemsList = [...(possibleItems || this.items)]
       const items: IItem[] = []
 
       const mapSize = this.w * this.h
@@ -246,7 +353,9 @@ export default {
       })
       if (!itemsList.length) {
         this.items = items
+        return true
       }
+      return false
     },
     getItemCellsIndexes(item: IItem, cornerIndex: number) {
       const cornerX = cornerIndex % this.w
@@ -293,6 +402,7 @@ export default {
         left: `calc(var(--cell-size)*${item.x})`,
         pointerEvents: isItemOver ? 'none' : 'auto',
       }"
+      ref="itemWrappers"
       :key="`${item.x};${item.y}`"
     >
       <InvItem

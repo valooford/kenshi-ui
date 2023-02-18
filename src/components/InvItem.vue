@@ -27,6 +27,7 @@ export default {
       pX: -1000,
       pY: -1000,
       amountDragging: null as number | null,
+      cleanupEventName: null as string | null,
     }
   },
   computed: {
@@ -72,7 +73,12 @@ export default {
       this.cY = y
       this.pX = e.clientX
       this.pY = e.clientY
-      document.body.addEventListener('mouseup', this.onMouseUp)
+
+      const buttonHeld = !!e.detail
+      this.cleanupEventName = buttonHeld ? 'mouseup' : 'mousedown'
+      setTimeout(() => {
+        document.body.addEventListener(this.cleanupEventName!, this.cleanup)
+      }, 0)
     },
     onDragStart(e: DragEvent) {
       if (e.dataTransfer) {
@@ -82,7 +88,6 @@ export default {
         // because retrieving data via getData() is only accessible in 'drop' event handlers
         // also 'dataTransfer.types' might seem to be empty in debug console, but it's not
         // dnd/[property];value=[property-value]
-        e.dataTransfer.clearData()
         e.dataTransfer.setData(`dnd/w;value=${this.w}`, '')
         e.dataTransfer.setData(`dnd/h;value=${this.h}`, '')
         e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
@@ -119,18 +124,19 @@ export default {
     onDragEnd() {
       this.isDragging = false
       this.amountDragging = null
-      this.onMouseUp()
+      this.cleanup()
       document.body.removeEventListener('drop', this.onDrop)
 
       this.$emit('dragend')
     },
-    onMouseUp() {
+    cleanup() {
       this.isPreview = false
       this.cX = 0
       this.cY = 0
       this.pX = -1000
       this.pY = -1000
-      document.body.removeEventListener('mouseup', this.onMouseUp)
+      document.body.removeEventListener(this.cleanupEventName!, this.cleanup)
+      this.cleanupEventName = null
     },
     onDrag(e: DragEvent) {
       this.pX = e.clientX
@@ -219,9 +225,10 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
+  height: 5px;
   -webkit-appearance: none;
   appearance: none;
-  height: 5px;
+  pointer-events: none;
 }
 .scrap::-webkit-progress-bar {
   background-color: #000;
@@ -234,9 +241,10 @@ export default {
 }
 .count {
   position: absolute;
-  bottom: 5px;
   right: 0;
+  bottom: 5px;
   color: #fff;
   font-weight: 600;
+  pointer-events: none;
 }
 </style>

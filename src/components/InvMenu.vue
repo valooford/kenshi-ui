@@ -1,12 +1,14 @@
 <script lang="ts">
-import { CELL_SIZE } from './constants'
-import InvItem from './InvItem.vue'
+import InvItem from './InvItem/InvItem.vue'
+import InvAmountItem from './InvItem/InvAmountItem.vue'
 import InvInventory from './InvInventory.vue'
+import { ItemType } from './interface'
+import { CELL_SIZE } from './constants'
 
 export default {
-  components: { InvItem, InvInventory },
+  components: { InvItem, InvAmountItem, InvInventory },
   data() {
-    return { cellSize: CELL_SIZE }
+    return { ItemType, CELL_SIZE }
   },
   methods: {
     emulateDefaultCursorEverywhere(e: DragEvent) {
@@ -23,22 +25,22 @@ export default {
 </script>
 
 <template>
-  <div class="menu" :style="{ '--cell-size': `${cellSize}px` }">
+  <div class="menu" :style="{ '--cell-size': `${CELL_SIZE}px` }">
     <InvInventory />
     <div class="itemsContainer">
       <InvItem
-        :type="'backpack'"
+        :type="ItemType.Backpack"
         :w="3"
         :h="3"
         img="src/assets/1288-gamedata.base.686-gamedata.base.png"
       />
       <InvItem
-        :type="'weapon'"
+        :type="ItemType.Weapon"
         :w="7"
         :h="1"
         img="src/assets/52295-rebirth.mod.913-gamedata.base.png"
       />
-      <InvItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="1.4" :scrap="true" />
+      <InvAmountItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="1.4" :scrap="true" />
     </div>
   </div>
 </template>

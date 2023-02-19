@@ -1,18 +1,21 @@
 <script lang="ts">
-import { CELL_SIZE, CELL_HALF_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
+import type { PropType } from 'vue'
+import { CELL_SIZE, CELL_HALF_SIZE, DRAG_PAYLOAD_SYMBOL } from '../constants'
+import type { ItemType } from '../interface'
 
 export default {
   props: {
-    img: { type: String, required: true },
     w: { type: Number, required: true },
     h: { type: Number, required: true },
-    type: { type: String },
-    amount: { type: Number },
-    scrap: { type: Boolean },
+    img: { type: String, required: true },
+    type: { type: String as PropType<ItemType> },
+    hidden: { type: Boolean },
+    handleDragStart: { type: Function as PropType<(e: DragEvent) => void> },
+    handleDragEnd: { type: Function as PropType<() => void> },
   },
   emits: {
     dragstart: null,
-    drop: (dragPayload: any) => !!dragPayload,
+    drop: (dragPayload?: any) => true || dragPayload,
     dragend: null,
   },
   data() {
@@ -26,7 +29,6 @@ export default {
       cY: 0,
       pX: -1000,
       pY: -1000,
-      amountDragging: null as number | null,
       cleanupEventName: null as string | null,
     }
   },
@@ -41,24 +43,6 @@ export default {
       const x = this.pX - this.cX * CELL_SIZE - CELL_HALF_SIZE
       const y = this.pY - this.cY * CELL_SIZE - CELL_HALF_SIZE
       return { x, y }
-    },
-    count() {
-      if (!this.amount) return undefined
-      return Math.ceil(this.amount - Number(this.amountDragging))
-    },
-    notEnoughToShowCount() {
-      return !this.count || this.count <= 1
-    },
-    notEnoughAmountToShowItem() {
-      return !this.count || this.count === 0
-    },
-    progressValue() {
-      if (!this.amount) return undefined
-      return this.isPreview || this.isDragging ? 100 : (this.amount % 1 || 1) * 100
-    },
-    progressScrap() {
-      if (!this.amount) return undefined
-      return (this.amount % 1 || 1) * 100
     },
   },
   methods: {
@@ -81,6 +65,7 @@ export default {
       }, 0)
     },
     onDragStart(e: DragEvent) {
+      if (this.handleDragStart) this.handleDragStart(e)
       if (e.dataTransfer) {
         // selects closest to default cursor
         e.dataTransfer.effectAllowed = 'move'
@@ -92,16 +77,10 @@ export default {
         e.dataTransfer.setData(`dnd/h;value=${this.h}`, '')
         e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
         e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
-        e.dataTransfer.setData(`dnd/img;value=${this.img}`, '')
-        if (this.type) e.dataTransfer.setData(`dnd/type;value=${this.type}`, '')
-        let amount = 1
-        if (this.amount) {
-          if (e.shiftKey) amount = this.amount
-          else amount = this.amount % 1 || 1
-        }
-        this.amountDragging = amount
-        e.dataTransfer.setData(`dnd/amount;value=${amount}`, '')
-        if (this.scrap) e.dataTransfer.setData(`dnd/scrap;value=${+this.scrap}`, '')
+
+        e.dataTransfer.setData('dnd/img', this.img)
+        if (this.type) e.dataTransfer.setData('dnd/type', this.type)
+
         // removes ghost
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
       }
@@ -122,8 +101,8 @@ export default {
       }
     },
     onDragEnd() {
+      if (this.handleDragEnd) this.handleDragEnd()
       this.isDragging = false
-      this.amountDragging = null
       this.cleanup()
       document.body.removeEventListener('drop', this.onDrop)
 
@@ -151,8 +130,8 @@ export default {
   <div
     :class="[
       'item',
-      isDragging && notEnoughAmountToShowItem && 'item_dragging',
-      isPreview && notEnoughAmountToShowItem && 'item_preview',
+      isDragging && hidden && 'item_dragging',
+      isPreview && hidden && 'item_preview',
     ]"
   >
     <img
@@ -168,10 +147,7 @@ export default {
         height,
       }"
     />
-    <progress v-if="scrap && amount" :value="progressValue" max="100" class="scrap"></progress>
-    <div v-if="!notEnoughToShowCount" class="count">
-      {{ count }}
-    </div>
+    <slot name="item"></slot>
   </div>
   <!-- ITEM PREVIEW -->
   <div
@@ -192,10 +168,7 @@ export default {
           height,
         }"
       />
-      <progress v-if="scrap && amount" :value="progressScrap" max="100" class="scrap"></progress>
-      <div v-if="amountDragging && amountDragging > 1" class="count">
-        {{ Math.ceil(amountDragging) }}
-      </div>
+      <slot name="preview"></slot>
     </div>
   </div>
 </template>
@@ -219,32 +192,5 @@ export default {
 .preview__content {
   position: relative;
   background-color: rgb(0 0 0 / 0.4);
-}
-.scrap {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  -webkit-appearance: none;
-  appearance: none;
-  pointer-events: none;
-}
-.scrap::-webkit-progress-bar {
-  background-color: #000;
-  background-clip: padding-box;
-  border: 1px solid transparent;
-  border-top: none;
-}
-.scrap::-webkit-progress-value {
-  background-color: #fff;
-}
-.count {
-  position: absolute;
-  right: 0;
-  bottom: 5px;
-  color: #fff;
-  font-weight: 600;
-  pointer-events: none;
 }
 </style>

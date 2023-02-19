@@ -1,56 +1,34 @@
 <script lang="ts">
+import type { PropType } from 'vue'
+
 import InvCell from './InvCell.vue'
-import InvItem from './InvItem.vue'
+import InvItem from './InvItem/InvItem.vue'
+import InvAmountItem from './InvItem/InvAmountItem.vue'
+import { ItemType } from './interface'
+import type { IAmountDragPayload, IAmountItem, IItem, ItemObj } from './interface'
+import { isAmountItem } from './predicates'
 import { CELL_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
 
-interface IItem {
-  w: number
-  h: number
-  x: number
-  y: number
-  img: string
-  amount: number
-  type?: string
-  scrap?: boolean
-}
-
-interface IDragPayload {
-  amount: number
-}
-
 export default {
-  components: { InvCell, InvItem },
+  components: { InvCell, InvItem, InvAmountItem },
   props: {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
-    type: { type: String },
-    stack: { type: Array<{ type: string; max: number }> },
+    type: { type: String as PropType<ItemType> },
+    stack: { type: Array<{ type: ItemType; max: number }> },
   },
   expose: ['arrange'],
   data() {
     return {
-      hvrI: null as number | null,
-      hvrX: null as number | null,
-      hvrY: null as number | null,
-      iW: null as number | null,
-      iH: null as number | null,
-      iX: null as number | null,
-      iY: null as number | null,
-      iImg: null as string | null,
-      iType: null as string | null,
-      iAmount: null as number | null,
-      iScrap: null as boolean | null,
-      iWillRelease: null as boolean | null,
-      items: [] as IItem[],
+      hoverCell: null as { index: number; x: number; y: number } | null,
+      hoverItem: null as { w: number; h: number; x: number; y: number } | null,
+      items: [] as ItemObj[],
       draggingItemIndex: null as number | null,
     }
   },
   computed: {
     cells() {
       return Array(this.w * this.h).fill(0)
-    },
-    isItemOver() {
-      return !!this.iW
     },
     itemsMap() {
       return this.items.reduce(
@@ -71,30 +49,32 @@ export default {
     },
   },
   methods: {
+    isAmountItem,
     onDragEnter(e: DragEvent) {
       // dnd/[property];value=[property-value]
       const paramsRegex = /dnd\/(\S+);value=(.+)$/
       const types = e.dataTransfer?.types
       setTimeout(() => {
+        let w: number | undefined = undefined
+        let h: number | undefined = undefined
+        let x: number | undefined = undefined
+        let y: number | undefined = undefined
         types?.forEach((t) => {
           const [, prop, value] = paramsRegex.exec(t) || []
-          if (prop === 'w') this.iW = +value
-          if (prop === 'h') this.iH = +value
-          if (prop === 'x') this.iX = +value
-          if (prop === 'y') this.iY = +value
-          if (prop === 'img') this.iImg = value
-          if (prop === 'type') this.iType = value
-          if (prop === 'amount') this.iAmount = +value
-          if (prop === 'scrap') this.iScrap = !!+value
-          if (prop === 'button-will-release') this.iWillRelease = !!+value
+          if (!prop) return
+          if (prop === 'w') w = +value
+          if (prop === 'h') h = +value
+          if (prop === 'x') x = +value
+          if (prop === 'y') y = +value
         })
+        if (w && h && x !== undefined && y !== undefined) {
+          this.hoverItem = { w, h, x, y }
+        }
       }, 0)
     },
-    onDragEnterCell(cI: number) {
-      this.hvrI = cI
-      const { x: cX, y: cY } = this.toCoords(cI, this.w)
-      this.hvrX = cX
-      this.hvrY = cY
+    onDragEnterCell(index: number) {
+      const { x, y } = this.toCoords(index, this.w)
+      this.hoverCell = { index, x, y }
     },
     toCoords(i: number, w: number) {
       const x = i % w
@@ -103,39 +83,32 @@ export default {
     },
     // enables to shadow cells under the dragged item
     isOverCell(cI: number) {
-      if (this.hvrI === null) return false
+      if (!this.hoverCell || !this.hoverItem) return false
       const { x: cX, y: cY } = this.toCoords(cI, this.w)
-      const left = this.hvrX! - this.iX!
-      const right = left + this.iW! - 1
-      const top = this.hvrY! - this.iY!
-      const bottom = top + this.iH! - 1
+      const left = this.hoverCell.x - this.hoverItem.x
+      const right = left + this.hoverItem.w - 1
+      const top = this.hoverCell.y - this.hoverItem.y
+      const bottom = top + this.hoverItem.h - 1
       return !(cX < left || cX > right || cY < top || cY > bottom)
     },
     onDragLeaveCell() {
-      this.hvrI = null
-      this.hvrX = null
-      this.hvrY = null
-      this.iW = null
-      this.iH = null
-      this.iX = null
-      this.iY = null
-      this.iImg = null
-      this.iType = null
-      this.iAmount = null
-      this.iScrap = null
-      this.iWillRelease = null
+      this.hoverCell = null
+      this.hoverItem = null
     },
     onItemDragStart(itemIndex: number) {
       this.draggingItemIndex = itemIndex
     },
-    onItemDrop(itemIndex: number, data: IDragPayload) {
-      // local item is being dragged somewhere
-      const amount = this.items[itemIndex].amount - data.amount
-      if (amount > 0) {
-        this.items[itemIndex].amount = amount
-      } else {
-        this.items.splice(itemIndex, 1)
+    onItemDrop(itemIndex: number, data?: IAmountDragPayload) {
+      const item = this.items[itemIndex]
+      if (data && isAmountItem(item)) {
+        // local item is being dragged somewhere
+        const amount = item.amount - data.amount
+        if (amount > 0) {
+          item.amount = amount
+          return
+        }
       }
+      this.items.splice(itemIndex, 1)
       this.onItemDragEnd()
     },
     onItemDragEnd() {
@@ -144,34 +117,49 @@ export default {
     getItemOverlap(item: IItem) {
       const overlappedItemsIndexes = new Set<number>()
       const overlappedCellsShift: Array<{ x: number; y: number }> = []
-      for (let i = 0; i < item.h; i++) {
-        for (let j = 0; j < item.w; j++) {
-          const itemIndex = this.itemsMap[item.y + i][item.x + j]
-          if (typeof itemIndex === 'number' && this.draggingItemIndex !== itemIndex) {
-            overlappedItemsIndexes.add(itemIndex)
-            overlappedCellsShift.push({
-              x: item.x + j - this.hvrX!,
-              y: item.y + i - this.hvrY!,
-            })
+      if (this.hoverCell) {
+        for (let i = 0; i < item.h; i++) {
+          for (let j = 0; j < item.w; j++) {
+            const itemIndex = this.itemsMap[item.y + i][item.x + j]
+            if (typeof itemIndex === 'number' && this.draggingItemIndex !== itemIndex) {
+              overlappedItemsIndexes.add(itemIndex)
+              overlappedCellsShift.push({
+                x: item.x + j - this.hoverCell.x,
+                y: item.y + i - this.hoverCell.y,
+              })
+            }
           }
         }
       }
       return { indexes: overlappedItemsIndexes, cellsShift: overlappedCellsShift }
     },
     onDrop(e: DragEvent) {
-      const item: IItem = {
-        w: this.iW!,
-        h: this.iH!,
-        x: this.hvrX! - this.iX!,
-        y: this.hvrY! - this.iY!,
-        img: this.iImg!,
-        amount: this.iAmount!,
+      if (!this.hoverCell || !this.hoverItem) return
+
+      const img = e.dataTransfer?.getData('dnd/img') || './fallback.png'
+      const type = e.dataTransfer?.getData('dnd/type')
+      const amount = e.dataTransfer?.getData('dnd/amount')
+      const scrap = e.dataTransfer?.getData('dnd/scrap')
+      const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0')
+
+      const item: ItemObj = {
+        w: this.hoverItem.w,
+        h: this.hoverItem.h,
+        x: this.hoverCell.x - this.hoverItem.x,
+        y: this.hoverCell.y! - this.hoverItem.y,
+        img,
       }
-      if (this.iType) item.type = this.iType
-      if (this.iScrap) item.scrap = this.iScrap
+      if (type) item.type = type as ItemType
+
+      if (amount) {
+        ;(item as IAmountItem).amount = +amount
+        if (scrap) (item as IAmountItem).scrap = !!+scrap
+      }
 
       if (
+        // do not match the type of region
         (this.type && item.type !== this.type) ||
+        // or do not fit in the region rectangle
         item.x < 0 ||
         item.y < 0 ||
         item.x + item.w > this.w ||
@@ -181,10 +169,9 @@ export default {
         return
       }
 
-      const iWillRelease = this.iWillRelease
       const overlap = this.getItemOverlap(item)
 
-      this.onDragLeaveCell() // this.iXXX properties are reset, don't use them below
+      this.onDragLeaveCell() // this.hoverXXX properties are reset, don't use them below
 
       if (overlap.indexes.size > 1) {
         //! todo: try to place an item with the current items arrangement first
@@ -197,10 +184,10 @@ export default {
         const overlappedItemIndex = overlap.indexes.values().next()
           .value as typeof overlap.indexes extends Set<infer T> ? T : never
         const overlappedItem = this.items[overlappedItemIndex]
-        if (this.stack) {
+        if (this.stack && isAmountItem(overlappedItem) && isAmountItem(item)) {
           // try to stack
           const typeStackRestriction = this.stack.find(({ type }) =>
-            overlappedItem.type ? type === overlappedItem.type : type === 'misc'
+            overlappedItem.type ? type === overlappedItem.type : type === ItemType.Misc
           )
           if (
             typeStackRestriction &&
@@ -217,7 +204,7 @@ export default {
               return
             }
 
-            const dragPayload: IDragPayload = { amount: item.amount - excess }
+            const dragPayload: IAmountDragPayload = { amount: item.amount - excess }
             Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
 
             e.preventDefault() // mark drop as successful
@@ -246,7 +233,7 @@ export default {
         overlappedItemElement.style.pointerEvents = ''
 
         const dataTransfer = new DataTransfer()
-        dataTransfer.setData(`dnd/button-will-release;value=${iWillRelease ? 0 : 1}`, '')
+        dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
 
         let elementToOver: Element | null
         const onMouseMove = (e: MouseEvent) => {
@@ -278,6 +265,7 @@ export default {
             new DragEvent('drop', {
               clientX: e.clientX,
               clientY: e.clientY,
+              dataTransfer,
               bubbles: true,
               cancelable: true, // setting cancelable=true is crucial because it allows to check defaultPrevented property to see if the drop was successful
             })
@@ -310,8 +298,10 @@ export default {
 
       // place the item (same when replacing)
 
-      const dragPayload: IDragPayload = { amount: item.amount }
-      Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
+      if (isAmountItem(item)) {
+        const dragPayload: IAmountDragPayload = { amount: item.amount }
+        Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
+      }
 
       e.preventDefault() // mark drop as successful
       this.items.push(item)
@@ -395,23 +385,26 @@ export default {
       :key="i"
     />
     <div
-      v-for="(item, i) in items"
+      v-for="({ x, y, ...item }, i) in items"
       class="itemWrapper"
       :style="{
-        top: `calc(var(--cell-size)*${item.y})`,
-        left: `calc(var(--cell-size)*${item.x})`,
-        pointerEvents: isItemOver ? 'none' : 'auto',
+        top: `calc(var(--cell-size)*${y})`,
+        left: `calc(var(--cell-size)*${x})`,
+        pointerEvents: hoverItem ? 'none' : 'auto',
       }"
       ref="itemWrappers"
-      :key="`${item.x};${item.y}`"
+      :key="`${x};${y}`"
     >
+      <InvAmountItem
+        v-if="isAmountItem(item)"
+        v-bind="item"
+        @dragstart="onItemDragStart(i)"
+        @drop="onItemDrop(i, $event)"
+        @dragend="onItemDragEnd"
+      />
       <InvItem
-        :w="item.w"
-        :h="item.h"
-        :img="item.img"
-        :type="item.type"
-        :amount="item.amount"
-        :scrap="item.scrap"
+        v-else
+        v-bind="item"
         @dragstart="onItemDragStart(i)"
         @drop="onItemDrop(i, $event)"
         @dragend="onItemDragEnd"

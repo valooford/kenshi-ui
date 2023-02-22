@@ -4,34 +4,49 @@ import type { PropType } from 'vue'
 import InvCell from './InvCell.vue'
 import InvItem from './InvItem/InvItem.vue'
 import InvAmountItem from './InvItem/InvAmountItem.vue'
+import type {
+  IAmountDragPayload,
+  IAmountItem,
+  IBackpack,
+  IItem,
+  IStackItem,
+  ItemObj,
+} from './interface'
 import { ItemType } from './interface'
-import type { IAmountDragPayload, IAmountItem, IItem, ItemObj } from './interface'
-import { isAmountItem } from './predicates'
+import { isAmountItem, isBackpack } from './predicates'
 import { CELL_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
+import InvBackpack from './InvItem/InvBackpack.vue'
 
 export default {
-  components: { InvCell, InvItem, InvAmountItem },
+  components: { InvCell, InvItem, InvAmountItem, InvBackpack },
   props: {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
+    items: { type: Array<ItemObj>, required: true },
     type: { type: String as PropType<ItemType> },
-    stack: { type: Array<{ type: ItemType; max: number }> },
+    stack: { type: Array<IStackItem> },
   },
+  emits: { change: (items: ItemObj[]) => !!items },
   expose: ['arrange'],
   data() {
     return {
+      immediateItems: [] as ItemObj[],
       hoverCell: null as { index: number; x: number; y: number } | null,
       hoverItem: null as { w: number; h: number; x: number; y: number } | null,
-      items: [] as ItemObj[],
       draggingItemIndex: null as number | null,
     }
+  },
+  watch: {
+    items(value: ItemObj[]) {
+      this.immediateItems = [...value]
+    },
   },
   computed: {
     cells() {
       return Array(this.w * this.h).fill(0)
     },
     itemsMap() {
-      return this.items.reduce(
+      return this.immediateItems.reduce(
         (acc, item, itemIndex) => {
           for (let i = 0; i < item.h; i++) {
             for (let j = 0; j < item.w; j++) {
@@ -50,6 +65,10 @@ export default {
   },
   methods: {
     isAmountItem,
+    isBackpack,
+    syncItems() {
+      this.$emit('change', this.immediateItems)
+    },
     onDragEnter(e: DragEvent) {
       // dnd/[property];value=[property-value]
       const paramsRegex = /dnd\/(\S+);value=(.+)$/
@@ -99,16 +118,18 @@ export default {
       this.draggingItemIndex = itemIndex
     },
     onItemDrop(itemIndex: number, data?: IAmountDragPayload) {
-      const item = this.items[itemIndex]
+      const item = { ...this.immediateItems[itemIndex] }
       if (data && isAmountItem(item)) {
         // local item is being dragged somewhere
         const amount = item.amount - data.amount
         if (amount > 0) {
           item.amount = amount
-          return
+          this.immediateItems[itemIndex] = item
         }
+      } else {
+        this.immediateItems.splice(itemIndex, 1)
       }
-      this.items.splice(itemIndex, 1)
+      this.syncItems()
       this.onItemDragEnd()
     },
     onItemDragEnd() {
@@ -138,9 +159,12 @@ export default {
 
       const img = e.dataTransfer?.getData('dnd/img') || './fallback.png'
       const type = e.dataTransfer?.getData('dnd/type')
+      const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0')
+
       const amount = e.dataTransfer?.getData('dnd/amount')
       const scrap = e.dataTransfer?.getData('dnd/scrap')
-      const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0')
+
+      const region = e.dataTransfer?.getData('dnd/region')
 
       const item: ItemObj = {
         w: this.hoverItem.w,
@@ -154,6 +178,10 @@ export default {
       if (amount) {
         ;(item as IAmountItem).amount = +amount
         if (scrap) (item as IAmountItem).scrap = !!+scrap
+      }
+
+      if (region) {
+        ;(item as IBackpack).region = JSON.parse(region)
       }
 
       if (
@@ -175,7 +203,7 @@ export default {
 
       if (overlap.indexes.size > 1) {
         //! todo: try to place an item with the current items arrangement first
-        if (this.arrange([...this.items, item])) {
+        if (this.arrange([...this.immediateItems, item])) {
           e.preventDefault() // mark drop as successful
         }
         return
@@ -183,7 +211,7 @@ export default {
       if (overlap.indexes.size === 1) {
         const overlappedItemIndex = overlap.indexes.values().next()
           .value as typeof overlap.indexes extends Set<infer T> ? T : never
-        const overlappedItem = this.items[overlappedItemIndex]
+        const overlappedItem = this.immediateItems[overlappedItemIndex]
         if (this.stack && isAmountItem(overlappedItem) && isAmountItem(item)) {
           // try to stack
           const typeStackRestriction = this.stack.find(({ type }) =>
@@ -209,7 +237,8 @@ export default {
 
             e.preventDefault() // mark drop as successful
             const newItem = { ...overlappedItem, amount }
-            this.items[overlappedItemIndex] = newItem
+            this.immediateItems[overlappedItemIndex] = newItem
+            this.syncItems()
             return
           }
         }
@@ -304,11 +333,12 @@ export default {
       }
 
       e.preventDefault() // mark drop as successful
-      this.items.push(item)
+      this.immediateItems.push(item)
+      this.syncItems()
     },
     /** @returns {boolean} was items arrangement successful or not */
     arrange(possibleItems?: IItem[]) {
-      const itemsList = [...(possibleItems || this.items)]
+      const itemsList = [...(possibleItems || this.immediateItems)]
       const items: IItem[] = []
 
       const mapSize = this.w * this.h
@@ -342,7 +372,8 @@ export default {
         }
       })
       if (!itemsList.length) {
-        this.items = items
+        this.immediateItems = items
+        this.syncItems()
         return true
       }
       return false
@@ -397,6 +428,13 @@ export default {
     >
       <InvAmountItem
         v-if="isAmountItem(item)"
+        v-bind="item"
+        @dragstart="onItemDragStart(i)"
+        @drop="onItemDrop(i, $event)"
+        @dragend="onItemDragEnd"
+      />
+      <InvBackpack
+        v-if="isBackpack(item)"
         v-bind="item"
         @dragstart="onItemDragStart(i)"
         @drop="onItemDrop(i, $event)"

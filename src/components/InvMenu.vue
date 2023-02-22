@@ -1,12 +1,13 @@
 <script lang="ts">
+import InvInventory from './InvInventory.vue'
 import InvItem from './InvItem/InvItem.vue'
 import InvAmountItem from './InvItem/InvAmountItem.vue'
-import InvInventory from './InvInventory.vue'
+import InvBackpack from './InvItem/InvBackpack.vue'
 import { ItemType } from './interface'
 import { CELL_SIZE } from './constants'
 
 export default {
-  components: { InvItem, InvAmountItem, InvInventory },
+  components: { InvInventory, InvItem, InvAmountItem, InvBackpack },
   data() {
     return { ItemType, CELL_SIZE }
   },
@@ -28,10 +29,11 @@ export default {
   <div class="menu" :style="{ '--cell-size': `${CELL_SIZE}px` }">
     <InvInventory />
     <div class="itemsContainer">
-      <InvItem
+      <InvBackpack
         :type="ItemType.Backpack"
         :w="3"
         :h="3"
+        :region="{ w: 8, h: 8, items: [] }"
         img="src/assets/1288-gamedata.base.686-gamedata.base.png"
       />
       <InvItem

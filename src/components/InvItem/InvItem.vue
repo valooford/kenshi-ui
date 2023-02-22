@@ -133,6 +133,7 @@ export default {
       isDragging && hidden && 'item_dragging',
       isPreview && hidden && 'item_preview',
     ]"
+    :style="{ height }"
   >
     <img
       :src="img"
@@ -157,7 +158,7 @@ export default {
       top: `${pivot.y}px`,
     }"
   >
-    <div class="preview__content">
+    <div class="preview__content" :style="{ height }">
       <img
         v-if="isPreview"
         :src="img"

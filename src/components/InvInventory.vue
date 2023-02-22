@@ -63,13 +63,13 @@ export default {
 </script>
 
 <template>
-  <InvWindow v-if="isBackpackOpened">
+  <InvWindow v-if="isBackpackOpened" title="BACKPACK" @close="toggleBackpack">
     <InvRegion v-bind="backpack.region" @change="onBackpackItemsChange" ref="backpack" />
     <div class="backpack_buttons">
       <button @click="onBackpackArrange">ARRANGE</button>
     </div>
   </InvWindow>
-  <InvWindow>
+  <InvWindow title="CHARACTER">
     <div class="wrapper">
       <div class="stuff">
         <div class="stuff__row">

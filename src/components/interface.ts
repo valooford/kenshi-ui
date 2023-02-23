@@ -45,6 +45,11 @@ export interface IRegion {
   stack?: IStackItem[]
 }
 
+export interface IPoint {
+  x: number
+  y: number
+}
+
 // there is no need to pass in-region coordinates to the item itself
 export type Propsify<T> = Omit<T, 'x' | 'y'>
 

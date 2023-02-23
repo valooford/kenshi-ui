@@ -1,12 +1,14 @@
 <script lang="ts">
 import InvWindow from './InvWindow.vue'
 import InvRegion from './InvRegion.vue'
-import type { IBackpack, IItem, ItemObj } from './interface'
+import type { IBackpack, IItem, IPoint, ItemObj } from './interface'
 import { InventoryRegion, ItemType } from './interface'
 
 export default {
   components: { InvWindow, InvRegion },
   data() {
+    const windowPosX = Math.round((window.innerWidth - 569) / 2)
+    const windowPosY = Math.round((window.innerHeight - 658) / 2)
     return {
       ItemType,
       InventoryRegion,
@@ -23,6 +25,11 @@ export default {
         [InventoryRegion.Armor]: [] as IItem[],
       },
       isBackpackOpened: false,
+      pX: -1000,
+      pY: -1000,
+      windowPos: { x: windowPosX, y: windowPosY },
+      backpackWindowPos: { x: 0, y: 0 },
+      isBackpackWindowPosSync: false,
     }
   },
   computed: {
@@ -47,6 +54,10 @@ export default {
     },
     toggleBackpack() {
       if (this.hasBackpack) {
+        if (!this.isBackpackOpened) {
+          this.isBackpackWindowPosSync = true
+          this.backpackWindowPos = { x: this.windowPos.x - 255, y: this.windowPos.y }
+        }
         this.isBackpackOpened = !this.isBackpackOpened
       }
     },
@@ -58,18 +69,56 @@ export default {
       const ref = this.$refs.backpack as InstanceType<typeof InvRegion>
       ref.arrange()
     },
+    onWindowDragStart(e: DragEvent) {
+      if (!this.isBackpackWindowPosSync) return
+      this.pX = e.clientX
+      this.pY = e.clientY
+    },
+    onWindowDrag(diff: IPoint) {
+      if (this.isBackpackWindowPosSync) {
+        this.backpackWindowPos = {
+          x: this.backpackWindowPos.x + diff.x,
+          y: this.backpackWindowPos.y + diff.y,
+        }
+      }
+    },
+    onWindowMove(pos: IPoint) {
+      this.windowPos = pos
+      if (this.isBackpackWindowPosSync) {
+        this.backpackWindowPos = { x: this.windowPos.x - 255, y: this.windowPos.y }
+      }
+      this.pX = -1000
+      this.pY = -1000
+    },
+    onBackpackWindowMove(pos: IPoint) {
+      this.backpackWindowPos = pos
+      this.isBackpackWindowPosSync = false
+    },
   },
 }
 </script>
 
 <template>
-  <InvWindow v-if="isBackpackOpened" title="BACKPACK" @close="toggleBackpack">
+  <InvWindow
+    v-if="isBackpackOpened"
+    title="BACKPACK"
+    :x="backpackWindowPos.x"
+    :y="backpackWindowPos.y"
+    @close="toggleBackpack"
+    @move="onBackpackWindowMove"
+  >
     <InvRegion v-bind="backpack.region" @change="onBackpackItemsChange" ref="backpack" />
     <div class="backpack_buttons">
       <button @click="onBackpackArrange">ARRANGE</button>
     </div>
   </InvWindow>
-  <InvWindow title="CHARACTER">
+  <InvWindow
+    title="CHARACTER"
+    :x="windowPos.x"
+    :y="windowPos.y"
+    @drag="onWindowDrag"
+    @move="onWindowMove"
+  >
     <div class="wrapper">
       <div class="stuff">
         <div class="stuff__row">

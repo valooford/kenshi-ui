@@ -26,7 +26,7 @@ export default {
 </script>
 
 <template>
-  <div class="menu" :style="{ '--cell-size': `${CELL_SIZE}px` }">
+  <div class="menu">
     <InvInventory />
     <div class="itemsContainer">
       <InvBackpack
@@ -50,15 +50,23 @@ export default {
 <style scoped>
 .menu {
   display: flex;
+  flex: 1;
+
+  --cell-size: v-bind(`${CELL_SIZE}px`);
 }
 .itemsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   width: calc(var(--cell-size) * 9);
+  height: 100vh;
+  margin-left: auto;
+  padding: 10px 0;
+  gap: 10px;
   overflow-y: scroll;
   background-color: #f8f8f8;
   user-select: none;
 }
 </style>
+
+<style></style>

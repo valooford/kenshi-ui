@@ -187,7 +187,7 @@ export default {
 .preview {
   position: fixed;
   pointer-events: none;
-  z-index: 1;
+  z-index: 1200;
 }
 .item,
 .preview__content {

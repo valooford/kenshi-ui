@@ -192,6 +192,6 @@ export default {
 .item,
 .preview__content {
   position: relative;
-  background-color: rgb(0 0 0 / 0.4);
+  background-color: rgb(0 0 0 / 0.6);
 }
 </style>

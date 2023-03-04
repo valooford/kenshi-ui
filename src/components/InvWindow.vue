@@ -1,8 +1,10 @@
 <script lang="ts">
 import type { IPoint } from './interface'
-import { CELL_SIZE } from './constants'
+import InvIconButton from './InvIconButton.vue'
 
 export default {
+  components: { InvIconButton },
+  inject: ['cssVariables'],
   props: {
     title: { type: String, required: true },
     x: { type: Number, required: true },
@@ -17,7 +19,7 @@ export default {
     const emptyImage = new Image()
     emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
     return {
-      CELL_SIZE,
+      cssVariables: this.cssVariables,
       emptyImage,
       shiftX: 0,
       shiftY: 0,
@@ -78,23 +80,28 @@ export default {
   <teleport to="#root">
     <div
       :class="['window', focused && 'window_active']"
-      :style="{ top: `${posY}px`, left: `${posX}px` }"
+      :style="[{ top: `${posY}px`, left: `${posX}px` }, cssVariables]"
       tabindex="-1"
       @focus="onFocus"
       @blur="onBlur"
       v-bind="$attrs"
     >
       <div
-        class="header"
+        class="header section"
         draggable="true"
         @dragstart="onDragStart"
         @drag="onDrag"
         @dragend="onDragEnd"
       >
         {{ title }}
-        <button class="close-button" @click="onClose">X</button>
+        <div class="header__buttons">
+          <!-- <InvIconButton variant="o" /> -->
+          <InvIconButton variant="close" @click="onClose" />
+        </div>
       </div>
-      <slot></slot>
+      <div class="section">
+        <slot></slot>
+      </div>
     </div>
   </teleport>
 </template>
@@ -102,28 +109,36 @@ export default {
 <style scoped>
 .window {
   position: fixed;
-  padding: 5px;
   background-color: #fff;
-  border: 2px solid #000;
+  border: 4px solid #000;
   z-index: 1000;
-
-  /* necessary because of the teleport usage () */
-  /* window teleports outside the app so used CSS properties become inaccessible */
-  --cell-size: v-bind(`${CELL_SIZE}px`);
 }
 .window_active {
   z-index: 1100;
 }
+.section {
+  background-color: #1d1d1d;
+  box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
+}
 .header {
   position: relative;
-  line-height: 26px;
-  margin-bottom: 5px;
+  line-height: 30px;
+  color: #9c9c9c;
   text-align: center;
-  border-bottom: 1px solid #000;
+  font-family: Sentencia, sans-serif;
+  font-size: 17px;
+  text-shadow: 1px 1px 1px #000;
+  background-image: linear-gradient(to bottom, #2c2c2c 50%, #272727 50%);
+  border-bottom: 5px solid #000;
   user-select: none;
 }
-.close-button {
+.header__buttons {
   position: absolute;
-  right: 0;
+  top: 0;
+  bottom: 0;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 </style>

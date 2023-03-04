@@ -1,6 +1,31 @@
+@import './reset.css';
 @import './base.css';
+
+@font-face {
+  font-family: Exo2;
+  font-weight: normal; /* 400 */
+  src: url('./fonts/Exo2-Medium.ttf');
+}
+@font-face {
+  font-family: Exo2;
+  font-weight: 600;
+  src: url('./fonts/Exo2-SemiBold.ttf');
+}
+@font-face {
+  font-family: Exo2;
+  font-weight: bold; /* 700 */
+  src: url('./fonts/Exo2-Bold.ttf');
+}
+@font-face {
+  font-family: Sentencia;
+  src: url('./fonts/Sentencia_1.ttf');
+}
+@font-face {
+  font-family: MailartRubberstamp;
+  src: url('./fonts/MailartRubberstamp-Regular.ttf');
+}
 
 #root {
   height: 100vh;
-  font-family: sans-serif;
+  font-family: Exo2, sans-serif;
 }

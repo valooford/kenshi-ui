@@ -4,13 +4,15 @@ import InvItem from './InvItem/InvItem.vue'
 import InvAmountItem from './InvItem/InvAmountItem.vue'
 import InvBackpack from './InvItem/InvBackpack.vue'
 import { ItemType } from './interface'
-import { CELL_SIZE } from './constants'
+import { cssVariables } from './constants'
 
 export default {
   components: { InvInventory, InvItem, InvAmountItem, InvBackpack },
   data() {
-    return { ItemType, CELL_SIZE }
+    return { ItemType, cssVariables }
   },
+  // if children are using teleports they can restore their CSS variables context
+  provide: { cssVariables },
   methods: {
     emulateDefaultCursorEverywhere(e: DragEvent) {
       e.preventDefault()
@@ -26,7 +28,7 @@ export default {
 </script>
 
 <template>
-  <div class="menu">
+  <div class="menu" :style="cssVariables">
     <InvInventory />
     <div class="itemsContainer">
       <InvBackpack
@@ -51,8 +53,6 @@ export default {
 .menu {
   display: flex;
   flex: 1;
-
-  --cell-size: v-bind(`${CELL_SIZE}px`);
 }
 .itemsContainer {
   display: flex;

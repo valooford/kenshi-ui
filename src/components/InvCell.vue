@@ -29,11 +29,11 @@ export default {
 .cell {
   width: var(--cell-size);
   height: var(--cell-size);
-  background-color: rgb(133, 128, 125);
-  box-shadow: inset 0 0 4px #333;
+  background-color: #3d3938;
+  box-shadow: inset 0 0 0 1px #1c1c1c, inset 0 0 8px #222, inset 0 0 8px #222;
 }
 .hover {
-  background-color: rgb(194, 187, 183);
+  background-color: #c2bbb7;
   box-shadow: inset 0 0 4px rgba(51, 51, 51, 0.3);
 }
 </style>

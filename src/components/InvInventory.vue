@@ -1,11 +1,12 @@
 <script lang="ts">
 import InvWindow from './InvWindow.vue'
 import InvRegion from './InvRegion.vue'
+import InvButton from './InvButton.vue'
 import type { IBackpack, IItem, IPoint, ItemObj } from './interface'
 import { InventoryRegion, ItemType } from './interface'
 
 export default {
-  components: { InvWindow, InvRegion },
+  components: { InvWindow, InvRegion, InvButton },
   data() {
     const windowPosX = Math.round((window.innerWidth - 569) / 2)
     const windowPosY = Math.round((window.innerHeight - 658) / 2)
@@ -56,7 +57,7 @@ export default {
       if (this.hasBackpack) {
         if (!this.isBackpackOpened) {
           this.isBackpackWindowPosSync = true
-          this.backpackWindowPos = { x: this.windowPos.x - 255, y: this.windowPos.y }
+          this.backpackWindowPos = { x: this.windowPos.x - 240, y: this.windowPos.y } // here 240 is a backpack window width
         }
         this.isBackpackOpened = !this.isBackpackOpened
       }
@@ -85,7 +86,7 @@ export default {
     onWindowMove(pos: IPoint) {
       this.windowPos = pos
       if (this.isBackpackWindowPosSync) {
-        this.backpackWindowPos = { x: this.windowPos.x - 255, y: this.windowPos.y }
+        this.backpackWindowPos = { x: this.windowPos.x - 240, y: this.windowPos.y }
       }
       this.pX = -1000
       this.pY = -1000
@@ -107,9 +108,11 @@ export default {
     @close="toggleBackpack"
     @move="onBackpackWindowMove"
   >
-    <InvRegion v-bind="backpack.region" @change="onBackpackItemsChange" ref="backpack" />
-    <div class="backpack_buttons">
-      <button @click="onBackpackArrange">ARRANGE</button>
+    <div class="backpack">
+      <InvRegion v-bind="backpack.region" @change="onBackpackItemsChange" ref="backpack" />
+      <div>
+        <InvButton size="sm" @click="onBackpackArrange">ARRANGE</InvButton>
+      </div>
     </div>
   </InvWindow>
   <InvWindow
@@ -123,13 +126,13 @@ export default {
       <div class="stuff">
         <div class="stuff__row">
           <div class="stuff__buttons">
-            <button :disabled="!hasBackpack" @click="toggleBackpack">
-              {{ isBackpackOpened ? 'CLOSE' : 'OPEN' }} BAG
-            </button>
-            <button disabled>LIMBS</button>
+            <InvButton size="lg" :disabled="!hasBackpack" @click="toggleBackpack">
+              OPEN BAG
+            </InvButton>
+            <InvButton size="lg" disabled>LIMBS</InvButton>
           </div>
-          <div>
-            <div>-BACKPACK-</div>
+          <div class="stuff__group stuff__backpack">
+            <div class="region-label">-BACKPACK-</div>
             <InvRegion
               :type="ItemType.Backpack"
               :w="5"
@@ -139,99 +142,103 @@ export default {
             />
           </div>
         </div>
-        <div>
-          <div>WEAPON I</div>
-          <InvRegion
-            :type="ItemType.Weapon"
-            :w="10"
-            :h="2"
-            :items="items[InventoryRegion.Weapon1]"
-            @change="onItemsChange(InventoryRegion.Weapon1)($event)"
-          />
-        </div>
-        <div class="stuff__row">
-          <div>
-            <div>WEAPON II</div>
+        <div class="stuff__rows">
+          <div class="stuff__group stuff__weapon1">
+            <div class="region-label region-label_start">WEAPON I</div>
             <InvRegion
               :type="ItemType.Weapon"
-              :w="7"
-              :h="1"
-              :items="items[InventoryRegion.Weapon2]"
-              @change="onItemsChange(InventoryRegion.Weapon2)($event)"
-            />
-          </div>
-          <div>
-            <div>BELT</div>
-            <InvRegion
-              :type="ItemType.Belt"
-              :w="2"
+              :w="10"
               :h="2"
-              :items="items[InventoryRegion.Belt]"
-              @change="onItemsChange(InventoryRegion.Belt)($event)"
+              :items="items[InventoryRegion.Weapon1]"
+              @change="onItemsChange(InventoryRegion.Weapon1)($event)"
             />
           </div>
-        </div>
-        <div class="stuff__row">
-          <div>
-            <div>
-              <div>SHIRT</div>
+          <div class="stuff__row">
+            <div class="stuff__group">
+              <div class="region-label region-label_start">WEAPON II</div>
               <InvRegion
-                :type="ItemType.Shirt"
-                :w="4"
-                :h="2"
-                :items="items[InventoryRegion.Shirt]"
-                @change="onItemsChange(InventoryRegion.Shirt)($event)"
+                :type="ItemType.Weapon"
+                :w="7"
+                :h="1"
+                :items="items[InventoryRegion.Weapon2]"
+                @change="onItemsChange(InventoryRegion.Weapon2)($event)"
               />
             </div>
-            <div>
-              <div>PANTS</div>
+            <div class="stuff__group">
+              <div class="region-label">BELT</div>
               <InvRegion
-                :type="ItemType.Pants"
-                :w="4"
-                :h="5"
-                :items="items[InventoryRegion.Pants]"
-                @change="onItemsChange(InventoryRegion.Pants)($event)"
-              />
-            </div>
-            <div>
-              <div>BOOTS</div>
-              <InvRegion
-                :type="ItemType.Boots"
-                :w="4"
+                :type="ItemType.Belt"
+                :w="2"
                 :h="2"
-                :items="items[InventoryRegion.Boots]"
-                @change="onItemsChange(InventoryRegion.Boots)($event)"
+                :items="items[InventoryRegion.Belt]"
+                @change="onItemsChange(InventoryRegion.Belt)($event)"
               />
             </div>
           </div>
-          <div>
-            <div>
-              <div>HEAD</div>
-              <InvRegion
-                :type="ItemType.Head"
-                :w="4"
-                :h="3"
-                :items="items[InventoryRegion.Head]"
-                @change="onItemsChange(InventoryRegion.Head)($event)"
-              />
+          <div class="stuff__row">
+            <div class="stuff__group">
+              <div class="stuff__group stuff__shirt">
+                <div class="region-label">SHIRT</div>
+                <InvRegion
+                  :type="ItemType.Shirt"
+                  :w="4"
+                  :h="2"
+                  :items="items[InventoryRegion.Shirt]"
+                  @change="onItemsChange(InventoryRegion.Shirt)($event)"
+                />
+              </div>
+              <div class="stuff__group">
+                <div class="region-label">PANTS</div>
+                <InvRegion
+                  :type="ItemType.Pants"
+                  :w="4"
+                  :h="5"
+                  :items="items[InventoryRegion.Pants]"
+                  @change="onItemsChange(InventoryRegion.Pants)($event)"
+                />
+              </div>
+              <div class="stuff__group">
+                <div class="region-label">BOOTS</div>
+                <InvRegion
+                  :type="ItemType.Boots"
+                  :w="4"
+                  :h="2"
+                  :items="items[InventoryRegion.Boots]"
+                  @change="onItemsChange(InventoryRegion.Boots)($event)"
+                />
+              </div>
             </div>
-            <div>
-              <div>ARMOR</div>
-              <InvRegion
-                :type="ItemType.Armor"
-                :w="4"
-                :h="6"
-                :items="items[InventoryRegion.Armor]"
-                @change="onItemsChange(InventoryRegion.Armor)($event)"
-              />
+            <div class="stuff__group">
+              <div class="stuff__group">
+                <div class="region-label">HEAD</div>
+                <InvRegion
+                  :type="ItemType.Head"
+                  :w="4"
+                  :h="3"
+                  :items="items[InventoryRegion.Head]"
+                  @change="onItemsChange(InventoryRegion.Head)($event)"
+                />
+              </div>
+              <div class="stuff__group">
+                <div class="region-label">ARMOR</div>
+                <InvRegion
+                  :type="ItemType.Armor"
+                  :w="4"
+                  :h="6"
+                  :items="items[InventoryRegion.Armor]"
+                  @change="onItemsChange(InventoryRegion.Armor)($event)"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="common">
-        <div class="common__info">INFO</div>
-        <div class="common_inventory">
-          <div>INVENTORY</div>
+        <div class="common__info">
+          <div class="region-label">INFO</div>
+        </div>
+        <div class="common_inventory stuff__group">
+          <div class="region-label">INVENTORY</div>
           <InvRegion
             :w="8"
             :h="10"
@@ -242,7 +249,7 @@ export default {
           />
         </div>
         <div class="common_buttons">
-          <button @click="onInventoryArrange">ARRANGE</button>
+          <InvButton @click="onInventoryArrange">ARRANGE</InvButton>
         </div>
       </div>
     </div>
@@ -252,12 +259,28 @@ export default {
 <style scoped>
 .wrapper {
   display: flex;
-  gap: calc(var(--cell-size) / 2);
+  justify-content: space-between;
+  width: 487px;
+  gap: 12px;
+  padding: 9px 8px;
+}
+.region-label {
+  color: #9c9c9c;
+  font-family: Sentencia, sans-serif;
+  font-size: 17px;
+  letter-spacing: 0.02em;
 }
 .stuff {
+  flex: 1 1 256px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+.stuff__rows {
+  margin-left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .stuff__row {
   display: flex;
@@ -266,9 +289,30 @@ export default {
 .stuff__buttons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
+}
+.stuff__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.stuff__backpack {
+  margin-right: 2px;
+  gap: 4px;
+}
+.region-label_start {
+  margin-inline-end: auto;
+  margin-inline-start: 7px;
+}
+.stuff__weapon1 .region-label {
+  margin-top: -15px;
+}
+.stuff__shirt .region-label {
+  margin-top: -22px;
 }
 .common {
+  flex: 1 1 200px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -281,11 +325,13 @@ export default {
 }
 .common_buttons {
   display: flex;
-  justify-content: flex-end;
-}
-.backpack_buttons {
-  display: flex;
   justify-content: center;
-  margin-top: 10px;
+}
+.backpack {
+  padding: 12px 16px 6px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 </style>

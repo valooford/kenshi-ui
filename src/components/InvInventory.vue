@@ -4,9 +4,10 @@ import InvRegion from './InvRegion.vue'
 import InvButton from './InvButton.vue'
 import type { IBackpack, IItem, IPoint, ItemObj } from './interface'
 import { InventoryRegion, ItemType } from './interface'
+import InvCharacterGear from './InvCharacterGear.vue'
 
 export default {
-  components: { InvWindow, InvRegion, InvButton },
+  components: { InvWindow, InvRegion, InvButton, InvCharacterGear },
   data() {
     const windowPosX = Math.round((window.innerWidth - 569) / 2)
     const windowPosY = Math.round((window.innerHeight - 658) / 2)
@@ -234,8 +235,8 @@ export default {
         </div>
       </div>
       <div class="common">
-        <div class="common__info">
-          <div class="region-label">INFO</div>
+        <div class="common__gear">
+          <InvCharacterGear />
         </div>
         <div class="common_inventory stuff__group">
           <div class="region-label">INVENTORY</div>
@@ -261,7 +262,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 487px;
-  gap: 12px;
+  gap: 10px;
   padding: 9px 8px;
 }
 .region-label {
@@ -317,7 +318,7 @@ export default {
   flex-direction: column;
   gap: 10px;
 }
-.common__info {
+.common__gear {
   flex: 1;
 }
 .common_inventory {

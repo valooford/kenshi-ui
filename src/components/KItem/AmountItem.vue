@@ -1,9 +1,9 @@
 <script lang="ts">
-import InvItem from './InvItem.vue'
+import KItem from './KItem.vue'
 
 export default {
-  extends: InvItem,
-  components: { InvItem },
+  extends: KItem,
+  components: { KItem },
   props: {
     amount: { type: Number, required: true },
     scrap: { type: Boolean },
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <template>
-  <InvItem
+  <KItem
     v-bind="itemProps"
     :hidden="notEnoughAmountToShowItem"
     :handle-drag-start="onDragStart"
@@ -83,7 +83,7 @@ export default {
         {{ Math.ceil(amountDragging) }}
       </div>
     </template>
-  </InvItem>
+  </KItem>
 </template>
 
 <style scoped>

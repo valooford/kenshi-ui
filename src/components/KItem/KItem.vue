@@ -1,14 +1,14 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+
 import { CELL_SIZE, CELL_HALF_SIZE, DRAG_PAYLOAD_SYMBOL } from '../constants'
-import type { ItemType } from '../interface'
 
 export default {
   props: {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
     img: { type: String, required: true },
-    type: { type: String as PropType<ItemType> },
+    type: { type: String as PropType<IItemType> },
     hidden: { type: Boolean },
     handleDragStart: { type: Function as PropType<(e: DragEvent) => void> },
     handleDragEnd: { type: Function as PropType<() => void> },
@@ -61,7 +61,7 @@ export default {
       const buttonHeld = !!e.detail
       this.cleanupEventName = buttonHeld ? 'mouseup' : 'mousedown'
       setTimeout(() => {
-        document.body.addEventListener(this.cleanupEventName!, this.cleanup)
+        document.addEventListener(this.cleanupEventName!, this.cleanup)
       }, 0)
     },
     onDragStart(e: DragEvent) {
@@ -85,7 +85,7 @@ export default {
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
       }
 
-      document.body.addEventListener('drop', this.onDrop)
+      document.addEventListener('drop', this.onDrop)
 
       requestAnimationFrame(() => {
         // prevents immediate 'dragend' event
@@ -104,7 +104,7 @@ export default {
       if (this.handleDragEnd) this.handleDragEnd()
       this.isDragging = false
       this.cleanup()
-      document.body.removeEventListener('drop', this.onDrop)
+      document.removeEventListener('drop', this.onDrop)
 
       this.$emit('dragend')
     },
@@ -114,7 +114,7 @@ export default {
       this.cY = 0
       this.pX = -1000
       this.pY = -1000
-      document.body.removeEventListener(this.cleanupEventName!, this.cleanup)
+      document.removeEventListener(this.cleanupEventName!, this.cleanup)
       this.cleanupEventName = null
     },
     onDrag(e: DragEvent) {

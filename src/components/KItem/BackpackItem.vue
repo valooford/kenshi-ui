@@ -1,12 +1,11 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 
-import type { IRegion } from '../interface'
-import InvItem from './InvItem.vue'
+import KItem from './KItem.vue'
 
 export default {
-  extends: InvItem,
-  components: { InvItem },
+  extends: KItem,
+  components: { KItem },
   props: {
     region: { type: Object as PropType<IRegion>, required: true },
     /** @private Not intended to use */
@@ -31,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <InvItem
+  <KItem
     v-bind="itemProps"
     :handle-drag-start="onDragStart"
     @dragstart="$emit('dragstart', $event)"

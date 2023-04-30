@@ -12,4 +12,14 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.vue'],
+      rules: {
+        // motivation: globally declared types
+        // restrictions: .vue files mustn't be written in JS
+        'no-undef': 0,
+      },
+    },
+  ],
 }

@@ -1,29 +1,21 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+import { ItemType } from '@/constants'
 
-import InvCell from './InvCell.vue'
-import InvItem from './InvItem/InvItem.vue'
-import InvAmountItem from './InvItem/InvAmountItem.vue'
-import type {
-  IAmountDragPayload,
-  IAmountItem,
-  IBackpack,
-  IItem,
-  IStackItem,
-  ItemObj,
-} from './interface'
-import { ItemType } from './interface'
+import KCell from './KCell.vue'
+import KItem from './KItem/KItem.vue'
+import AmountItem from './KItem/AmountItem.vue'
 import { isAmountItem, isBackpack } from './predicates'
 import { CELL_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
-import InvBackpack from './InvItem/InvBackpack.vue'
+import BackpackItem from './KItem/BackpackItem.vue'
 
 export default {
-  components: { InvCell, InvItem, InvAmountItem, InvBackpack },
+  components: { KCell, KItem, AmountItem, BackpackItem },
   props: {
     w: { type: Number, required: true },
     h: { type: Number, required: true },
     items: { type: Array<ItemObj>, required: true },
-    type: { type: String as PropType<ItemType> },
+    type: { type: String as PropType<IItemType> },
     stack: { type: Array<IStackItem> },
   },
   emits: { change: (items: ItemObj[]) => !!items },
@@ -173,7 +165,7 @@ export default {
         y: this.hoverCell.y! - this.hoverItem.y,
         img,
       }
-      if (type) item.type = type as ItemType
+      if (type) item.type = type as IItemType
 
       if (amount) {
         ;(item as IAmountItem).amount = +amount
@@ -408,7 +400,7 @@ export default {
     @dragenter="onDragEnter"
     @drop="onDrop"
   >
-    <InvCell
+    <KCell
       v-for="(cell, i) in cells"
       :is-over="isOverCell(i)"
       @dragenter="onDragEnterCell(i)"
@@ -426,21 +418,21 @@ export default {
       ref="itemWrappers"
       :key="`${x};${y}`"
     >
-      <InvAmountItem
+      <AmountItem
         v-if="isAmountItem(item)"
         v-bind="item"
         @dragstart="onItemDragStart(i)"
         @drop="onItemDrop(i, $event)"
         @dragend="onItemDragEnd"
       />
-      <InvBackpack
+      <BackpackItem
         v-if="isBackpack(item)"
         v-bind="item"
         @dragstart="onItemDragStart(i)"
         @drop="onItemDrop(i, $event)"
         @dragend="onItemDragEnd"
       />
-      <InvItem
+      <KItem
         v-else
         v-bind="item"
         @dragstart="onItemDragStart(i)"

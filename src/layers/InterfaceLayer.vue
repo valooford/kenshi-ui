@@ -1,18 +1,16 @@
 <script lang="ts">
-import { ItemType } from '@/constants'
+import { ItemType } from '@/shared/constants'
 import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
-import { KItem, AmountItem, BackpackItem } from '@/components/KItem'
+import KRegion from '@/components/KRegion.vue'
 
 export default {
   components: {
     CharactersBar,
     CssVariablesProvider,
     KSeam,
-    KItem,
-    AmountItem,
-    BackpackItem,
+    KRegion,
   },
   inject: ['store', 'dispatch'],
   data() {
@@ -26,7 +24,7 @@ export default {
       return this.dispatch as IDispatch
     },
     charactersArr() {
-      return this.s.charactersList.map((id) => this.s.characters[id])
+      return this.s.charactersList.map((id) => this.s.characters[id]!)
     },
   },
   methods: {
@@ -42,15 +40,15 @@ export default {
         case 'Tab':
           if (!this.s.selectedCharacter) break
           e.preventDefault()
-          if (this.s.seamData.main) {
-            this.d.closeMainSeamInventory()
+          if (this.s.seam.main) {
+            this.d.closeSeamInventory()
           } else {
             this.d.openMainSeamInventory()
           }
           break
         case 'Escape':
-          if (this.s.seamData.main) {
-            this.d.closeMainSeamInventory()
+          if (this.s.seam.main) {
+            this.d.closeSeamInventory()
           } else if (this.s.selectedCharacter) {
             this.d.resetSelectedCharacter()
           }
@@ -74,22 +72,9 @@ export default {
 
 <template>
   <CssVariablesProvider class="menu">
-    <KSeam :data="s.seamData" @items-change="d.onItemsChange" @close="d.onSeamInventoryClose" />
+    <KSeam />
     <div class="items-container">
-      <BackpackItem
-        :type="ItemType.Backpack"
-        :w="3"
-        :h="3"
-        :region="{ w: 8, h: 8, items: [] }"
-        img="src/assets/1288-gamedata.base.686-gamedata.base.png"
-      />
-      <KItem
-        :type="ItemType.Weapon"
-        :w="7"
-        :h="1"
-        img="src/assets/52295-rebirth.mod.913-gamedata.base.png"
-      />
-      <AmountItem :w="1" :h="3" img="src/assets/Dried Fish.png" :amount="1.4" :scrap="true" />
+      <KRegion :id="('IRegion_registry' as IRegionId)" />
     </div>
     <div class="controls">
       <div class="controls__left"></div>
@@ -119,7 +104,7 @@ export default {
   width: calc(var(--cell-size) * 9);
   height: 100vh;
   margin-left: auto;
-  padding: 10px 0;
+  padding: 15vh 0;
   gap: 10px;
   overflow-y: scroll;
   background-color: #f8f8f8;

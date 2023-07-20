@@ -1,36 +1,32 @@
 <script lang="ts">
-import type { PropType } from 'vue'
-import { SeamInventoryTypes } from '@/constants'
+import { isCharacterId } from '@/shared/utils'
 
 import CharacterInventory from './CharacterInventory.vue'
 
 export default {
   components: { CharacterInventory },
-  props: {
-    data: { type: Object as PropType<ISeam>, required: true },
-  },
-  emits: ['items-change', 'close'],
+  inject: ['store', 'dispatch'],
   data() {
-    return { SeamInventoryTypes }
+    return { isCharacterId }
+  },
+  computed: {
+    s() {
+      return this.store as IStore
+    },
+    d() {
+      return this.dispatch as IDispatch
+    },
   },
 }
 </script>
 
 <template>
-  <div class="seam" :key="data.related?.id">
+  <div class="seam" :key="String(s.seam.related)">
+    <CharacterInventory v-if="isCharacterId(s.seam.main)" :id="s.seam.main" :key="s.seam.main" />
     <CharacterInventory
-      v-if="data.main?.type === SeamInventoryTypes.Character"
-      :data="data.main.data"
-      @items-change="(...args: any[]) => $emit('items-change', ...args)"
-      @close="(...args: any[]) => $emit('close', ...args)"
-      :key="data.main.id"
-    />
-    <CharacterInventory
-      v-if="data.related?.type === SeamInventoryTypes.Character"
-      :data="data.related.data"
-      @items-change="(...args: any[]) => $emit('items-change', ...args)"
-      @close="(...args: any[]) => $emit('close', ...args)"
-      :key="data.related.id"
+      v-if="isCharacterId(s.seam.related)"
+      :id="s.seam.related"
+      :key="s.seam.related"
     />
   </div>
 </template>

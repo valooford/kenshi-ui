@@ -1,22 +1,14 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-
-import { CELL_SIZE, CELL_HALF_SIZE, DRAG_PAYLOAD_SYMBOL } from '../constants'
+import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
 
 export default {
+  inject: ['store'],
   props: {
-    w: { type: Number, required: true },
-    h: { type: Number, required: true },
-    img: { type: String, required: true },
-    type: { type: String as PropType<IItemType> },
-    hidden: { type: Boolean },
+    id: { type: String as PropType<string> as PropType<IItemObjId>, required: true },
+    visible: { type: Boolean },
     handleDragStart: { type: Function as PropType<(e: DragEvent) => void> },
     handleDragEnd: { type: Function as PropType<() => void> },
-  },
-  emits: {
-    dragstart: null,
-    drop: (dragPayload?: any) => true || dragPayload,
-    dragend: null,
   },
   data() {
     const emptyImage = new Image()
@@ -33,11 +25,17 @@ export default {
     }
   },
   computed: {
+    s() {
+      return this.store as IStore
+    },
+    data() {
+      return this.s.items[this.id]!
+    },
     width() {
-      return `${this.w * CELL_SIZE}px`
+      return `${this.data.w * CELL_SIZE}px`
     },
     height() {
-      return `${this.h * CELL_SIZE}px`
+      return `${this.data.h * CELL_SIZE}px`
     },
     pivot() {
       const x = this.pX - this.cX * CELL_SIZE - CELL_HALF_SIZE
@@ -46,7 +44,7 @@ export default {
     },
   },
   methods: {
-    onMouseDown(e: MouseEvent) {
+    onMouseLeftDown(e: MouseEvent) {
       const el = e.target as HTMLElement
       const rect = el.getBoundingClientRect()
       // find out what cell of an item are meant to be dragged
@@ -67,46 +65,31 @@ export default {
     onDragStart(e: DragEvent) {
       if (this.handleDragStart) this.handleDragStart(e)
       if (e.dataTransfer) {
-        // selects closest to default cursor
+        // selects cursor which is most similar to the default one
         e.dataTransfer.effectAllowed = 'move'
         // using MIME types to pass data to 'dragenter' event handlers
         // because retrieving data via getData() is only accessible in 'drop' event handlers
         // also 'dataTransfer.types' might seem to be empty in debug console, but it's not
         // dnd/[property];value=[property-value]
-        e.dataTransfer.setData(`dnd/w;value=${this.w}`, '')
-        e.dataTransfer.setData(`dnd/h;value=${this.h}`, '')
+        e.dataTransfer.setData(`dnd/w;value=${this.data.w}`, '')
+        e.dataTransfer.setData(`dnd/h;value=${this.data.h}`, '')
         e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
         e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
 
-        e.dataTransfer.setData('dnd/img', this.img)
-        if (this.type) e.dataTransfer.setData('dnd/type', this.type)
-
+        e.dataTransfer.setData('dnd/id', this.id)
         // removes ghost
         e.dataTransfer.setDragImage(this.emptyImage, 0, 0)
       }
-
-      document.addEventListener('drop', this.onDrop)
 
       requestAnimationFrame(() => {
         // prevents immediate 'dragend' event
         this.isDragging = true
       })
-
-      this.$emit('dragstart')
-    },
-    onDrop(e: DragEvent) {
-      if (e.defaultPrevented) {
-        const dragPayload = Object.getOwnPropertyDescriptor(e, DRAG_PAYLOAD_SYMBOL)?.value
-        this.$emit('drop', dragPayload)
-      }
     },
     onDragEnd() {
       if (this.handleDragEnd) this.handleDragEnd()
       this.isDragging = false
       this.cleanup()
-      document.removeEventListener('drop', this.onDrop)
-
-      this.$emit('dragend')
     },
     cleanup() {
       this.isPreview = false
@@ -121,6 +104,14 @@ export default {
       this.pX = e.clientX
       this.pY = e.clientY
     },
+    onMouseRightClick() {
+      // https://stackoverflow.com/questions/41993508/vuejs-bubbling-custom-events
+      const el = this.$refs.item as HTMLDivElement
+      el?.dispatchEvent(new CustomEvent('rmbmove', { bubbles: true }))
+    },
+    test() {
+      console.log('test')
+    },
   },
 }
 </script>
@@ -130,19 +121,27 @@ export default {
   <div
     :class="[
       'item',
-      isDragging && hidden && 'item_dragging',
-      isPreview && hidden && 'item_preview',
+      isDragging && !visible && 'item_dragging',
+      isPreview && !visible && 'item_preview',
     ]"
-    :style="{ height }"
+    :style="{
+      height,
+      top: `calc(var(--cell-size)*${data.y})`,
+      left: `calc(var(--cell-size)*${data.x})`,
+    }"
+    :onrmbmove="test"
+    ref="item"
   >
     <img
-      :src="img"
+      :src="data.img"
       alt=""
       draggable="true"
-      @mousedown="onMouseDown"
+      @mousedown.left="onMouseLeftDown"
+      @click.right="onMouseRightClick"
       @dragstart="onDragStart"
       @drag="onDrag"
       @dragend="onDragEnd"
+      @contextmenu.prevent
       :style="{
         width,
         height,
@@ -161,7 +160,7 @@ export default {
     <div class="preview__content" :style="{ height }">
       <img
         v-if="isPreview"
-        :src="img"
+        :src="data.img"
         alt=""
         draggable="false"
         :style="{
@@ -176,6 +175,7 @@ export default {
 
 <style scoped>
 .item {
+  position: absolute;
   user-select: none;
 }
 .item_dragging {
@@ -189,9 +189,11 @@ export default {
   pointer-events: none;
   z-index: 1200;
 }
-.item,
 .preview__content {
   position: relative;
+}
+.item,
+.preview__content {
   background-color: rgb(0 0 0 / 0.6);
 }
 </style>

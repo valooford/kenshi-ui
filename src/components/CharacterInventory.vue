@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { InventoryRegion, ItemType } from '@/constants'
+import { InventoryRegion, ItemType } from '@/shared/constants'
 
 import KWindow from './KWindow.vue'
 import KRegion from './KRegion.vue'
@@ -9,44 +9,45 @@ import CharacterGear from './CharacterGear.vue'
 
 export default {
   components: { KWindow, KRegion, KButton, CharacterGear },
+  inject: ['store', 'dispatch'],
   props: {
-    data: { type: Object as PropType<ICharacterInventoryData>, required: true },
-  },
-  emits: {
-    'items-change': (id: string, items: ICharacterItems) => !!(id && items),
-    close: null,
+    id: { type: String as PropType<string> as PropType<ICharacterId>, required: true },
   },
   data() {
     return {
       ItemType,
       InventoryRegion,
-      isBackpackOpened: !!this.data.items[InventoryRegion.Backpack][0],
+      isBackpackOpened: false,
       backpackWindowShift: { x: 0, y: 0 } as IPoint,
       isBackpackWindowPosSync: true,
     }
   },
   computed: {
+    s() {
+      return this.store as IStore
+    },
+    d() {
+      return this.dispatch as IDispatch
+    },
+    data() {
+      return this.s.characters[this.id]!
+    },
     backpack() {
-      return this.data.items[InventoryRegion.Backpack][0]
+      const backpackId = this.s.regions[this.data.regions[InventoryRegion.Backpack]]!.items[0]
+      return backpackId && this.s.items[backpackId]
     },
     hasBackpack() {
       return !!this.backpack
     },
   },
-  methods: {
-    onItemsChange(region: IInventoryRegion) {
-      return (regionItems: ItemObj[]) => {
-        const items = { ...this.data.items }
-        items[region] = regionItems as any[]
-        this.$emit('items-change', this.data.id, items)
-        if (region === InventoryRegion.Backpack && !regionItems.length) {
-          this.isBackpackOpened = false
-        }
+  watch: {
+    backpack(backpack: IBackpackItem | undefined) {
+      if (!backpack && this.isBackpackOpened) {
+        this.isBackpackOpened = false
       }
     },
-    onBackpackItemsChange(items: ItemObj[]) {
-      this.backpack.region.items = items
-    },
+  },
+  methods: {
     toggleBackpack() {
       if (this.hasBackpack) {
         if (!this.isBackpackOpened) {
@@ -57,12 +58,10 @@ export default {
       }
     },
     onInventoryArrange() {
-      const ref = this.$refs.inventory as InstanceType<typeof KRegion>
-      ref.arrange()
+      this.d.arrangeRegion(this.data.regions[InventoryRegion.Inventory])
     },
     onBackpackArrange() {
-      const ref = this.$refs.backpack as InstanceType<typeof KRegion>
-      ref.arrange()
+      this.d.arrangeRegion(this.backpack!.innerRegionId)
     },
     onWindowDrag(diff: IPoint) {
       if (this.isBackpackOpened && this.isBackpackWindowPosSync) {
@@ -75,16 +74,16 @@ export default {
     onBackpackWindowMove() {
       this.isBackpackWindowPosSync = false
     },
-    onClose() {
-      this.$emit('close', this.data.id)
-    },
+  },
+  created() {
+    this.isBackpackOpened = !!this.backpack
   },
 }
 </script>
 
 <template>
-  <KWindow :title="data.name" @drag="onWindowDrag" @close="onClose">
-    <template #left-aligned v-if="isBackpackOpened">
+  <KWindow :title="data.name" @drag="onWindowDrag" @close="d.closeSeamInventory">
+    <template #left-aligned v-if="backpack && isBackpackOpened">
       <KWindow
         title="BACKPACK"
         :shift="backpackWindowShift"
@@ -92,7 +91,7 @@ export default {
         @close="toggleBackpack"
       >
         <div class="backpack">
-          <KRegion v-bind="backpack.region" @change="onBackpackItemsChange" ref="backpack" />
+          <KRegion :id="backpack.innerRegionId" />
           <div>
             <KButton size="sm" @click="onBackpackArrange">ARRANGE</KButton>
           </div>
@@ -108,101 +107,47 @@ export default {
           </div>
           <div class="stuff__group stuff__backpack">
             <div class="region-label">-Backpack-</div>
-            <KRegion
-              :type="ItemType.Backpack"
-              :w="5"
-              :h="4"
-              :items="data.items[InventoryRegion.Backpack]"
-              @change="onItemsChange(InventoryRegion.Backpack)($event)"
-            />
+            <KRegion :id="data.regions[InventoryRegion.Backpack]" />
           </div>
         </div>
         <div class="stuff__rows">
           <div class="stuff__group stuff__weapon1">
             <div class="region-label region-label_start">Weapon I</div>
-            <KRegion
-              :type="ItemType.Weapon"
-              :w="10"
-              :h="2"
-              :items="data.items[InventoryRegion.Weapon1]"
-              @change="onItemsChange(InventoryRegion.Weapon1)($event)"
-            />
+            <KRegion :id="data.regions[InventoryRegion.Weapon1]" />
           </div>
           <div class="stuff__row">
             <div class="stuff__group">
               <div class="region-label region-label_start">Weapon II</div>
-              <KRegion
-                :type="ItemType.Weapon"
-                :w="7"
-                :h="1"
-                :items="data.items[InventoryRegion.Weapon2]"
-                @change="onItemsChange(InventoryRegion.Weapon2)($event)"
-              />
+              <KRegion :id="data.regions[InventoryRegion.Weapon2]" />
             </div>
             <div class="stuff__group">
               <div class="region-label">Belt</div>
-              <KRegion
-                :type="ItemType.Belt"
-                :w="2"
-                :h="2"
-                :items="data.items[InventoryRegion.Belt]"
-                @change="onItemsChange(InventoryRegion.Belt)($event)"
-              />
+              <KRegion :id="data.regions[InventoryRegion.Belt]" />
             </div>
           </div>
           <div class="stuff__row">
             <div class="stuff__group">
               <div class="stuff__group stuff__shirt">
                 <div class="region-label">Shirt</div>
-                <KRegion
-                  :type="ItemType.Shirt"
-                  :w="4"
-                  :h="2"
-                  :items="data.items[InventoryRegion.Shirt]"
-                  @change="onItemsChange(InventoryRegion.Shirt)($event)"
-                />
+                <KRegion :id="data.regions[InventoryRegion.Shirt]" />
               </div>
               <div class="stuff__group">
                 <div class="region-label">Pants</div>
-                <KRegion
-                  :type="ItemType.Pants"
-                  :w="4"
-                  :h="5"
-                  :items="data.items[InventoryRegion.Pants]"
-                  @change="onItemsChange(InventoryRegion.Pants)($event)"
-                />
+                <KRegion :id="data.regions[InventoryRegion.Pants]" />
               </div>
               <div class="stuff__group">
                 <div class="region-label">Boots</div>
-                <KRegion
-                  :type="ItemType.Boots"
-                  :w="4"
-                  :h="2"
-                  :items="data.items[InventoryRegion.Boots]"
-                  @change="onItemsChange(InventoryRegion.Boots)($event)"
-                />
+                <KRegion :id="data.regions[InventoryRegion.Boots]" />
               </div>
             </div>
             <div class="stuff__group">
               <div class="stuff__group">
                 <div class="region-label">Head</div>
-                <KRegion
-                  :type="ItemType.Head"
-                  :w="4"
-                  :h="3"
-                  :items="data.items[InventoryRegion.Head]"
-                  @change="onItemsChange(InventoryRegion.Head)($event)"
-                />
+                <KRegion :id="data.regions[InventoryRegion.Head]" />
               </div>
               <div class="stuff__group">
                 <div class="region-label">Armor</div>
-                <KRegion
-                  :type="ItemType.Armor"
-                  :w="4"
-                  :h="6"
-                  :items="data.items[InventoryRegion.Armor]"
-                  @change="onItemsChange(InventoryRegion.Armor)($event)"
-                />
+                <KRegion :id="data.regions[InventoryRegion.Armor]" />
               </div>
             </div>
           </div>
@@ -214,14 +159,7 @@ export default {
         </div>
         <div class="common_inventory stuff__group">
           <div class="region-label">Inventory</div>
-          <KRegion
-            :w="8"
-            :h="10"
-            :items="data.items[InventoryRegion.Inventory]"
-            :stack="[{ type: ItemType.Misc, max: 5 }]"
-            @change="onItemsChange(InventoryRegion.Inventory)($event)"
-            ref="inventory"
-          />
+          <KRegion :id="data.regions[InventoryRegion.Inventory]" />
         </div>
         <div class="common_buttons">
           <KButton @click="onInventoryArrange">ARRANGE</KButton>

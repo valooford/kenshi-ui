@@ -1,5 +1,5 @@
 <script lang="ts">
-import { cssVariables } from './constants'
+import { cssVariables } from '@/shared/constants'
 
 export default {
   // if children are using teleports they can restore their CSS variables context

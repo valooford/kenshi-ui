@@ -1,66 +1,46 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { ItemType } from '@/constants'
+import { indexToCoords, isAmountItemId, isBackpackItemId, isItemId } from '@/shared/utils'
+import { CELL_SIZE } from '@/shared/constants'
 
 import KCell from './KCell.vue'
 import KItem from './KItem/KItem.vue'
 import AmountItem from './KItem/AmountItem.vue'
-import { isAmountItem, isBackpack } from './predicates'
-import { CELL_SIZE, DRAG_PAYLOAD_SYMBOL } from './constants'
 import BackpackItem from './KItem/BackpackItem.vue'
 
 export default {
   components: { KCell, KItem, AmountItem, BackpackItem },
+  inject: ['store', 'dispatch'],
   props: {
-    w: { type: Number, required: true },
-    h: { type: Number, required: true },
-    items: { type: Array<ItemObj>, required: true },
-    type: { type: String as PropType<IItemType> },
-    stack: { type: Array<IStackItem> },
+    id: { type: String as PropType<string> as PropType<IRegionObjId>, required: true },
   },
-  emits: { change: (items: ItemObj[]) => !!items },
-  expose: ['arrange'],
   data() {
     return {
-      immediateItems: [] as ItemObj[],
-      hoverCell: null as { index: number; x: number; y: number } | null,
-      hoverItem: null as { w: number; h: number; x: number; y: number } | null,
-      draggingItemIndex: null as number | null,
+      hoverCell: null as { x: number; y: number } | null,
+      hoverItem: null as { w: number; h: number; gX: number; gY: number } | null,
     }
   },
-  watch: {
-    items(value: ItemObj[]) {
-      this.immediateItems = [...value]
-    },
-  },
   computed: {
-    cells() {
-      return Array(this.w * this.h).fill(0)
+    s() {
+      return this.store as IStore
     },
-    itemsMap() {
-      return this.immediateItems.reduce(
-        (acc, item, itemIndex) => {
-          for (let i = 0; i < item.h; i++) {
-            for (let j = 0; j < item.w; j++) {
-              acc[item.y + i][item.x + j] = itemIndex
-            }
-          }
-          return acc
-        },
-        [
-          ...Array(this.h)
-            .fill(0)
-            .map(() => []),
-        ] as number[][]
-      )
+    d() {
+      return this.dispatch as IDispatch
+    },
+    data() {
+      return this.s.regions[this.id]!
+    },
+    /** Just an array of certain length to map elements from */
+    cells() {
+      return Array(this.data.w * this.data.h).fill(0)
     },
   },
   methods: {
-    isAmountItem,
-    isBackpack,
-    syncItems() {
-      this.$emit('change', this.immediateItems)
-    },
+    // type predicates
+    isAmountItemId,
+    isBackpackItemId,
+
+    /** Finds out the parameters of hovering item and stores them */
     onDragEnter(e: DragEvent) {
       // dnd/[property];value=[property-value]
       const paramsRegex = /dnd\/(\S+);value=(.+)$/
@@ -68,183 +48,80 @@ export default {
       setTimeout(() => {
         let w: number | undefined = undefined
         let h: number | undefined = undefined
-        let x: number | undefined = undefined
-        let y: number | undefined = undefined
+        let gX: number | undefined = undefined
+        let gY: number | undefined = undefined
         types?.forEach((t) => {
           const [, prop, value] = paramsRegex.exec(t) || []
           if (!prop) return
-          if (prop === 'w') w = +value
-          if (prop === 'h') h = +value
-          if (prop === 'x') x = +value
-          if (prop === 'y') y = +value
+          if (prop === 'w') w = +value!
+          if (prop === 'h') h = +value!
+          if (prop === 'x') gX = +value!
+          if (prop === 'y') gY = +value!
         })
-        if (w && h && x !== undefined && y !== undefined) {
-          this.hoverItem = { w, h, x, y }
+        if (w && h && gX !== undefined && gY !== undefined) {
+          this.hoverItem = { w, h, gX, gY }
         }
       }, 0)
     },
+
+    /** Stores coordinates of cell being hovered */
     onDragEnterCell(index: number) {
-      const { x, y } = this.toCoords(index, this.w)
-      this.hoverCell = { index, x, y }
+      this.hoverCell = indexToCoords(index, this.data.w)
     },
-    toCoords(i: number, w: number) {
-      const x = i % w
-      const y = Math.floor(i / w)
-      return { x, y }
-    },
-    // enables to shadow cells under the dragged item
+
+    /**
+     * Checks if the hovering item is on top of certain cell
+     * Enables to shadow such cells
+     */
     isOverCell(cI: number) {
       if (!this.hoverCell || !this.hoverItem) return false
-      const { x: cX, y: cY } = this.toCoords(cI, this.w)
-      const left = this.hoverCell.x - this.hoverItem.x
+      const { x: cX, y: cY } = indexToCoords(cI, this.data.w)
+      const left = this.hoverCell.x - this.hoverItem.gX
       const right = left + this.hoverItem.w - 1
-      const top = this.hoverCell.y - this.hoverItem.y
+      const top = this.hoverCell.y - this.hoverItem.gY
       const bottom = top + this.hoverItem.h - 1
       return !(cX < left || cX > right || cY < top || cY > bottom)
     },
+
+    /** Clears the hover preview related parameters */
     onDragLeaveCell() {
       this.hoverCell = null
       this.hoverItem = null
     },
-    onItemDragStart(itemIndex: number) {
-      this.draggingItemIndex = itemIndex
-    },
-    onItemDrop(itemIndex: number, data?: IAmountDragPayload) {
-      const item = { ...this.immediateItems[itemIndex] }
-      if (data && isAmountItem(item)) {
-        // local item is being dragged somewhere
-        const amount = item.amount - data.amount
-        if (amount > 0) {
-          item.amount = amount
-          this.immediateItems[itemIndex] = item
-        }
-      } else {
-        this.immediateItems.splice(itemIndex, 1)
-      }
-      this.syncItems()
-      this.onItemDragEnd()
-    },
-    onItemDragEnd() {
-      this.draggingItemIndex = null
-    },
-    getItemOverlap(item: IItem) {
-      const overlappedItemsIndexes = new Set<number>()
-      const overlappedCellsShift: Array<{ x: number; y: number }> = []
-      if (this.hoverCell) {
-        for (let i = 0; i < item.h; i++) {
-          for (let j = 0; j < item.w; j++) {
-            const itemIndex = this.itemsMap[item.y + i][item.x + j]
-            if (typeof itemIndex === 'number' && this.draggingItemIndex !== itemIndex) {
-              overlappedItemsIndexes.add(itemIndex)
-              overlappedCellsShift.push({
-                x: item.x + j - this.hoverCell.x,
-                y: item.y + i - this.hoverCell.y,
-              })
-            }
-          }
-        }
-      }
-      return { indexes: overlappedItemsIndexes, cellsShift: overlappedCellsShift }
-    },
+
+    /** Dispatches onItemMove action and rules the replace-related Drag-and-Drop emulation */
     onDrop(e: DragEvent) {
       if (!this.hoverCell || !this.hoverItem) return
 
-      const img = e.dataTransfer?.getData('dnd/img') || './fallback.png'
-      const type = e.dataTransfer?.getData('dnd/type')
-      const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0')
-
-      const amount = e.dataTransfer?.getData('dnd/amount')
-      const scrap = e.dataTransfer?.getData('dnd/scrap')
-
-      const region = e.dataTransfer?.getData('dnd/region')
-
-      const item: ItemObj = {
-        w: this.hoverItem.w,
-        h: this.hoverItem.h,
-        x: this.hoverCell.x - this.hoverItem.x,
-        y: this.hoverCell.y! - this.hoverItem.y,
-        img,
-      }
-      if (type) item.type = type as IItemType
-
-      if (amount) {
-        ;(item as IAmountItem).amount = +amount
-        if (scrap) (item as IAmountItem).scrap = !!+scrap
-      }
-
-      if (region) {
-        ;(item as IBackpack).region = JSON.parse(region)
-      }
-
-      if (
-        // do not match the type of region
-        (this.type && item.type !== this.type) ||
-        // or do not fit in the region rectangle
-        item.x < 0 ||
-        item.y < 0 ||
-        item.x + item.w > this.w ||
-        item.y + item.h > this.h
-      ) {
+      const id = e.dataTransfer?.getData('dnd/id')
+      if (!isItemId(id) && !isAmountItemId(id) && !isBackpackItemId(id)) {
         this.onDragLeaveCell()
         return
       }
 
-      const overlap = this.getItemOverlap(item)
+      const all = !!+(e.dataTransfer?.getData('dnd/all') || '0')
+      const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0') // LMB next state
+
+      const { lastCoords, lastIndex } =
+        this.d.onItemMove(id, {
+          regionId: this.id,
+          pos: {
+            x: this.hoverCell.x - this.hoverItem.gX,
+            y: this.hoverCell.y - this.hoverItem.gY,
+          },
+          all,
+        }) || {}
+
+      const cellRealShift: typeof lastCoords = lastCoords && {
+        x: (lastCoords.x - this.hoverCell.x) * CELL_SIZE,
+        y: (lastCoords.y - this.hoverCell.y) * CELL_SIZE,
+      }
 
       this.onDragLeaveCell() // this.hoverXXX properties are reset, don't use them below
 
-      if (overlap.indexes.size > 1) {
-        //! todo: try to place an item with the current items arrangement first
-        if (this.arrange([...this.immediateItems, item])) {
-          e.preventDefault() // mark drop as successful
-        }
-        return
-      }
-      if (overlap.indexes.size === 1) {
-        const overlappedItemIndex = overlap.indexes.values().next()
-          .value as typeof overlap.indexes extends Set<infer T> ? T : never
-        const overlappedItem = this.immediateItems[overlappedItemIndex]
-        if (this.stack && isAmountItem(overlappedItem) && isAmountItem(item)) {
-          // try to stack
-          const typeStackRestriction = this.stack.find(({ type }) =>
-            overlappedItem.type ? type === overlappedItem.type : type === ItemType.Misc
-          )
-          if (
-            typeStackRestriction &&
-            overlappedItem.img === item.img &&
-            overlappedItem.amount <= typeStackRestriction.max
-          ) {
-            let amount = overlappedItem.amount + item.amount
-            const excess = Math.max(0, amount - typeStackRestriction.max)
-            if (excess) {
-              amount = typeStackRestriction.max
-            }
-
-            if (amount === overlappedItem.amount) {
-              return
-            }
-
-            const dragPayload: IAmountDragPayload = { amount: item.amount - excess }
-            Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
-
-            e.preventDefault() // mark drop as successful
-            const newItem = { ...overlappedItem, amount }
-            this.immediateItems[overlappedItemIndex] = newItem
-            this.syncItems()
-            return
-          }
-        }
-
-        // replace
-
-        const cellRealShift = {
-          x: overlap.cellsShift[0].x * CELL_SIZE,
-          y: overlap.cellsShift[0].y * CELL_SIZE,
-        }
-
-        const overlappedItemElement = (this.$refs.itemWrappers as HTMLDivElement[])[
-          overlappedItemIndex
-        ]
+      // replace
+      if (cellRealShift) {
+        const overlappedItemElement = (this.$refs.itemWrappers as HTMLDivElement[])[lastIndex!]!
         overlappedItemElement.style.pointerEvents = 'all'
         //! todo: select most appropriate cell index
         const overlappedItemInnerElement = document.elementFromPoint(
@@ -288,7 +165,9 @@ export default {
               clientY: e.clientY,
               dataTransfer,
               bubbles: true,
-              cancelable: true, // setting cancelable=true is crucial because it allows to check defaultPrevented property to see if the drop was successful
+              // setting cancelable=true is crucial because it allows to check
+              // defaultPrevented property to see if the drop was successful
+              cancelable: true,
             })
           )
           overlappedItemInnerElement?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
@@ -316,75 +195,6 @@ export default {
           }, 0)
         }, 0)
       }
-
-      // place the item (same when replacing)
-
-      if (isAmountItem(item)) {
-        const dragPayload: IAmountDragPayload = { amount: item.amount }
-        Object.defineProperty(e, DRAG_PAYLOAD_SYMBOL, { value: dragPayload })
-      }
-
-      e.preventDefault() // mark drop as successful
-      this.immediateItems.push(item)
-      this.syncItems()
-    },
-    /** @returns {boolean} was items arrangement successful or not */
-    arrange(possibleItems?: IItem[]) {
-      const itemsList = [...(possibleItems || this.immediateItems)]
-      const items: IItem[] = []
-
-      const mapSize = this.w * this.h
-      const flatItemsMap = Array(mapSize).fill(false)
-      flatItemsMap.forEach((isOccupied, i, map) => {
-        if (isOccupied) return
-        const [itemToPlaceIndex, occupiedIndexes] =
-          itemsList.reduce((res: [number, number[]] | undefined, item, itemIndex) => {
-            if (res) return res
-
-            const itemCellsIndexes = this.getItemCellsIndexes(item, i)
-            if (
-              itemCellsIndexes.length !== item.w * item.h ||
-              itemCellsIndexes.some((ci) => map[ci])
-            ) {
-              return undefined
-            }
-
-            return [itemIndex, itemCellsIndexes]
-          }, undefined) || []
-        if (occupiedIndexes && typeof itemToPlaceIndex === 'number') {
-          occupiedIndexes.forEach((ci) => {
-            map[ci] = true
-          })
-          const [placedItem] = itemsList.splice(itemToPlaceIndex, 1)
-          items.push({
-            ...placedItem,
-            x: i % this.w,
-            y: Math.floor(i / this.w),
-          })
-        }
-      })
-      if (!itemsList.length) {
-        this.immediateItems = items
-        this.syncItems()
-        return true
-      }
-      return false
-    },
-    getItemCellsIndexes(item: IItem, cornerIndex: number) {
-      const cornerX = cornerIndex % this.w
-      const cornerY = Math.floor(cornerIndex / this.w)
-      const indexes: number[] = []
-      outer: for (let i = cornerY; i < cornerY + item.h; i++) {
-        for (let j = cornerX; j < cornerX + item.w; j++) {
-          const index = i * this.w + j
-          if (index / this.w >= i + 1) {
-            // do not fit in this position
-            break outer
-          }
-          indexes.push(index)
-        }
-      }
-      return indexes
     },
   },
 }
@@ -394,8 +204,8 @@ export default {
   <div
     class="region"
     :style="{
-      width: `calc(var(--cell-size)*${w})`,
-      height: `calc(var(--cell-size)*${h})`,
+      width: `calc(var(--cell-size)*${data.w})`,
+      height: `calc(var(--cell-size)*${data.h})`,
     }"
     @dragenter="onDragEnter"
     @drop="onDrop"
@@ -408,37 +218,16 @@ export default {
       :key="i"
     />
     <div
-      v-for="({ x, y, ...item }, i) in items"
-      class="itemWrapper"
+      v-for="itemId in data.items"
       :style="{
-        top: `calc(var(--cell-size)*${y})`,
-        left: `calc(var(--cell-size)*${x})`,
         pointerEvents: hoverItem ? 'none' : 'auto',
       }"
       ref="itemWrappers"
-      :key="`${x};${y}`"
+      :key="itemId"
     >
-      <AmountItem
-        v-if="isAmountItem(item)"
-        v-bind="item"
-        @dragstart="onItemDragStart(i)"
-        @drop="onItemDrop(i, $event)"
-        @dragend="onItemDragEnd"
-      />
-      <BackpackItem
-        v-if="isBackpack(item)"
-        v-bind="item"
-        @dragstart="onItemDragStart(i)"
-        @drop="onItemDrop(i, $event)"
-        @dragend="onItemDragEnd"
-      />
-      <KItem
-        v-else
-        v-bind="item"
-        @dragstart="onItemDragStart(i)"
-        @drop="onItemDrop(i, $event)"
-        @dragend="onItemDragEnd"
-      />
+      <AmountItem v-if="isAmountItemId(itemId)" :id="itemId" />
+      <BackpackItem v-else-if="isBackpackItemId(itemId)" :id="itemId" />
+      <KItem v-else :id="itemId" />
     </div>
   </div>
 </template>
@@ -448,8 +237,5 @@ export default {
   display: flex;
   flex-wrap: wrap;
   position: relative;
-}
-.itemWrapper {
-  position: absolute;
 }
 </style>

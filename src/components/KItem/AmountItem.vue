@@ -5,10 +5,8 @@ export default {
   extends: KItem,
   components: { KItem },
   props: {
-    amount: { type: Number, required: true },
-    scrap: { type: Boolean },
     /** @private Not intended to use */
-    hidden: {
+    visible: {
       validator() {
         return false
       },
@@ -21,8 +19,14 @@ export default {
   },
   computed: {
     itemProps() {
-      const { w, h, img, type } = this.$props
-      return { w, h, img, type }
+      const { id } = this.$props
+      return { id }
+    },
+    amount() {
+      return (this.data as IAmountItem).amount
+    },
+    scrap() {
+      return (this.data as IAmountItem).scrap
     },
     count() {
       if (!this.amount) return undefined
@@ -31,11 +35,12 @@ export default {
     notEnoughToShowCount() {
       return !this.count || this.count <= 1
     },
-    notEnoughAmountToShowItem() {
-      return !this.count || this.count === 0
+    enoughAmountToShowItem() {
+      return !!this.count && this.count > 0
     },
     progressValue() {
       if (!this.amount) return undefined
+      //! this.isPreview || this.isDragging ! not reactive
       return this.isPreview || this.isDragging ? 100 : (this.amount % 1 || 1) * 100
     },
     progressScrap() {
@@ -51,8 +56,7 @@ export default {
         else amount = this.amount % 1 || 1
       }
       this.amountDragging = amount
-      e.dataTransfer!.setData('dnd/amount', `${amount}`)
-      if (this.scrap) e.dataTransfer!.setData('dnd/scrap', `${+this.scrap}`)
+      e.dataTransfer!.setData('dnd/all', `${+e.shiftKey}`)
     },
     onDragEnd() {
       this.amountDragging = null
@@ -64,12 +68,9 @@ export default {
 <template>
   <KItem
     v-bind="itemProps"
-    :hidden="notEnoughAmountToShowItem"
+    :visible="enoughAmountToShowItem"
     :handle-drag-start="onDragStart"
     :handle-drag-end="onDragEnd"
-    @dragstart="$emit('dragstart', $event)"
-    @drop="$emit('drop', $event)"
-    @dragend="$emit('dragend', $event)"
   >
     <template #item>
       <progress v-if="scrap && amount" :value="progressValue" max="100" class="scrap"></progress>

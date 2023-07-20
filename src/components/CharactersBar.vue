@@ -114,7 +114,7 @@ export default {
   box-shadow: inset 0 0 0 2px #ababab;
 }
 /* https://vue-loader.vuejs.org/guide/scoped-css.html#deep-selectors */
-.characters >>> .characters-button__menu-wrapper {
+.characters :deep(.characters-button__menu-wrapper) {
   position: relative;
   flex: 1 1 0;
   max-width: 125px;

@@ -141,8 +141,8 @@ export default {
   position: absolute;
   top: min(-50vw, -50vh);
   left: min(-50vw, -50vh);
-  width: max(100vw, 100vh);
-  height: max(100vw, 100vh);
+  width: max(200vw, 200vh);
+  height: max(200vw, 200vh);
   background-size: 20px 20px;
   background-image: linear-gradient(to right, #151515 0 25%, #1d1d1d 25% 75%, #151515 75% 100%);
   transform: rotate(50deg);

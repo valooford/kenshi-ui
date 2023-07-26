@@ -187,6 +187,7 @@ export default {
 .preview {
   position: fixed;
   pointer-events: none;
+  user-select: none;
   z-index: 1200;
 }
 .preview__content {

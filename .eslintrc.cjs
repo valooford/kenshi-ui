@@ -19,6 +19,7 @@ module.exports = {
         // motivation: globally declared types
         // restrictions: .vue files mustn't be written in JS
         'no-undef': 0,
+        'no-console': 1,
       },
     },
   ],

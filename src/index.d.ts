@@ -96,6 +96,7 @@ declare type IBackpackItemId = Brand<IBackpackItemIdRaw, IBackpackItem>
 declare interface IBackpackItem extends IItemBase {
   readonly id: NotBrand<IBackpackItemIdRaw>
   readonly innerRegionId: IRegionId
+  isOpened: boolean
 }
 
 // region
@@ -270,6 +271,8 @@ declare interface IDispatch {
   onItemMove: (
     id: IItemObjId,
     options: { regionId?: IRegionObjId; pos?: IPoint; all?: boolean }
-  ) => { lastCoords?: IPoint; lastIndex?: number } | void
-  arrangeRegion: (id: IRegionObjId, possibleItemId?: IItemObjId) => boolean
+  ) => { lastCoords?: IPoint; lastIndex?: number; isContinuous?: boolean } | void
+  arrangeRegion: (id: IRegionObjId) => void
+  openBackpack: (id: IBackpackItemId) => void
+  closeBackpack: (id: IBackpackItemId) => void
 }

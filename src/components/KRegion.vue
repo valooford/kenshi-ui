@@ -17,7 +17,14 @@ export default {
   data() {
     return {
       hoverCell: null as { x: number; y: number } | null,
-      hoverItem: null as { w: number; h: number; gX: number; gY: number } | null,
+      hoverItem: null as {
+        w: number
+        h: number
+        gX: number
+        gY: number
+        oX?: number
+        oY?: number
+      } | null,
     }
   },
   computed: {
@@ -48,8 +55,12 @@ export default {
       setTimeout(() => {
         let w: number | undefined = undefined
         let h: number | undefined = undefined
+        // grab
         let gX: number | undefined = undefined
         let gY: number | undefined = undefined
+        // origin
+        let oX: number | undefined = undefined
+        let oY: number | undefined = undefined
         types?.forEach((t) => {
           const [, prop, value] = paramsRegex.exec(t) || []
           if (!prop) return
@@ -57,9 +68,11 @@ export default {
           if (prop === 'h') h = +value!
           if (prop === 'x') gX = +value!
           if (prop === 'y') gY = +value!
+          if (prop === 'ox') oX = +value!
+          if (prop === 'oy') oY = +value!
         })
         if (w && h && gX !== undefined && gY !== undefined) {
-          this.hoverItem = { w, h, gX, gY }
+          this.hoverItem = { w, h, gX, gY, oX, oY }
         }
       }, 0)
     },
@@ -90,7 +103,7 @@ export default {
     },
 
     /** Dispatches onItemMove action and rules the replace-related Drag-and-Drop emulation */
-    onDrop(e: DragEvent) {
+    async onDrop(e: DragEvent) {
       if (!this.hoverCell || !this.hoverItem) return
 
       const id = e.dataTransfer?.getData('dnd/id')
@@ -102,7 +115,7 @@ export default {
       const all = !!+(e.dataTransfer?.getData('dnd/all') || '0')
       const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0') // LMB next state
 
-      const { lastCoords, lastIndex } =
+      const { lastCoords, lastIndex, isContinuous } =
         this.d.onItemMove(id, {
           regionId: this.id,
           pos: {
@@ -112,32 +125,32 @@ export default {
           all,
         }) || {}
 
-      const cellRealShift: typeof lastCoords = lastCoords && {
-        x: (lastCoords.x - this.hoverCell.x) * CELL_SIZE,
-        y: (lastCoords.y - this.hoverCell.y) * CELL_SIZE,
+      let elementToEmulateDraggingOn: Element | null = null
+      let elementOnScreenX: number | null = null
+      let elementOnScreenY: number | null = null
+      if (lastCoords) {
+        elementOnScreenX = e.clientX + (lastCoords.x - this.hoverCell.x) * CELL_SIZE
+        elementOnScreenY = e.clientY + (lastCoords.y - this.hoverCell.y) * CELL_SIZE
+        const overlappedItemElement = (this.$refs.itemBoxes as HTMLDivElement[])[lastIndex!]!
+        overlappedItemElement.style.pointerEvents = 'all'
+        elementToEmulateDraggingOn = document.elementFromPoint(elementOnScreenX, elementOnScreenY)
+        overlappedItemElement.style.pointerEvents = ''
+      } else if (isContinuous) {
+        // always catch top-left cell
+        elementOnScreenX = this.hoverItem.oX! - this.hoverItem.gX * CELL_SIZE
+        elementOnScreenY = this.hoverItem.oY! - this.hoverItem.gY * CELL_SIZE
+        await new Promise((r) => setTimeout(r))
+        elementToEmulateDraggingOn = document.elementFromPoint(elementOnScreenX, elementOnScreenY)
       }
 
-      this.onDragLeaveCell() // this.hoverXXX properties are reset, don't use them below
-
       // replace
-      if (cellRealShift) {
-        const overlappedItemElement = (this.$refs.itemWrappers as HTMLDivElement[])[lastIndex!]!
-        overlappedItemElement.style.pointerEvents = 'all'
-        //! todo: select most appropriate cell index
-        const overlappedItemInnerElement = document.elementFromPoint(
-          e.clientX + cellRealShift.x,
-          e.clientY + cellRealShift.y
-        )
-        overlappedItemElement.style.pointerEvents = ''
-
+      if (elementToEmulateDraggingOn) {
         const dataTransfer = new DataTransfer()
-        dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
+        dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`) //! useless
 
         let elementToOver: Element | null
-        const onMouseMove = (e: MouseEvent) => {
-          const clientX = e.clientX
-          const clientY = e.clientY
-          overlappedItemInnerElement?.dispatchEvent(
+        const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
+          elementToEmulateDraggingOn?.dispatchEvent(
             new DragEvent('drag', { clientX, clientY, bubbles: true })
           )
           const newElementToOver = document.elementFromPoint(clientX, clientY)
@@ -170,24 +183,35 @@ export default {
               cancelable: true,
             })
           )
-          overlappedItemInnerElement?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
+          elementToEmulateDraggingOn?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
           document.removeEventListener('mousemove', onMouseMove)
           document.removeEventListener(mouseDropEvent, onMouseDropEvent)
+          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = ''
         }
 
         setTimeout(() => {
           // let the previous item to catch the 'drop' event on the document
-          overlappedItemInnerElement?.dispatchEvent(
+          elementToEmulateDraggingOn?.dispatchEvent(
             new MouseEvent('mousedown', {
-              clientX: e.clientX + cellRealShift.x,
-              clientY: e.clientY + cellRealShift.y,
+              clientX: elementOnScreenX!,
+              clientY: elementOnScreenY!,
               bubbles: true,
-              detail: +!!iWillRelease, // 0 - drag ends when button  pressed, 1 - when released
+              detail: +!!iWillRelease, // 0 - drag ends when button pressed, 1 - when released
             })
           )
-          overlappedItemInnerElement?.dispatchEvent(
-            new DragEvent('dragstart', { dataTransfer, bubbles: true, shiftKey: true })
+          elementToEmulateDraggingOn?.dispatchEvent(
+            new DragEvent('dragstart', {
+              dataTransfer,
+              bubbles: true,
+              shiftKey: true,
+              clientX: elementOnScreenX!,
+              clientY: elementOnScreenY!,
+            })
           )
+          // enables cells to be picked with document.elementFromPoint() calls
+          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = 'none'
+          // to continue dragging immediately (do not wait for mouse movements)
+          onMouseMove(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY }))
           setTimeout(() => {
             // prevent handling the freshly programmatically triggered 'mousedown' event
             document.addEventListener('mousemove', onMouseMove)
@@ -195,6 +219,8 @@ export default {
           }, 0)
         }, 0)
       }
+
+      this.onDragLeaveCell() // cleanup
     },
   },
 }
@@ -217,17 +243,17 @@ export default {
       @dragleave="onDragLeaveCell"
       :key="i"
     />
-    <div
-      v-for="itemId in data.items"
-      :style="{
-        pointerEvents: hoverItem ? 'none' : 'auto',
-      }"
-      ref="itemWrappers"
-      :key="itemId"
-    >
-      <AmountItem v-if="isAmountItemId(itemId)" :id="itemId" />
-      <BackpackItem v-else-if="isBackpackItemId(itemId)" :id="itemId" />
-      <KItem v-else :id="itemId" />
+    <div ref="itemsWrapper">
+      <div
+        v-for="itemId in data.items"
+        :style="{ pointerEvents: hoverItem ? 'none' : undefined }"
+        ref="itemBoxes"
+        :key="itemId"
+      >
+        <AmountItem v-if="isAmountItemId(itemId)" :id="itemId" />
+        <BackpackItem v-else-if="isBackpackItemId(itemId)" :id="itemId" />
+        <KItem v-else :id="itemId" />
+      </div>
     </div>
   </div>
 </template>

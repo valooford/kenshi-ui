@@ -17,7 +17,6 @@ export default {
     return {
       ItemType,
       InventoryRegion,
-      isBackpackOpened: false,
       backpackWindowShift: { x: 0, y: 0 } as IPoint,
       isBackpackWindowPosSync: true,
     }
@@ -32,29 +31,26 @@ export default {
     data() {
       return this.s.characters[this.id]!
     },
+    backpackId() {
+      return this.s.regions[this.data.regions[InventoryRegion.Backpack]]!.items[0]
+    },
     backpack() {
-      const backpackId = this.s.regions[this.data.regions[InventoryRegion.Backpack]]!.items[0]
-      return backpackId && this.s.items[backpackId]
+      return this.backpackId && this.s.items[this.backpackId]!
     },
     hasBackpack() {
       return !!this.backpack
     },
   },
-  watch: {
-    backpack(backpack: IBackpackItem | undefined) {
-      if (!backpack && this.isBackpackOpened) {
-        this.isBackpackOpened = false
-      }
-    },
-  },
   methods: {
     toggleBackpack() {
       if (this.hasBackpack) {
-        if (!this.isBackpackOpened) {
+        if (this.backpack!.isOpened) {
+          this.d.closeBackpack(this.backpackId!)
+        } else {
           this.backpackWindowShift = { x: 0, y: 0 }
           this.isBackpackWindowPosSync = true
+          this.d.openBackpack(this.backpackId!)
         }
-        this.isBackpackOpened = !this.isBackpackOpened
       }
     },
     onInventoryArrange() {
@@ -64,7 +60,7 @@ export default {
       this.d.arrangeRegion(this.backpack!.innerRegionId)
     },
     onWindowDrag(diff: IPoint) {
-      if (this.isBackpackOpened && this.isBackpackWindowPosSync) {
+      if (this.backpack?.isOpened && this.isBackpackWindowPosSync) {
         this.backpackWindowShift = {
           x: this.backpackWindowShift.x + diff.x,
           y: this.backpackWindowShift.y + diff.y,
@@ -76,14 +72,14 @@ export default {
     },
   },
   created() {
-    this.isBackpackOpened = !!this.backpack
+    if (this.backpackId) this.d.openBackpack(this.backpackId)
   },
 }
 </script>
 
 <template>
   <KWindow :title="data.name" @drag="onWindowDrag" @close="d.closeSeamInventory">
-    <template #left-aligned v-if="backpack && isBackpackOpened">
+    <template #left-aligned v-if="backpack?.isOpened">
       <KWindow
         title="BACKPACK"
         :shift="backpackWindowShift"

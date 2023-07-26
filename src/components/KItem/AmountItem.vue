@@ -1,10 +1,13 @@
 <script lang="ts">
+import type { PropType } from 'vue'
+
 import KItem from './KItem.vue'
 
 export default {
   extends: KItem,
   components: { KItem },
   props: {
+    id: { type: String as PropType<string> as PropType<IAmountItemId>, required: true },
     /** @private Not intended to use */
     visible: {
       validator() {
@@ -15,6 +18,8 @@ export default {
   data() {
     return {
       amountDragging: null as number | null,
+      // used instead of "this.isPreview || this.isDragging" pair because of lack of the reactivity in the latter
+      isExcessVisible: false,
     }
   },
   computed: {
@@ -40,8 +45,7 @@ export default {
     },
     progressValue() {
       if (!this.amount) return undefined
-      //! this.isPreview || this.isDragging ! not reactive
-      return this.isPreview || this.isDragging ? 100 : (this.amount % 1 || 1) * 100
+      return this.isExcessVisible ? 100 : (this.amount % 1 || 1) * 100
     },
     progressScrap() {
       if (!this.amount) return undefined
@@ -51,15 +55,22 @@ export default {
   methods: {
     onDragStart(e: DragEvent) {
       let amount = 1
+      const isAll = e.shiftKey || e.ctrlKey
       if (this.amount) {
-        if (e.shiftKey) amount = this.amount
+        if (isAll) amount = this.amount
         else amount = this.amount % 1 || 1
       }
       this.amountDragging = amount
-      e.dataTransfer!.setData('dnd/all', `${+e.shiftKey}`)
+      e.dataTransfer!.setData('dnd/all', `${+isAll}`)
+      if (isAll) {
+        e.dataTransfer!.setData(`dnd/ox;value=${e.clientX}`, '')
+        e.dataTransfer!.setData(`dnd/oy;value=${e.clientY}`, '')
+      }
+      this.isExcessVisible = true
     },
     onDragEnd() {
       this.amountDragging = null
+      this.isExcessVisible = false
     },
   },
 }

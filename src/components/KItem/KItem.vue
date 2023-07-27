@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
+import { emulateDragAndDropApi } from '@/shared/utils'
 
 export default {
   inject: ['store'],
@@ -61,6 +62,21 @@ export default {
       setTimeout(() => {
         document.addEventListener(this.cleanupEventName!, this.cleanup)
       }, 0)
+
+      // Since draggable=false we need to handle Drag-and-Drop logic manually.
+      // Commenting out this block and setting draggable=true on item's <img /> tag
+      // (not the preview one) will enable us to use native Drag-and-Drop once again.
+      if (!e.defaultPrevented) {
+        // emulate Drag-and-Drop API
+        emulateDragAndDropApi({
+          element: e.target as Element,
+          elementPointX: e.clientX,
+          elementPointY: e.clientY,
+          clientX: e.clientX,
+          clientY: e.clientY,
+          iWillRelease: buttonHeld,
+        })
+      }
     },
     onDragStart(e: DragEvent) {
       if (this.handleDragStart) this.handleDragStart(e)
@@ -135,7 +151,7 @@ export default {
     <img
       :src="data.img"
       alt=""
-      draggable="true"
+      draggable="false"
       @mousedown.left="onMouseLeftDown"
       @click.right="onMouseRightClick"
       @dragstart="onDragStart"

@@ -1,6 +1,12 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { indexToCoords, isAmountItemId, isBackpackItemId, isItemId } from '@/shared/utils'
+import {
+  indexToCoords,
+  isAmountItemId,
+  isBackpackItemId,
+  isItemId,
+  emulateDragAndDropApi,
+} from '@/shared/utils'
 import { CELL_SIZE } from '@/shared/constants'
 
 import KCell from './KCell.vue'
@@ -126,97 +132,47 @@ export default {
         }) || {}
 
       let elementToEmulateDraggingOn: Element | null = null
-      let elementOnScreenX: number | null = null
-      let elementOnScreenY: number | null = null
+      let elementPointX: number | null = null
+      let elementPointY: number | null = null
       if (lastCoords) {
-        elementOnScreenX = e.clientX + (lastCoords.x - this.hoverCell.x) * CELL_SIZE
-        elementOnScreenY = e.clientY + (lastCoords.y - this.hoverCell.y) * CELL_SIZE
+        elementPointX = e.clientX + (lastCoords.x - this.hoverCell.x) * CELL_SIZE
+        elementPointY = e.clientY + (lastCoords.y - this.hoverCell.y) * CELL_SIZE
         const overlappedItemElement = (this.$refs.itemBoxes as HTMLDivElement[])[lastIndex!]!
         overlappedItemElement.style.pointerEvents = 'all'
-        elementToEmulateDraggingOn = document.elementFromPoint(elementOnScreenX, elementOnScreenY)
+        elementToEmulateDraggingOn = document.elementFromPoint(elementPointX, elementPointY)
         overlappedItemElement.style.pointerEvents = ''
       } else if (isContinuous) {
         // always catch top-left cell
-        elementOnScreenX = this.hoverItem.oX! - this.hoverItem.gX * CELL_SIZE
-        elementOnScreenY = this.hoverItem.oY! - this.hoverItem.gY * CELL_SIZE
+        elementPointX = this.hoverItem.oX! - this.hoverItem.gX * CELL_SIZE
+        elementPointY = this.hoverItem.oY! - this.hoverItem.gY * CELL_SIZE
         await new Promise((r) => setTimeout(r))
-        elementToEmulateDraggingOn = document.elementFromPoint(elementOnScreenX, elementOnScreenY)
+        elementToEmulateDraggingOn = document.elementFromPoint(elementPointX, elementPointY)
       }
 
       // replace
       if (elementToEmulateDraggingOn) {
-        const dataTransfer = new DataTransfer()
-        dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`) //! useless
+        // let the previous item to catch the 'drop' event on the document
+        setTimeout(async () => {
+          const mousedownEvent = new MouseEvent('mousedown', {
+            clientX: elementPointX!,
+            clientY: elementPointY!,
+            bubbles: true,
+            detail: +!!iWillRelease, // 0 - drag ends when button pressed, 1 - when released
+          })
+          mousedownEvent.preventDefault() // signalize that we will emulate dragging by ourselves
+          elementToEmulateDraggingOn?.dispatchEvent(mousedownEvent)
 
-        let elementToOver: Element | null
-        const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
-          elementToEmulateDraggingOn?.dispatchEvent(
-            new DragEvent('drag', { clientX, clientY, bubbles: true })
-          )
-          const newElementToOver = document.elementFromPoint(clientX, clientY)
-          if (elementToOver !== newElementToOver) {
-            elementToOver?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
-            newElementToOver?.dispatchEvent(
-              new DragEvent('dragenter', { dataTransfer, bubbles: true })
-            )
-            //! fix: overlapping over items but not cells
-            // const a = newElementToOver as HTMLElement
-            // a.style.border = '1px solid red'
-            elementToOver = newElementToOver
-          }
-          elementToOver?.dispatchEvent(
-            new DragEvent('dragover', { clientX, clientY, bubbles: true })
-          )
-        }
-
-        const mouseDropEvent = iWillRelease ? 'mouseup' : 'mousedown'
-        const onMouseDropEvent = (e: MouseEvent) => {
-          const elementToDrop = document.elementFromPoint(e.clientX, e.clientY)
-          elementToDrop?.dispatchEvent(
-            new DragEvent('drop', {
-              clientX: e.clientX,
-              clientY: e.clientY,
-              dataTransfer,
-              bubbles: true,
-              // setting cancelable=true is crucial because it allows to check
-              // defaultPrevented property to see if the drop was successful
-              cancelable: true,
-            })
-          )
-          elementToEmulateDraggingOn?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
-          document.removeEventListener('mousemove', onMouseMove)
-          document.removeEventListener(mouseDropEvent, onMouseDropEvent)
-          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = ''
-        }
-
-        setTimeout(() => {
-          // let the previous item to catch the 'drop' event on the document
-          elementToEmulateDraggingOn?.dispatchEvent(
-            new MouseEvent('mousedown', {
-              clientX: elementOnScreenX!,
-              clientY: elementOnScreenY!,
-              bubbles: true,
-              detail: +!!iWillRelease, // 0 - drag ends when button pressed, 1 - when released
-            })
-          )
-          elementToEmulateDraggingOn?.dispatchEvent(
-            new DragEvent('dragstart', {
-              dataTransfer,
-              bubbles: true,
-              shiftKey: true,
-              clientX: elementOnScreenX!,
-              clientY: elementOnScreenY!,
-            })
-          )
           // enables cells to be picked with document.elementFromPoint() calls
           ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = 'none'
-          // to continue dragging immediately (do not wait for mouse movements)
-          onMouseMove(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY }))
-          setTimeout(() => {
-            // prevent handling the freshly programmatically triggered 'mousedown' event
-            document.addEventListener('mousemove', onMouseMove)
-            document.addEventListener(mouseDropEvent, onMouseDropEvent)
-          }, 0)
+          await emulateDragAndDropApi({
+            element: elementToEmulateDraggingOn,
+            elementPointX: elementPointX!,
+            elementPointY: elementPointY!,
+            clientX: e.clientX,
+            clientY: e.clientY,
+            iWillRelease,
+          })
+          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = ''
         }, 0)
       }
 

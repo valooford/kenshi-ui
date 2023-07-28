@@ -18,10 +18,11 @@ export default {
       isPreview: false,
       isDragging: false,
       emptyImage,
-      cX: 0,
-      cY: 0,
+      gX: 0,
+      gY: 0,
       pX: -1000,
       pY: -1000,
+      vecO: null as IPoint | null,
       cleanupEventName: null as string | null,
     }
   },
@@ -39,8 +40,8 @@ export default {
       return `${this.data.h * CELL_SIZE}px`
     },
     pivot() {
-      const x = this.pX - this.cX * CELL_SIZE - CELL_HALF_SIZE
-      const y = this.pY - this.cY * CELL_SIZE - CELL_HALF_SIZE
+      const x = this.pX - this.gX * CELL_SIZE - CELL_HALF_SIZE
+      const y = this.pY - this.gY * CELL_SIZE - CELL_HALF_SIZE
       return { x, y }
     },
   },
@@ -52,10 +53,15 @@ export default {
       const x = Math.floor((e.clientX - rect.left) / CELL_SIZE)
       const y = Math.floor((e.clientY - rect.top) / CELL_SIZE)
       this.isPreview = true
-      this.cX = x
-      this.cY = y
+      this.gX = x
+      this.gY = y
       this.pX = e.clientX
       this.pY = e.clientY
+      // vector to the center of the item
+      this.vecO = {
+        x: this.pivot.x + rect.width / 2 - this.pX,
+        y: this.pivot.y + rect.height / 2 - this.pY,
+      }
 
       const buttonHeld = !!e.detail
       this.cleanupEventName = buttonHeld ? 'mouseup' : 'mousedown'
@@ -69,11 +75,13 @@ export default {
       if (!e.defaultPrevented) {
         // emulate Drag-and-Drop API
         emulateDragAndDropApi({
-          element: e.target as Element,
+          element: el,
           elementPointX: e.clientX,
           elementPointY: e.clientY,
-          clientX: e.clientX,
-          clientY: e.clientY,
+          screenX: e.clientX,
+          screenY: e.clientY,
+          pointerShift: this.vecO,
+          shiftKey: e.shiftKey,
           iWillRelease: buttonHeld,
         })
       }
@@ -89,8 +97,8 @@ export default {
         // dnd/[property];value=[property-value]
         e.dataTransfer.setData(`dnd/w;value=${this.data.w}`, '')
         e.dataTransfer.setData(`dnd/h;value=${this.data.h}`, '')
-        e.dataTransfer.setData(`dnd/x;value=${this.cX}`, '')
-        e.dataTransfer.setData(`dnd/y;value=${this.cY}`, '')
+        e.dataTransfer.setData(`dnd/x;value=${this.gX}`, '')
+        e.dataTransfer.setData(`dnd/y;value=${this.gY}`, '')
 
         e.dataTransfer.setData('dnd/id', this.id)
         // removes ghost
@@ -109,16 +117,17 @@ export default {
     },
     cleanup() {
       this.isPreview = false
-      this.cX = 0
-      this.cY = 0
+      this.gX = 0
+      this.gY = 0
       this.pX = -1000
       this.pY = -1000
+      this.vecO = null
       document.removeEventListener(this.cleanupEventName!, this.cleanup)
       this.cleanupEventName = null
     },
     onDrag(e: DragEvent) {
-      this.pX = e.clientX
-      this.pY = e.clientY
+      this.pX = e.clientX - this.vecO!.x
+      this.pY = e.clientY - this.vecO!.y
     },
     onMouseRightClick() {
       // https://stackoverflow.com/questions/41993508/vuejs-bubbling-custom-events

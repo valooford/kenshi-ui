@@ -73,9 +73,6 @@ export default {
 <template>
   <CssVariablesProvider class="menu">
     <KSeam />
-    <div class="items-container">
-      <KRegion :id="('IRegion_registry' as IRegionId)" />
-    </div>
     <div class="controls">
       <div class="controls__left"></div>
       <div class="controls__flex">
@@ -87,6 +84,9 @@ export default {
         />
       </div>
       <div class="controls__right"></div>
+    </div>
+    <div class="items-container">
+      <KRegion :id="('IRegion_registry' as IRegionId)" />
     </div>
   </CssVariablesProvider>
 </template>

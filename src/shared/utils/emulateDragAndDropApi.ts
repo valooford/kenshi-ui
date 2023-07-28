@@ -2,8 +2,10 @@ interface IEmulateDragAndDropApiParameters {
   element: Element | null
   elementPointX: number
   elementPointY: number
-  clientX: number
-  clientY: number
+  screenX: number
+  screenY: number
+  pointerShift?: IPoint
+  shiftKey?: boolean
   iWillRelease: boolean
 }
 
@@ -12,15 +14,19 @@ export const emulateDragAndDropApi = ({
   element,
   elementPointX,
   elementPointY,
-  clientX,
-  clientY,
+  screenX,
+  screenY,
+  pointerShift = { x: 0, y: 0 },
+  shiftKey = false,
   iWillRelease,
 }: IEmulateDragAndDropApiParameters) => {
   const dataTransfer = new DataTransfer()
   dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
 
   let elementToOver: Element | null
-  const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
+  const onMouseMove = ({ clientX: pClientX, clientY: pClientY }: MouseEvent) => {
+    const clientX = pClientX + pointerShift.x
+    const clientY = pClientY + pointerShift.y
     element?.dispatchEvent(new DragEvent('drag', { clientX, clientY, bubbles: true }))
     const newElementToOver = document.elementFromPoint(clientX, clientY)
     if (elementToOver !== newElementToOver) {
@@ -37,7 +43,7 @@ export const emulateDragAndDropApi = ({
     new DragEvent('dragstart', {
       dataTransfer,
       bubbles: true,
-      shiftKey: true,
+      shiftKey,
       clientX: elementPointX,
       clientY: elementPointY,
     })
@@ -48,11 +54,14 @@ export const emulateDragAndDropApi = ({
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener(mouseDropEvent, onMouseDropEvent)
       setTimeout(() => {
-        const elementToDrop = document.elementFromPoint(e.clientX, e.clientY)
+        const elementToDrop = document.elementFromPoint(
+          e.clientX + pointerShift.x,
+          e.clientY + pointerShift.y
+        )
         elementToDrop?.dispatchEvent(
           new DragEvent('drop', {
-            clientX: e.clientX,
-            clientY: e.clientY,
+            clientX: e.clientX + pointerShift.x,
+            clientY: e.clientY + pointerShift.y,
             dataTransfer,
             bubbles: true,
             // setting cancelable=true is crucial because it allows to check
@@ -66,10 +75,10 @@ export const emulateDragAndDropApi = ({
       }, 0)
     }
 
-    // to continue dragging immediately (do not wait for mouse movements)
-    onMouseMove(new MouseEvent('mousemove', { clientX, clientY }))
+    // prevent handling the freshly programmatically triggered 'mousedown' event
     setTimeout(() => {
-      // prevent handling the freshly programmatically triggered 'mousedown' event
+      // to continue dragging immediately (do not wait for mouse movements)
+      onMouseMove(new MouseEvent('mousemove', { clientX: screenX, clientY: screenY }))
       document.addEventListener('mousemove', onMouseMove)
       document.addEventListener(mouseDropEvent, onMouseDropEvent)
     }, 0)

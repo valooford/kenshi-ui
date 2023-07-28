@@ -3,26 +3,11 @@ export default {
   props: {
     isOver: { type: Boolean, required: true },
   },
-  emits: ['dragenter', 'dragleave'],
-  methods: {
-    onDragEnter() {
-      setTimeout(() => {
-        this.$emit('dragenter')
-      }, 0)
-    },
-    onDragLeave() {
-      this.$emit('dragleave')
-    },
-  },
 }
 </script>
 
 <template>
-  <div
-    :class="['cell', isOver && 'hover']"
-    @dragenter.prevent="onDragEnter"
-    @dragleave="onDragLeave"
-  />
+  <div :class="['cell', isOver && 'hover']" />
 </template>
 
 <style scoped>
@@ -31,6 +16,7 @@ export default {
   height: var(--cell-size);
   background-color: #3d3938;
   box-shadow: inset 0 0 0 1px #1c1c1c, inset 0 0 8px #222, inset 0 0 8px #222;
+  pointer-events: none;
 }
 .hover {
   background-color: #c2bbb7;

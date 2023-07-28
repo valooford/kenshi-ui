@@ -22,6 +22,7 @@ export default {
   },
   data() {
     return {
+      screenCoords: null as IPoint | null,
       hoverCell: null as { x: number; y: number } | null,
       hoverItem: null as {
         w: number
@@ -58,6 +59,7 @@ export default {
       // dnd/[property];value=[property-value]
       const paramsRegex = /dnd\/(\S+);value=(.+)$/
       const types = e.dataTransfer?.types
+      const currentTarget = e.currentTarget as HTMLElement
       setTimeout(() => {
         let w: number | undefined = undefined
         let h: number | undefined = undefined
@@ -79,13 +81,29 @@ export default {
         })
         if (w && h && gX !== undefined && gY !== undefined) {
           this.hoverItem = { w, h, gX, gY, oX, oY }
+          const { left, top } = currentTarget.getBoundingClientRect()
+          this.screenCoords = { x: left, y: top }
         }
       }, 0)
     },
 
-    /** Stores coordinates of cell being hovered */
-    onDragEnterCell(index: number) {
-      this.hoverCell = indexToCoords(index, this.data.w)
+    onDragOver(e: DragEvent) {
+      if (!this.screenCoords || !this.hoverItem) return
+      // разбиваем область на сетку размером CELL_SIZE и ищем неокругленные координаты центра
+      // split the region into cells of CELL_SIZE and find item center zero-based coordinates
+      const centerX = (e.clientX - this.screenCoords.x) / CELL_SIZE
+      const centerY = (e.clientY - this.screenCoords.y) / CELL_SIZE
+      // find the top left cell center rounded coordinates
+      const topLeftCellX = Math.floor(centerX - this.hoverItem.w / 2 + 0.5)
+      const topLeftCellY = Math.floor(centerY - this.hoverItem.h / 2 + 0.5)
+      // make sure that coordinates are accurate according to the region- and item sizes (mm stands for minmax)
+      const mmX = Math.max(0, Math.min(topLeftCellX, this.data.w - this.hoverItem.w))
+      const mmY = Math.max(0, Math.min(topLeftCellY, this.data.h - this.hoverItem.h))
+      // set the coordinates of a grabbed cell
+      this.hoverCell = {
+        x: mmX + this.hoverItem.gX,
+        y: mmY + this.hoverItem.gY,
+      }
     },
 
     /**
@@ -103,7 +121,8 @@ export default {
     },
 
     /** Clears the hover preview related parameters */
-    onDragLeaveCell() {
+    onDragLeave() {
+      this.screenCoords = null
       this.hoverCell = null
       this.hoverItem = null
     },
@@ -114,7 +133,7 @@ export default {
 
       const id = e.dataTransfer?.getData('dnd/id')
       if (!isItemId(id) && !isAmountItemId(id) && !isBackpackItemId(id)) {
-        this.onDragLeaveCell()
+        this.onDragLeave()
         return
       }
 
@@ -134,9 +153,10 @@ export default {
       let elementToEmulateDraggingOn: Element | null = null
       let elementPointX: number | null = null
       let elementPointY: number | null = null
-      if (lastCoords) {
-        elementPointX = e.clientX + (lastCoords.x - this.hoverCell.x) * CELL_SIZE
-        elementPointY = e.clientY + (lastCoords.y - this.hoverCell.y) * CELL_SIZE
+      if (lastCoords && this.screenCoords) {
+        elementPointX = this.screenCoords.x + (lastCoords.x + 0.5) * CELL_SIZE
+        elementPointY = this.screenCoords.y + (lastCoords.y + 0.5) * CELL_SIZE
+
         const overlappedItemElement = (this.$refs.itemBoxes as HTMLDivElement[])[lastIndex!]!
         overlappedItemElement.style.pointerEvents = 'all'
         elementToEmulateDraggingOn = document.elementFromPoint(elementPointX, elementPointY)
@@ -158,6 +178,7 @@ export default {
             clientY: elementPointY!,
             bubbles: true,
             detail: +!!iWillRelease, // 0 - drag ends when button pressed, 1 - when released
+            cancelable: true, // allows to preventDefault()
           })
           mousedownEvent.preventDefault() // signalize that we will emulate dragging by ourselves
           elementToEmulateDraggingOn?.dispatchEvent(mousedownEvent)
@@ -168,15 +189,16 @@ export default {
             element: elementToEmulateDraggingOn,
             elementPointX: elementPointX!,
             elementPointY: elementPointY!,
-            clientX: e.clientX,
-            clientY: e.clientY,
+            screenX: e.clientX,
+            screenY: e.clientY,
+            shiftKey: true,
             iWillRelease,
           })
           ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = ''
         }, 0)
       }
 
-      this.onDragLeaveCell() // cleanup
+      this.onDragLeave() // cleanup
     },
   },
 }
@@ -190,15 +212,11 @@ export default {
       height: `calc(var(--cell-size)*${data.h})`,
     }"
     @dragenter="onDragEnter"
+    @dragover="onDragOver"
     @drop="onDrop"
+    @dragleave="onDragLeave"
   >
-    <KCell
-      v-for="(cell, i) in cells"
-      :is-over="isOverCell(i)"
-      @dragenter="onDragEnterCell(i)"
-      @dragleave="onDragLeaveCell"
-      :key="i"
-    />
+    <KCell v-for="(_, i) in cells" :is-over="isOverCell(i)" :key="i" />
     <div ref="itemsWrapper">
       <div
         v-for="itemId in data.items"

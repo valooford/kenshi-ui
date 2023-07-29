@@ -271,7 +271,8 @@ declare interface IDispatch {
   onItemMove: (
     id: IItemObjId,
     options: { regionId?: IRegionObjId; pos?: IPoint; all?: boolean }
-  ) => { lastCoords?: IPoint; lastIndex?: number; isContinuous?: boolean } | void
+  ) => { success: boolean; lastCoords?: IPoint; lastIndex?: number; isContinuous?: boolean }
+  validateItemPosition: (id: IItemObjId) => void
   arrangeRegion: (id: IRegionObjId) => void
   openBackpack: (id: IBackpackItemId) => void
   closeBackpack: (id: IBackpackItemId) => void

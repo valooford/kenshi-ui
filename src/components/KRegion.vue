@@ -140,7 +140,7 @@ export default {
       const all = !!+(e.dataTransfer?.getData('dnd/all') || '0')
       const iWillRelease = !!+(e.dataTransfer?.getData('dnd/button-will-release') || '0') // LMB next state
 
-      const { lastCoords, lastIndex, isContinuous } =
+      const { success, lastCoords, lastIndex, isContinuous } =
         this.d.onItemMove(id, {
           regionId: this.id,
           pos: {
@@ -149,6 +149,7 @@ export default {
           },
           all,
         }) || {}
+      e.dataTransfer?.setData('dnd/success', `${+success}`)
 
       let elementToEmulateDraggingOn: Element | null = null
       let elementPointX: number | null = null
@@ -165,6 +166,9 @@ export default {
         // always catch top-left cell
         elementPointX = this.hoverItem.oX! - this.hoverItem.gX * CELL_SIZE
         elementPointY = this.hoverItem.oY! - this.hoverItem.gY * CELL_SIZE
+
+        this.onDragLeave() // cleanup --> allow pointer events on items
+
         await new Promise((r) => setTimeout(r))
         elementToEmulateDraggingOn = document.elementFromPoint(elementPointX, elementPointY)
       }

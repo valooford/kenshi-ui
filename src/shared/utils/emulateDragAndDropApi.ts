@@ -49,6 +49,9 @@ export const emulateDragAndDropApi = ({
     })
   )
 
+  const overlappedElement = document.elementFromPoint(screenX, screenY) //! maybe inaccurate, because it's not the item's center
+  overlappedElement?.dispatchEvent(new DragEvent('dragenter', { dataTransfer, bubbles: true }))
+
   return new Promise<void>((resolve) => {
     const onMouseDropEvent = (e: MouseEvent) => {
       document.removeEventListener('mousemove', onMouseMove)
@@ -70,7 +73,7 @@ export const emulateDragAndDropApi = ({
           })
         )
         // elementToDrop?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
-        element?.dispatchEvent(new DragEvent('dragend', { bubbles: true }))
+        element?.dispatchEvent(new DragEvent('dragend', { dataTransfer, bubbles: true }))
         resolve()
       }, 0)
     }

@@ -4,7 +4,7 @@ import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
 import { emulateDragAndDropApi } from '@/shared/utils'
 
 export default {
-  inject: ['store'],
+  inject: ['store', 'dispatch'],
   props: {
     id: { type: String as PropType<string> as PropType<IItemObjId>, required: true },
     visible: { type: Boolean },
@@ -29,6 +29,9 @@ export default {
   computed: {
     s() {
       return this.store as IStore
+    },
+    d() {
+      return this.dispatch as IDispatch
     },
     data() {
       return this.s.items[this.id]!
@@ -110,7 +113,9 @@ export default {
         this.isDragging = true
       })
     },
-    onDragEnd() {
+    onDragEnd(e: DragEvent) {
+      const success = !!+(e.dataTransfer?.getData('dnd/success') || '0')
+      if (!success) this.d.validateItemPosition(this.id)
       if (this.handleDragEnd) this.handleDragEnd()
       this.isDragging = false
       this.cleanup()

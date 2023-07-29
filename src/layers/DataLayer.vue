@@ -23,6 +23,7 @@ export default {
         openRelatedSeamInventory: this.openRelatedSeamInventory,
         closeSeamInventory: this.closeSeamInventory,
         onItemMove: this.onItemMove,
+        validateItemPosition: this.validateItemPosition,
         arrangeRegion: this.arrangeRegion,
         openBackpack: this.openBackpack,
         closeBackpack: this.closeBackpack,
@@ -202,7 +203,7 @@ export default {
         pos.x + item.w > region.w ||
         pos.y + item.h > region.h
       )
-        return
+        return { success: false }
 
       const itemsMap = this.getItemsMap(regionId)
 
@@ -227,7 +228,7 @@ export default {
       // result: movement rejection
       if (overlap.ids.size > 1) {
         if (itemPieceId) this.exhaustItem(itemPieceId)
-        return
+        return { success: false }
       }
 
       // Case 2: overlap with exactly 1 item
@@ -240,7 +241,7 @@ export default {
         if (overlappedItemId === id) {
           this.updateItem(id, { ...item, ...pos })
           if (itemPieceId) this.exhaustItem(itemToMoveId)
-          return
+          return { success: true }
         }
 
         const overlappedItem = this.items[overlappedItemId as IItemObjId]!
@@ -271,15 +272,15 @@ export default {
             ...pos,
             amount,
           })
-          return
+
+          return { success: true, isContinuous: !!excess }
         }
 
         // Case 2.3: overlap with an item when it can't be stack together
         // result: replace overlapped item with a fitting piece of the current one and continue dragging it in another place
         if (options.all && isAmountItemId(id)) {
-          // начать замену на часть item'а
-          this.placeItem(regionId, id, pos)
-          return { lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
+          this.safePlaceAmountItem(id, regionId, pos)
+          return { success: true, lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
         }
 
         // Case 2.4: same as Case 3.2, but the returning values are set
@@ -288,11 +289,11 @@ export default {
       // Case 3.1: no overlap, but it's an amount item
       // result: place only piece of of it that fits in and continue dragging the rest of the amount to another place
       if (!overlap.ids.size && options.all && isAmountItemId(id) && isAmountItem(item)) {
-        this.placeItem(regionId, id, pos)
+        this.safePlaceAmountItem(id, regionId, pos)
         if (id in this.items && this.items[id]!.amount !== item.amount) {
-          return { isContinuous: true }
+          return { success: true, isContinuous: true }
         }
-        return
+        return { success: true }
       }
 
       // Case 3.2: no/some overlap, just a regular movement or replacement
@@ -309,14 +310,15 @@ export default {
       if (itemPieceId && isAmountItem(item) && isAmountItem(itemToMove))
         this.updateItem(id as IAmountItemId, { ...item, amount: item.amount - itemToMove.amount })
 
-      return { lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
+      return { success: true, lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
     },
     /** @description Builds the region matrix with id-index value pairs for occupied cells */
-    getItemsMap(id: IRegionObjId) {
+    getItemsMap(id: IRegionObjId, ignoredItemId?: IItemObjId) {
       const region = this.regions[id]!
       const itemsList = region.items.map((itemId) => this.items[itemId]!)
       return itemsList.reduce(
         (acc, item, index) => {
+          if (ignoredItemId && item.id === ignoredItemId) return acc
           for (let i = 0; i < item.h; i++) {
             for (let j = 0; j < item.w; j++) {
               acc[item.y + i]![item.x + j] = [item.id, index]
@@ -327,7 +329,7 @@ export default {
         [
           ...Array(region.h)
             .fill(0)
-            .map(() => []),
+            .map(() => Array(region.w).fill(undefined)),
         ] as IItemsMap
       )
     },
@@ -365,23 +367,68 @@ export default {
     },
     /**
      * @public
+     * @description Checks if the item position is correct and fixes it if it's not
+     */
+    validateItemPosition(id: IItemObjId) {
+      const item = this.items[id]!
+
+      let itemsMap = this.getItemsMap(item.regionId, id)
+      let pos: IPoint | null = null
+
+      for (let i = item.y; i < item.y + item.h; i++) {
+        for (let j = item.x; j < item.x + item.w; j++) {
+          if (itemsMap[i]![j]) {
+            // try to find the new place
+            pos = this.findPlace({ itemsMap, w: item.w, h: item.h })
+            if (pos) {
+              this.unsafePlaceItem(id, item.regionId, pos)
+              return
+            }
+            // arrange target region and try to find the new place
+            this.arrangeRegion(item.regionId, id)
+            itemsMap = this.getItemsMap(item.regionId, id)
+            pos = this.findPlace({ itemsMap, w: item.w, h: item.h })
+            if (pos) {
+              this.unsafePlaceItem(id, item.regionId, pos)
+              return
+            }
+            // try to place in in the registry
+            itemsMap = this.getItemsMap('IRegion_registry' as IRegionId, id)
+            pos = this.findPlace({ itemsMap, w: item.w, h: item.h })
+            if (pos) {
+              this.unsafePlaceItem(id, 'IRegion_registry' as IRegionId, pos)
+              return
+            }
+            // exhaust the item (drop it to the ground)
+            this.exhaustItem(id)
+            return
+          }
+        }
+      }
+    },
+    /**
+     * @public
      * @description Tries to optimise items placement by filling the region from the top left corner to the bottom right one
      */
-    arrangeRegion(id: IRegionObjId) {
+    arrangeRegion(id: IRegionObjId, ignoredItemId?: IItemObjId) {
       const region = this.regions[id]!
 
-      const itemsList = region.items.map((itemId) => this.items[itemId]!) // itemId[] --> item[]
+      const processedItems = ignoredItemId
+        ? region.items.filter((itemId) => itemId !== ignoredItemId)
+        : region.items
+      const itemsList = processedItems.map((itemId) => this.items[itemId]!) // itemId[] --> item[]
       const items: IItemObj[] = []
 
       const mapSize = region.w * region.h
-      const flatItemsMap = Array(mapSize).fill(false)
-      flatItemsMap.forEach((isOccupied, i, map) => {
+      const itemsFlatMap = Array(mapSize).fill(false)
+      itemsFlatMap.forEach((isOccupied, i, map) => {
         if (isOccupied) return
+        // get indexes and cells of the first suitable item
         const [itemToPlaceIndex, occupiedIndexes] =
           itemsList.reduce((res: [number, number[]] | undefined, item, itemIndex) => {
             if (res) return res
 
-            const itemCellsIndexes = this.getItemCellsIndexes(item, region, i)
+            const itemCellsIndexes = this.getItemCellsIndexes(item, region.w, i)
             if (
               itemCellsIndexes.length !== item.w * item.h ||
               itemCellsIndexes.some((ci) => map[ci])
@@ -405,21 +452,23 @@ export default {
           }
         }
       })
+
+      // update item positions
       if (!itemsList.length) {
-        region.items.forEach((id, i) => {
+        processedItems.forEach((id, i) => {
           this.updateItem(id, items[i]!)
         })
       }
     },
     /** @description For a given item and region finds indexes of each cell as if an item were placed in the specified corner */
-    getItemCellsIndexes(item: IItemObj, region: IRegionObj, cornerIndex: number) {
-      const cornerX = cornerIndex % region.w
-      const cornerY = Math.floor(cornerIndex / region.w)
+    getItemCellsIndexes(item: IItemObj, regionW: number, cornerIndex: number) {
+      const cornerX = cornerIndex % regionW
+      const cornerY = Math.floor(cornerIndex / regionW)
       const indexes: number[] = []
       outer: for (let i = cornerY; i < cornerY + item.h; i++) {
         for (let j = cornerX; j < cornerX + item.w; j++) {
-          const index = i * region.w + j
-          if (index / region.w >= i + 1) {
+          const index = i * regionW + j
+          if (index / regionW >= i + 1) {
             // do not fit in this position
             break outer
           }
@@ -428,10 +477,25 @@ export default {
       }
       return indexes
     },
+    unsafePlaceItem(id: IItemObjId, regionId: IRegionObjId, pos: IPoint) {
+      const region = this.regions[regionId]!
+      const item = this.items[id]!
+      if (regionId !== item.regionId) {
+        // remove from previous region
+        const prevRegion = this.regions[item.regionId]!
+        this.updateRegion(item.regionId, {
+          ...prevRegion,
+          items: (prevRegion.items as any).filter((iId: IItemObjId) => iId !== id),
+        }) //! temp: any
+        // place onto new region
+        this.updateRegion(regionId, { ...region, items: [...(region.items as any), id] }) //! temp: any
+      }
+      this.updateItem(id, { ...item, ...pos, regionId: regionId })
+    },
     /** @description Places an item or its fitting piece to the specified position */
-    placeItem(id: IRegionObjId, itemId: IAmountItemId, pos: IPoint) {
-      const region = this.regions[id]!
-      const item = this.items[itemId]!
+    safePlaceAmountItem(id: IAmountItemId, regionId: IRegionObjId, pos: IPoint) {
+      const region = this.regions[regionId]!
+      const item = this.items[id]!
 
       const itemType = item.type || ItemType.Misc
       const typeStackRestriction = region.stack?.find(({ type }) => type === itemType)
@@ -441,29 +505,29 @@ export default {
         const itemPieceId = this.createAmountItem({
           ...item,
           ...pos,
-          regionId: id,
+          regionId: regionId,
           amount: itemPieceAmount,
         })
-        this.updateRegion(id, { ...region, items: [...(region.items as any), itemPieceId] }) //! temp: any
+        this.updateRegion(regionId, { ...region, items: [...(region.items as any), itemPieceId] }) //! temp: any
         if (itemPieceAmount === item.amount) {
-          this.exhaustItem(itemId)
+          this.exhaustItem(id)
         } else {
-          this.updateItem(itemId, { ...item, amount: item.amount - itemPieceAmount })
+          this.updateItem(id, { ...item, amount: item.amount - itemPieceAmount })
         }
         return
       }
 
-      if (id !== item.regionId) {
+      if (regionId !== item.regionId) {
         // remove from previous region
         const prevRegion = this.regions[item.regionId]!
         this.updateRegion(item.regionId, {
           ...prevRegion,
-          items: (prevRegion.items as any).filter((iId: IItemObjId) => iId !== itemId),
+          items: (prevRegion.items as any).filter((iId: IItemObjId) => iId !== id),
         }) //! temp: any
         // place onto new region
-        this.updateRegion(id, { ...region, items: [...(region.items as any), itemId] }) //! temp: any
+        this.updateRegion(regionId, { ...region, items: [...(region.items as any), id] }) //! temp: any
       }
-      this.updateItem(itemId, { ...item, ...pos, regionId: id })
+      this.updateItem(id, { ...item, ...pos, regionId: regionId })
     },
     /** @description Distributes an item over a region, performs all the necessary updates */
     distributeItem(id: IRegionObjId, itemId: IItemObjId) {
@@ -515,19 +579,7 @@ export default {
 
       // try to move
       const pos = this.findPlace({ itemsMap: this.getItemsMap(id), w: item.w, h: item.h })
-      if (pos) {
-        if (id !== item.regionId) {
-          // remove from previous region
-          const prevRegion = this.regions[item.regionId]!
-          this.updateRegion(item.regionId, {
-            ...prevRegion,
-            items: (prevRegion.items as any).filter((iId: IItemObjId) => iId !== itemId),
-          }) //! temp: any
-          // place onto new region
-          this.updateRegion(id, { ...region, items: [...(region.items as any), itemId] }) //! temp: any
-        }
-        this.updateItem(itemId, { ...item, ...pos, regionId: id })
-      }
+      if (pos) this.unsafePlaceItem(itemId, id, pos)
     },
     /**
      * @description Finds a free area of specified size in the region
@@ -546,7 +598,7 @@ export default {
     }): IPoint | null {
       const maxY = itemsMap.length - h
       for (let y = from; y < maxY; y++) {
-        const maxX = itemsMap[y]!.length - h
+        const maxX = itemsMap[y]!.length - w
         for (let x = 0; x < maxX; x++) {
           cells: for (let i = 0; i < h; i++) {
             for (let j = 0; j < w; j++) {
@@ -576,7 +628,7 @@ export default {
         h: 20,
         items: [registryItemId, registryAmountItemId, registryBackpackItemId],
         type: RegionType.Misc,
-        stack: [{ type: ItemType.Misc, max: 5 }],
+        stack: [{ type: ItemType.Misc, max: 99 }],
       }
       this.items[registryItemId] = {
         id: 'IItem_registry',
@@ -597,7 +649,7 @@ export default {
         regionId: registryRegionId,
         img: 'src/assets/Dried Fish.png',
         type: ItemType.Misc,
-        amount: 2.4,
+        amount: 10.4,
         scrap: true,
       }
       this.regions[registryBackpackRegionId] = {
@@ -606,6 +658,7 @@ export default {
         h: 8,
         items: [],
         type: RegionType.Misc,
+        stack: [{ type: ItemType.Misc, max: 3 }],
       }
       this.items[registryBackpackItemId] = {
         id: 'IBackpackItem_registry',

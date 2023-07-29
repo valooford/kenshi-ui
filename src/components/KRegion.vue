@@ -188,7 +188,8 @@ export default {
           elementToEmulateDraggingOn?.dispatchEvent(mousedownEvent)
 
           // enables cells to be picked with document.elementFromPoint() calls
-          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = 'none'
+          const itemsWrapperEl = this.$refs.itemsWrapper as HTMLElement
+          itemsWrapperEl.style.pointerEvents = 'none'
           await emulateDragAndDropApi({
             element: elementToEmulateDraggingOn,
             elementPointX: elementPointX!,
@@ -198,7 +199,7 @@ export default {
             shiftKey: true,
             iWillRelease,
           })
-          ;(this.$refs.itemsWrapper as HTMLElement).style.pointerEvents = ''
+          itemsWrapperEl.style.pointerEvents = ''
         }, 0)
       }
 

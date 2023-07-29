@@ -8,8 +8,10 @@ export default {
   props: {
     id: { type: String as PropType<string> as PropType<IItemObjId>, required: true },
     visible: { type: Boolean },
+    //! todo: callbacks --> @events
     handleDragStart: { type: Function as PropType<(e: DragEvent) => void> },
     handleDragEnd: { type: Function as PropType<() => void> },
+    handleFastMove: { type: Function as PropType<() => void> },
   },
   data() {
     const emptyImage = new Image()
@@ -88,6 +90,7 @@ export default {
           iWillRelease: buttonHeld,
         })
       }
+      e.preventDefault() // prevent user-select
     },
     onDragStart(e: DragEvent) {
       if (this.handleDragStart) this.handleDragStart(e)
@@ -134,13 +137,11 @@ export default {
       this.pX = e.clientX - this.vecO!.x
       this.pY = e.clientY - this.vecO!.y
     },
-    onMouseRightClick() {
+    onMouseRightClick(e: MouseEvent) {
       // https://stackoverflow.com/questions/41993508/vuejs-bubbling-custom-events
-      const el = this.$refs.item as HTMLDivElement
-      el?.dispatchEvent(new CustomEvent('rmbmove', { bubbles: true }))
-    },
-    test() {
-      console.log('test')
+      const all = e.shiftKey || e.ctrlKey
+      this.d.onItemFastMove(this.id, { all })
+      if (this.handleFastMove) this.handleFastMove()
     },
   },
 }
@@ -159,8 +160,6 @@ export default {
       top: `calc(var(--cell-size)*${data.y})`,
       left: `calc(var(--cell-size)*${data.x})`,
     }"
-    :onrmbmove="test"
-    ref="item"
   >
     <img
       :src="data.img"

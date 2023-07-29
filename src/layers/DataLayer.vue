@@ -1,13 +1,15 @@
 <script lang="ts">
 import { nanoid } from 'nanoid'
-import { ItemType, RegionType } from '@/shared/constants'
+import { InventoryRegion, ItemType, RegionType } from '@/shared/constants'
 import {
   isItemId,
   isAmountItemId,
   isBackpackItemId,
   isAmountItem,
+  isBackpack,
   isRegionId,
   isBackpackRegionId,
+  isCharacterId,
 } from '@/shared/utils'
 
 type IItemsMap = [string, number][][]
@@ -24,6 +26,7 @@ export default {
         closeSeamInventory: this.closeSeamInventory,
         onItemMove: this.onItemMove,
         validateItemPosition: this.validateItemPosition,
+        onItemFastMove: this.onItemFastMove,
         arrangeRegion: this.arrangeRegion,
         openBackpack: this.openBackpack,
         closeBackpack: this.closeBackpack,
@@ -113,18 +116,18 @@ export default {
         this.regions[id] = region as IBackpackRegion
       } else throw Error('RegionId of unknown type encountered')
     },
-    createCharacterRegions(): ICharacterRegions {
+    createCharacterRegions(ownerId: ISeamItemId): ICharacterRegions {
       return {
-        armor: this.createRegion({ w: 4, h: 6, type: 'armor' }),
-        backpack: this.createBackpackRegion({ w: 5, h: 4, type: 'backpack' }),
-        belt: this.createRegion({ w: 2, h: 2, type: 'belt' }),
-        boots: this.createRegion({ w: 4, h: 2, type: 'boots' }),
-        head: this.createRegion({ w: 4, h: 3, type: 'head' }),
-        inventory: this.createRegion({ w: 8, h: 10, type: 'misc' }),
-        pants: this.createRegion({ w: 4, h: 5, type: 'pants' }),
-        shirt: this.createRegion({ w: 4, h: 2, type: 'shirt' }),
-        weapon1: this.createRegion({ w: 10, h: 2, type: 'weapon' }),
-        weapon2: this.createRegion({ w: 7, h: 1, type: 'weapon' }),
+        armor: this.createRegion({ w: 4, h: 6, type: 'armor', ownerId }),
+        backpack: this.createBackpackRegion({ w: 5, h: 4, type: 'backpack', ownerId }),
+        belt: this.createRegion({ w: 2, h: 2, type: 'belt', ownerId }),
+        boots: this.createRegion({ w: 4, h: 2, type: 'boots', ownerId }),
+        head: this.createRegion({ w: 4, h: 3, type: 'head', ownerId }),
+        inventory: this.createRegion({ w: 8, h: 10, type: 'misc', ownerId }),
+        pants: this.createRegion({ w: 4, h: 5, type: 'pants', ownerId }),
+        shirt: this.createRegion({ w: 4, h: 2, type: 'shirt', ownerId }),
+        weapon1: this.createRegion({ w: 10, h: 2, type: 'weapon', ownerId }),
+        weapon2: this.createRegion({ w: 7, h: 1, type: 'weapon', ownerId }),
       }
     },
 
@@ -137,7 +140,7 @@ export default {
       this.characters[id] = {
         id: rawId,
         name,
-        regions: this.createCharacterRegions(),
+        regions: this.createCharacterRegions(id),
       }
       this.charactersList.push(id)
       return id
@@ -307,8 +310,15 @@ export default {
         this.updateRegion(regionId, { ...region, items: [...(region.items as any), itemToMoveId] }) //! temp: any
       }
       this.updateItem(itemToMoveId, { ...itemToMove, ...pos, regionId })
-      if (itemPieceId && isAmountItem(item) && isAmountItem(itemToMove))
+      if (itemPieceId && isAmountItem(item) && isAmountItem(itemToMove)) {
         this.updateItem(id as IAmountItemId, { ...item, amount: item.amount - itemToMove.amount })
+      }
+
+      // add owner inventory link (enables items fast moving, RMB)
+      if (isBackpack(item)) {
+        const innerRegion = this.regions[item.innerRegionId]!
+        this.updateRegion(item.innerRegionId, { ...innerRegion, ownerId: region.ownerId })
+      }
 
       return { success: true, lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
     },
@@ -405,6 +415,93 @@ export default {
           }
         }
       }
+    },
+    /**
+     * @public
+     * @description Finds the target region(s) and moves an item to it(them)
+     */
+    onItemFastMove(id: IItemObjId, options: { all?: boolean }): boolean {
+      const item = this.items[id]!
+      const region = this.regions[item.regionId]!
+      const { ownerId } = region
+      if (!ownerId) return false
+
+      // cross-region
+      let targetSeamItem = ownerId
+      // or
+      const isSeamMove = !!this.seam.related
+      // cross-inventory
+      if (isSeamMove) {
+        targetSeamItem = ownerId === this.seam.main! ? this.seam.related! : this.seam.main!
+      }
+
+      if (isCharacterId(targetSeamItem)) {
+        const character = this.characters[targetSeamItem]!
+        const targetRegionTypes: IInventoryRegion[] = []
+        const targetRegionIds: IRegionObjId[] = []
+
+        const backpackItemId = this.regions[character.regions[InventoryRegion.Backpack]]!.items[0]
+        const backpack = backpackItemId && this.items[backpackItemId]!
+
+        const inventoryRegionId = character.regions[InventoryRegion.Inventory]
+        // moving from InventoryRegion.Inventory
+        if (item.regionId === inventoryRegionId || isSeamMove) {
+          switch (item.type) {
+            case ItemType.Weapon: {
+              const weapon2Region = this.regions[character.regions[InventoryRegion.Weapon2]]!
+              if (item.h <= weapon2Region.h && item.w <= weapon2Region.w) {
+                targetRegionTypes.push(InventoryRegion.Weapon2, InventoryRegion.Weapon1)
+              } else {
+                targetRegionTypes.push(InventoryRegion.Weapon1, InventoryRegion.Weapon2)
+              }
+              break
+            }
+            case ItemType.Backpack:
+            case ItemType.Belt:
+            case ItemType.Shirt:
+            case ItemType.Pants:
+            case ItemType.Boots:
+            case ItemType.Head:
+            case ItemType.Armor: {
+              if (this.regions[character.regions[item.type]]!.items[0]) break
+              targetRegionTypes.push(item.type)
+              break
+            }
+            case ItemType.Misc:
+            default:
+          }
+          targetRegionIds.push(...targetRegionTypes.map((rt) => character.regions[rt]))
+          if (backpack?.isOpened) targetRegionIds.push(backpack.innerRegionId)
+          if (isSeamMove) targetRegionIds.push(inventoryRegionId)
+        } else {
+          // moving from type-specific region (or backpack)
+          if (item.type === ItemType.Weapon) {
+            const weapon1RegionId = character.regions[InventoryRegion.Weapon1]
+            const weapon2RegionId = character.regions[InventoryRegion.Weapon2]
+            if (item.regionId !== weapon2RegionId) targetRegionIds.push(weapon2RegionId)
+            if (item.regionId !== weapon1RegionId) targetRegionIds.push(weapon1RegionId)
+          }
+          targetRegionIds.push(inventoryRegionId)
+          if (item.regionId !== backpack?.innerRegionId && backpack?.isOpened)
+            targetRegionIds.push(backpack.innerRegionId)
+        }
+
+        let excess: number | undefined
+        for (let i = 0; i < targetRegionIds.length; i++) {
+          excess = this.distributeItem(id, targetRegionIds[i]!, options)
+          if (!excess) break
+        }
+
+        // add owner inventory link (enables items fast moving, RMB)
+        if (isBackpack(item)) {
+          const innerRegion = this.regions[item.innerRegionId]!
+          this.updateRegion(item.innerRegionId, { ...innerRegion, ownerId: targetSeamItem })
+        }
+
+        return !excess
+      }
+      // other inventory owner types go here (storage boxes, animals, etc.)
+      return false
     },
     /**
      * @public
@@ -530,56 +627,82 @@ export default {
       this.updateItem(id, { ...item, ...pos, regionId: regionId })
     },
     /** @description Distributes an item over a region, performs all the necessary updates */
-    distributeItem(id: IRegionObjId, itemId: IItemObjId) {
-      const region = this.regions[id]!
-      const item = this.items[itemId]!
+    distributeItem(id: IItemObjId, regionId: IRegionObjId, options: { all?: boolean }): number {
+      const region = this.regions[regionId]!
+      const item = this.items[id]!
 
-      if (isAmountItem(item) && item.amount > 1) {
+      if (isAmountItem(item)) {
         const itemType = item.type || ItemType.Misc
         const typeStackRestriction = region.stack?.find(({ type }) => type === itemType)
-        if (!typeStackRestriction || item.amount > typeStackRestriction.max) {
-          // try to place by pieces
 
+        let amount = options.all ? item.amount : item.amount % 1 || 1
+        const left = item.amount - amount
+        // try to stack with the items of the same type
+        if (typeStackRestriction) {
+          const itemsOfSameType = (
+            region.items
+              .map((itemId) => this.items[itemId]!)
+              .filter(
+                ({ img }) => img === item.img && item.amount < typeStackRestriction.max
+              ) as IAmountItem[]
+          ).sort((itemA, itemB) => itemB.amount - itemA.amount)
+          for (let i = 0; amount && i < itemsOfSameType.length; i++) {
+            const targetItem = itemsOfSameType[i]!
+            const distributedAmount = Math.min(targetItem.amount + amount, typeStackRestriction.max)
+            if (isAmountItemId(targetItem.id)) {
+              amount -= distributedAmount - targetItem.amount
+              this.updateItem(targetItem.id, { ...targetItem, amount: distributedAmount })
+            }
+          }
+          if (amount + left === 0) {
+            this.exhaustItem(id)
+            return 0
+          }
+          // fill the region with freshly created item pieces
+        }
+        if (amount) {
           const maxAmount = typeStackRestriction?.max ?? 1
-          let { amount } = item
-          const itemPieces: IAmountItemId[] = []
 
           let pos: IPoint | null = null
           for (; amount > 0; ) {
             pos = this.findPlace({
-              itemsMap: this.getItemsMap(id),
+              itemsMap: this.getItemsMap(regionId),
               w: item.w,
               h: item.h,
               from: pos?.y, // continue from the last row
             })
             if (!pos) break
             const itemPieceAmount = Math.min(amount, maxAmount)
-            itemPieces.push(
-              this.createAmountItem({
-                ...item,
-                ...pos,
-                regionId: id,
-                amount: itemPieceAmount,
-              })
-            )
+            const itemPieceId = this.createAmountItem({
+              ...item,
+              ...pos,
+              regionId,
+              amount: itemPieceAmount,
+            })
+            const currentRegion = this.regions[regionId]!
+            this.updateRegion(regionId, {
+              ...currentRegion,
+              items: [...(currentRegion.items as any), itemPieceId],
+            })
             amount -= itemPieceAmount
           }
 
-          if (amount === 0) {
-            this.exhaustItem(itemId)
+          if (amount + left === 0) {
+            this.exhaustItem(id)
           } else {
-            this.updateItem(itemId, { ...item, amount })
+            this.updateItem(id, { ...item, amount: amount + left })
           }
-          if (itemPieces.length) {
-            this.updateRegion(id, { ...region, items: [...(region.items as any), ...itemPieces] }) //! temp: any
-          }
-          return
         }
+        return amount
       }
 
       // try to move
-      const pos = this.findPlace({ itemsMap: this.getItemsMap(id), w: item.w, h: item.h })
-      if (pos) this.unsafePlaceItem(itemId, id, pos)
+      const pos = this.findPlace({ itemsMap: this.getItemsMap(regionId), w: item.w, h: item.h })
+      if (pos) {
+        this.unsafePlaceItem(id, regionId, pos)
+        return 0
+      }
+      return isAmountItem(item) ? item.amount : 1
     },
     /**
      * @description Finds a free area of specified size in the region
@@ -597,9 +720,9 @@ export default {
       from?: number
     }): IPoint | null {
       const maxY = itemsMap.length - h
-      for (let y = from; y < maxY; y++) {
+      for (let y = from; y <= maxY; y++) {
         const maxX = itemsMap[y]!.length - w
-        for (let x = 0; x < maxX; x++) {
+        for (let x = 0; x <= maxX; x++) {
           cells: for (let i = 0; i < h; i++) {
             for (let j = 0; j < w; j++) {
               if (itemsMap[y + i]![x + j]) break cells
@@ -649,7 +772,7 @@ export default {
         regionId: registryRegionId,
         img: 'src/assets/Dried Fish.png',
         type: ItemType.Misc,
-        amount: 10.4,
+        amount: 98.4,
         scrap: true,
       }
       this.regions[registryBackpackRegionId] = {

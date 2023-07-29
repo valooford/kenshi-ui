@@ -62,10 +62,8 @@ export default {
       }
       this.amountDragging = amount
       e.dataTransfer!.setData('dnd/all', `${+isAll}`)
-      if (isAll) {
-        e.dataTransfer!.setData(`dnd/ox;value=${e.clientX}`, '')
-        e.dataTransfer!.setData(`dnd/oy;value=${e.clientY}`, '')
-      }
+      e.dataTransfer!.setData(`dnd/ox;value=${e.clientX}`, '')
+      e.dataTransfer!.setData(`dnd/oy;value=${e.clientY}`, '')
       this.isExcessVisible = true
     },
     onDragEnd() {

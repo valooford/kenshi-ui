@@ -107,6 +107,7 @@ type IRegionBase = WithTypeMappedItems<{
   items: unknown // IItemObjId[]
   readonly type: IRegionType
   readonly stack?: Array<{ type: IItemType; max: number }>
+  ownerId?: ISeamItemId
 }>
 type IRegionType =
   | 'misc'
@@ -273,6 +274,7 @@ declare interface IDispatch {
     options: { regionId?: IRegionObjId; pos?: IPoint; all?: boolean }
   ) => { success: boolean; lastCoords?: IPoint; lastIndex?: number; isContinuous?: boolean }
   validateItemPosition: (id: IItemObjId) => void
+  onItemFastMove: (id: IItemObjId, options: { all?: boolean }) => boolean
   arrangeRegion: (id: IRegionObjId) => void
   openBackpack: (id: IBackpackItemId) => void
   closeBackpack: (id: IBackpackItemId) => void

@@ -12,6 +12,7 @@ export default {
 
 <style scoped>
 .cell {
+  position: relative;
   width: var(--cell-size);
   height: var(--cell-size);
   background-color: #3d3938;
@@ -19,7 +20,17 @@ export default {
   pointer-events: none;
 }
 .hover {
-  background-color: #c2bbb7;
   box-shadow: inset 0 0 4px rgba(51, 51, 51, 0.3);
+}
+.hover:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #c2bbb7;
+  z-index: 1;
 }
 </style>

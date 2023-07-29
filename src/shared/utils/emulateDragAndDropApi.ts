@@ -24,7 +24,9 @@ export const emulateDragAndDropApi = ({
   dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
 
   let elementToOver: Element | null
-  const onMouseMove = ({ clientX: pClientX, clientY: pClientY }: MouseEvent) => {
+  const onMouseMove = (e: MouseEvent) => {
+    e.preventDefault() // prevent user-select
+    const { clientX: pClientX, clientY: pClientY } = e
     const clientX = pClientX + pointerShift.x
     const clientY = pClientY + pointerShift.y
     element?.dispatchEvent(new DragEvent('drag', { clientX, clientY, bubbles: true }))
@@ -72,7 +74,7 @@ export const emulateDragAndDropApi = ({
             cancelable: true,
           })
         )
-        // elementToDrop?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
+        elementToDrop?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
         element?.dispatchEvent(new DragEvent('dragend', { dataTransfer, bubbles: true }))
         resolve()
       }, 0)

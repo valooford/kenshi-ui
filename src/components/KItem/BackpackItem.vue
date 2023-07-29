@@ -32,7 +32,7 @@ export default {
     },
   },
   methods: {
-    onDragStart() {
+    closeBackpack() {
       if (this.data.isOpened) this.d.closeBackpack(this.id)
     },
   },
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <template>
-  <KItem :handle-drag-start="onDragStart" v-bind="itemProps" />
+  <KItem :handle-drag-start="closeBackpack" :handle-fast-move="closeBackpack" v-bind="itemProps" />
 </template>
 
 <style scoped></style>

@@ -27,13 +27,10 @@ export default {
     d() {
       return this.dispatch as IDispatch
     },
-    data() {
-      return this.s.items[this.id]!
-    },
   },
   methods: {
     closeBackpack() {
-      if (this.data.isOpened) this.d.closeBackpack(this.id)
+      if ((this.data as IBackpackItem)?.isOpened) this.d.closeBackpack(this.id)
     },
   },
 }

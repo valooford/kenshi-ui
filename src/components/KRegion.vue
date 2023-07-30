@@ -129,6 +129,7 @@ export default {
 
     /** Dispatches onItemMove action and rules the replace-related Drag-and-Drop emulation */
     async onDrop(e: DragEvent) {
+      // ;(e.target as HTMLElement).dispatchEvent(new FocusEvent('focus', { bubbles: true })) // make the current window active
       if (!this.hoverCell || !this.hoverItem) return
 
       const id = e.dataTransfer?.getData('dnd/id')

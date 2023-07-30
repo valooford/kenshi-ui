@@ -107,7 +107,7 @@ type IRegionBase = WithTypeMappedItems<{
   items: unknown // IItemObjId[]
   readonly type: IRegionType
   readonly stack?: Array<{ type: IItemType; max: number }>
-  ownerId?: ISeamItemId
+  ownerId: ISeamItemId | IRegistryId
 }>
 type IRegionType =
   | 'misc'
@@ -229,11 +229,20 @@ declare interface ICharacterRegions {
 }
 declare type IInventoryRegion = keyof ICharacterRegions // union -> enum (1)
 
+// - registry
+declare type IRegistryId = Brand<'IRegistry_id', IRegistry>
+declare interface IRegistry {
+  readonly id: IRegistryId
+  // itemTypes: IItemType[]
+  readonly regionId: IRegionId
+}
+
 // seam
 declare type ISeamItemId = ICharacterId // | OtherInventoryOwnerId
 declare interface ISeam {
   main: ISeamItemId | null
   related: ISeamItemId | null
+  registry: IRegistryId | null
 }
 
 // store
@@ -256,6 +265,7 @@ declare interface IStore {
   }
   charactersList: ICharacterId[]
   selectedCharacter: ICharacterId | null
+  registry: IRegistry
   seam: ISeam
 }
 
@@ -269,6 +279,7 @@ declare interface IDispatch {
   openMainSeamInventory: () => void
   openRelatedSeamInventory: (id: ICharacterId) => void
   closeSeamInventory: () => void
+  toggleRegistry: () => void
   onItemMove: (
     id: IItemObjId,
     options: { regionId?: IRegionObjId; pos?: IPoint; all?: boolean }

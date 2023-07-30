@@ -10,6 +10,7 @@ import {
   isRegionId,
   isBackpackRegionId,
   isCharacterId,
+  isRegistryId,
 } from '@/shared/utils'
 
 type IItemsMap = [string, number][][]
@@ -24,6 +25,7 @@ export default {
         openMainSeamInventory: this.openMainSeamInventory,
         openRelatedSeamInventory: this.openRelatedSeamInventory,
         closeSeamInventory: this.closeSeamInventory,
+        toggleRegistry: this.toggleRegistry,
         onItemMove: this.onItemMove,
         validateItemPosition: this.validateItemPosition,
         onItemFastMove: this.onItemFastMove,
@@ -41,7 +43,8 @@ export default {
       charactersList: [],
       selectedCharacter: null,
       seam: { main: null, related: null },
-    } as IStore
+      registry: {},
+    } as unknown as IStore
   },
   methods: {
     // item
@@ -50,6 +53,16 @@ export default {
       const id = rawId as IItemId
       this.items[id] = { ...attrs, id: rawId }
       return id
+    },
+    cloneItem(item: IItemObj) {
+      if (isAmountItem(item)) {
+        return this.createAmountItem(item)
+      }
+      if (isBackpack(item)) {
+        const innerRegion = this.regions[item.regionId as IRegionId]!
+        return this.createBackpackItem(item as IBackpackItem, innerRegion)
+      }
+      return this.createItem(item)
     },
     createAmountItem(attrs: Omit<IAmountItem, 'id'>): IAmountItemId {
       const rawId = `IAmountItem_${nanoid()}` as const
@@ -76,13 +89,42 @@ export default {
         this.items[id] = item as IBackpackItem
       } else throw Error('ItemId of unknown type encountered')
     },
-    exhaustItem(id: IItemObjId) {
-      const item = this.items[id]!
+    recoverRegistryItem(item: IItemObj) {
       const region = this.regions[item.regionId]!
-      this.updateRegion(item.regionId, {
-        ...region,
-        items: (region.items as any).filter((itemId: IItemObjId) => itemId !== id), //! temp: any
-      })
+      const shouldRecover = isRegistryId(region.ownerId)
+      if (shouldRecover) {
+        if (isAmountItemId(item.id)) {
+          const currentItem = this.items[item.id]
+          if (currentItem && currentItem.regionId === item.regionId) {
+            this.exhaustItem(item.id, true) // to make sure there's no excess left
+          }
+        }
+        this.updateRegion(
+          item.regionId,
+          {
+            ...region,
+            items: [
+              ...region.items.filter((itemId) => itemId !== item.id),
+              this.cloneItem(item),
+            ] as any, //! temp: any
+          },
+          true
+        )
+      }
+      return shouldRecover
+    },
+    exhaustItem(id: IItemObjId, secure?: boolean) {
+      const item = this.items[id]
+      if (!item) return
+      const region = this.regions[item.regionId]!
+      this.updateRegion(
+        item.regionId,
+        {
+          ...region,
+          items: (region.items as any).filter((itemId: IItemObjId) => itemId !== id), //! temp: any
+        },
+        secure
+      )
       delete this.items[id]
     },
     /** @public */
@@ -109,7 +151,9 @@ export default {
       this.regions[id] = { ...attrs, id: rawId, items: [] }
       return id
     },
-    updateRegion(id: IRegionObjId, region: IRegionObj) {
+    updateRegion(id: IRegionObjId, region: IRegionObj, secure?: boolean) {
+      if (id === this.registry.regionId && !secure) return // prevent the unwanted updates of registry region
+
       if (isRegionId(id)) {
         this.regions[id] = region as IRegion
       } else if (isBackpackRegionId(id)) {
@@ -179,6 +223,10 @@ export default {
     closeSeamInventory() {
       this.seam.main = null
       this.seam.related = null
+    },
+    /** @public */
+    toggleRegistry() {
+      this.seam.registry = this.seam.registry ? null : this.registry.id
     },
 
     /**
@@ -250,7 +298,7 @@ export default {
         const overlappedItem = this.items[overlappedItemId as IItemObjId]!
 
         // Case 2.2: overlap with amount item of the same type (and not full)
-        // result: extract piece (or take all the amount), merge it with an item and return the excess if exists
+        // result: extract piece (or take all the amount), merge it with an item and continue dragging the excess
         if (
           typeStackRestriction &&
           isAmountItem(overlappedItem) &&
@@ -276,6 +324,8 @@ export default {
             amount,
           })
 
+          if (this.recoverRegistryItem(item)) return { success: true }
+
           return { success: true, isContinuous: !!excess }
         }
 
@@ -283,6 +333,9 @@ export default {
         // result: replace overlapped item with a fitting piece of the current one and continue dragging it in another place
         if (options.all && isAmountItemId(id)) {
           this.safePlaceAmountItem(id, regionId, pos)
+
+          this.recoverRegistryItem(item)
+
           return { success: true, lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
         }
 
@@ -294,8 +347,13 @@ export default {
       if (!overlap.ids.size && options.all && isAmountItemId(id) && isAmountItem(item)) {
         this.safePlaceAmountItem(id, regionId, pos)
         if (id in this.items && this.items[id]!.amount !== item.amount) {
+          if (this.recoverRegistryItem(item)) return { success: true }
+
           return { success: true, isContinuous: true }
         }
+
+        if (this.recoverRegistryItem(item)) return { success: true }
+
         return { success: true }
       }
 
@@ -310,7 +368,7 @@ export default {
         this.updateRegion(regionId, { ...region, items: [...(region.items as any), itemToMoveId] }) //! temp: any
       }
       this.updateItem(itemToMoveId, { ...itemToMove, ...pos, regionId })
-      if (itemPieceId && isAmountItem(item) && isAmountItem(itemToMove)) {
+      if (itemPieceId && isAmountItem(item) && isAmountItem(itemToMove) && id in this.items) {
         this.updateItem(id as IAmountItemId, { ...item, amount: item.amount - itemToMove.amount })
       }
 
@@ -319,6 +377,8 @@ export default {
         const innerRegion = this.regions[item.innerRegionId]!
         this.updateRegion(item.innerRegionId, { ...innerRegion, ownerId: region.ownerId })
       }
+
+      this.recoverRegistryItem(item)
 
       return { success: true, lastCoords: overlap.lastCoords, lastIndex: overlap.lastIndex }
     },
@@ -429,7 +489,7 @@ export default {
       // cross-region
       let targetSeamItem = ownerId
       // or
-      const isSeamMove = !!this.seam.related
+      const isSeamMove = !!(this.seam.related || this.seam.registry)
       // cross-inventory
       if (isSeamMove) {
         targetSeamItem = ownerId === this.seam.main! ? this.seam.related! : this.seam.main!
@@ -444,7 +504,7 @@ export default {
         const backpack = backpackItemId && this.items[backpackItemId]!
 
         const inventoryRegionId = character.regions[InventoryRegion.Inventory]
-        // moving from InventoryRegion.Inventory
+        // moving from InventoryRegion.Inventory or from the seam
         if (item.regionId === inventoryRegionId || isSeamMove) {
           switch (item.type) {
             case ItemType.Weapon: {
@@ -497,6 +557,8 @@ export default {
           const innerRegion = this.regions[item.innerRegionId]!
           this.updateRegion(item.innerRegionId, { ...innerRegion, ownerId: targetSeamItem })
         }
+
+        if (this.recoverRegistryItem(item)) return true
 
         return !excess
       }
@@ -738,68 +800,67 @@ export default {
       this.createCharacter('Character 2')
       this.createCharacter('Character 3')
     },
-    initItemsRegistry() {
-      const registryRegionId = 'IRegion_registry' as IRegionId
-      const registryItemId = 'IItem_registry' as IItemId
-      const registryAmountItemId = 'IAmountItem_registry' as IAmountItemId
-      const registryBackpackRegionId = 'IRegion_IBackpackItem_registry' as IRegionId
-      const registryBackpackItemId = 'IBackpackItem_registry' as IBackpackItemId
-
-      this.regions[registryRegionId] = {
-        id: 'IRegion_registry',
-        w: 8,
-        h: 20,
-        items: [registryItemId, registryAmountItemId, registryBackpackItemId],
+    initRegistry() {
+      const id = 'IRegistry_id' as IRegistryId
+      const regionId = this.createRegion({
+        w: 28,
+        h: 10000,
         type: RegionType.Misc,
         stack: [{ type: ItemType.Misc, max: 99 }],
-      }
-      this.items[registryItemId] = {
-        id: 'IItem_registry',
-        w: 7,
-        h: 1,
-        x: 0,
-        y: 0,
-        regionId: registryRegionId,
-        img: 'src/assets/52295-rebirth.mod.913-gamedata.base.png',
-        type: ItemType.Weapon,
-      }
-      this.items[registryAmountItemId] = {
-        id: 'IAmountItem_registry',
-        w: 1,
-        h: 3,
-        x: 1,
-        y: 2,
-        regionId: registryRegionId,
-        img: 'src/assets/Dried Fish.png',
-        type: ItemType.Misc,
-        amount: 98.4,
-        scrap: true,
-      }
-      this.regions[registryBackpackRegionId] = {
-        id: 'IRegion_IBackpackItem_registry',
-        w: 8,
-        h: 8,
-        items: [],
-        type: RegionType.Misc,
-        stack: [{ type: ItemType.Misc, max: 3 }],
-      }
-      this.items[registryBackpackItemId] = {
-        id: 'IBackpackItem_registry',
-        w: 3,
-        h: 3,
-        x: 4,
-        y: 2,
-        regionId: registryRegionId,
-        img: 'src/assets/1288-gamedata.base.686-gamedata.base.png',
-        type: ItemType.Backpack,
-        innerRegionId: registryBackpackRegionId,
-        isOpened: false,
-      }
+        ownerId: id,
+      })
+      this.registry = { id, regionId }
+
+      const items = [
+        this.createItem({
+          w: 7,
+          h: 1,
+          x: 0,
+          y: 0,
+          regionId: regionId,
+          img: 'src/assets/52295-rebirth.mod.913-gamedata.base.png',
+          type: ItemType.Weapon,
+        }),
+        this.createAmountItem({
+          w: 1,
+          h: 3,
+          x: 0,
+          y: 0,
+          regionId: regionId,
+          img: 'src/assets/Dried Fish.png',
+          type: ItemType.Misc,
+          amount: 0.8, // amount in registry shouldn't be greater than 1
+          scrap: true,
+        }),
+        this.createBackpackItem(
+          {
+            w: 3,
+            h: 3,
+            x: 0,
+            y: 0,
+            regionId: regionId,
+            img: 'src/assets/1288-gamedata.base.686-gamedata.base.png',
+            type: ItemType.Backpack,
+            isOpened: false,
+          },
+          {
+            w: 8,
+            h: 8,
+            type: RegionType.Misc,
+            stack: [{ type: ItemType.Misc, max: 3 }],
+            ownerId: id,
+          }
+        ),
+      ]
+
+      const region = this.regions[regionId]!
+      this.updateRegion(regionId, { ...region, items }, true)
+      this.arrangeRegion(regionId)
     },
   },
   created() {
     this.initCharacters()
-    this.initItemsRegistry()
+    this.initRegistry()
   },
 }
 </script>

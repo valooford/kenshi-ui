@@ -18,6 +18,7 @@ export default {
         return { x: 0, y: 0 }
       },
     },
+    centered: { type: Boolean },
   },
   emits: {
     drag: (diff: IPoint) => !!diff,
@@ -100,7 +101,14 @@ export default {
   inheritAttrs: false,
   mounted() {
     const rect = (this.$refs.window__content as HTMLDivElement).getBoundingClientRect()
-    this.pos = { x: rect.left, y: rect.top }
+    if (this.centered) {
+      this.pos = {
+        x: (document.documentElement.clientWidth - rect.width) / 2,
+        y: (document.documentElement.clientHeight - rect.height) / 2,
+      }
+    } else {
+      this.pos = { x: rect.left, y: rect.top }
+    }
     this.initialized = true
   },
 }

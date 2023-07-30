@@ -2,9 +2,10 @@
 import { isCharacterId } from '@/shared/utils'
 
 import CharacterInventory from './CharacterInventory.vue'
+import KRegistry from './KRegistry.vue'
 
 export default {
-  components: { CharacterInventory },
+  components: { CharacterInventory, KRegistry },
   inject: ['store', 'dispatch'],
   data() {
     return { isCharacterId }
@@ -28,6 +29,7 @@ export default {
       :id="s.seam.related"
       :key="s.seam.related"
     />
+    <KRegistry v-if="s.seam.registry" />
   </div>
 </template>
 

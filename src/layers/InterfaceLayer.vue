@@ -3,14 +3,14 @@ import { ItemType } from '@/shared/constants'
 import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
-import KRegion from '@/components/KRegion.vue'
+import KButton from '@/components/KButton.vue'
 
 export default {
   components: {
     CharactersBar,
     CssVariablesProvider,
     KSeam,
-    KRegion,
+    KButton,
   },
   inject: ['store', 'dispatch'],
   data() {
@@ -52,6 +52,9 @@ export default {
           } else if (this.s.selectedCharacter) {
             this.d.resetSelectedCharacter()
           }
+          if (this.s.seam.registry) {
+            this.d.toggleRegistry()
+          }
           break
         default:
       }
@@ -73,6 +76,9 @@ export default {
 <template>
   <CssVariablesProvider class="menu">
     <KSeam />
+    <div class="items-container">
+      <KButton size="default" @click="d.toggleRegistry">REGISTRY</KButton>
+    </div>
     <div class="controls">
       <div class="controls__left"></div>
       <div class="controls__flex">
@@ -85,30 +91,19 @@ export default {
       </div>
       <div class="controls__right"></div>
     </div>
-    <div class="items-container">
-      <KRegion :id="('IRegion_registry' as IRegionId)" />
-    </div>
   </CssVariablesProvider>
 </template>
 
 <style scoped>
 .menu {
   position: relative;
-  display: flex;
-  flex: 1;
+  height: 100%;
 }
 .items-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: calc(var(--cell-size) * 9);
-  height: 100vh;
-  margin-left: auto;
-  padding: 15vh 0;
-  gap: 10px;
-  overflow-y: scroll;
-  background-color: #f8f8f8;
-  user-select: none;
+  position: absolute;
+  right: 0;
+  bottom: 255px;
+  padding: 4px;
 }
 .controls {
   position: absolute;
@@ -118,6 +113,10 @@ export default {
   display: flex;
   align-items: flex-end;
   gap: 4px;
+  pointer-events: none;
+}
+.controls > * {
+  pointer-events: all;
 }
 .controls__left {
   position: relative;

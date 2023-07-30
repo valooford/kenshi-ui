@@ -20,3 +20,4 @@ export const isRegionId = isCertainId<IRegionId>('IRegion_')
 export const isBackpackRegionId = isCertainId<IBackpackRegionId>('IBackpackRegion_')
 
 export const isCharacterId = isCertainId<ICharacterId>('ICharacter_')
+export const isRegistryId = (id: any): id is IRegistryId => id === 'IRegistry_id'

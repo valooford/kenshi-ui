@@ -235,6 +235,7 @@ declare interface IRegistry {
   readonly id: IRegistryId
   // itemTypes: IItemType[]
   readonly regionId: IRegionId
+  section: number
 }
 
 // seam
@@ -280,6 +281,7 @@ declare interface IDispatch {
   openRelatedSeamInventory: (id: ICharacterId) => void
   closeSeamInventory: () => void
   toggleRegistry: () => void
+  selectRegistrySection: (id: number) => void
   onItemMove: (
     id: IItemObjId,
     options: { regionId?: IRegionObjId; pos?: IPoint; all?: boolean }

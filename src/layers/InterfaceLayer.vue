@@ -38,7 +38,10 @@ export default {
       if (e.repeat) return
       switch (e.code) {
         case 'Tab':
-          if (!this.s.selectedCharacter) break
+          if (!this.s.selectedCharacter) {
+            this.d.toggleRegistry()
+            break
+          }
           e.preventDefault()
           if (this.s.seam.main) {
             this.d.closeSeamInventory()

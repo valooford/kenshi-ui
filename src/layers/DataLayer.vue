@@ -12,6 +12,12 @@ import {
   isCharacterId,
   isRegistryId,
 } from '@/shared/utils'
+import {
+  GAMEDATA_ITEMS,
+  GAMEDATA_ITEMS_LISTS,
+  type OpenConstructionSet,
+  ItemType as GamedataItemType,
+} from '@/shared/gamedata'
 
 type IItemsMap = [string, number][][]
 
@@ -26,6 +32,7 @@ export default {
         openRelatedSeamInventory: this.openRelatedSeamInventory,
         closeSeamInventory: this.closeSeamInventory,
         toggleRegistry: this.toggleRegistry,
+        selectRegistrySection: this.selectRegistrySection,
         onItemMove: this.onItemMove,
         validateItemPosition: this.validateItemPosition,
         onItemFastMove: this.onItemFastMove,
@@ -71,13 +78,13 @@ export default {
       return id
     },
     createBackpackItem(
-      attrs: Omit<IBackpackItem, 'id' | 'innerRegionId'>,
+      attrs: Omit<IBackpackItem, 'id' | 'type' | 'innerRegionId'>,
       regionAttrs: Omit<IRegion, 'id' | 'items'>
     ): IBackpackItemId {
       const rawId = `IBackpackItem_${nanoid()}` as const
       const id = rawId as IBackpackItemId
       const innerRegionId = this.createRegion(regionAttrs)
-      this.items[id] = { ...attrs, id: rawId, innerRegionId }
+      this.items[id] = { ...attrs, id: rawId, type: ItemType.Backpack, innerRegionId }
       return id
     },
     updateItem(id: IItemObjId, item: IItemObj) {
@@ -160,6 +167,10 @@ export default {
         this.regions[id] = region as IBackpackRegion
       } else throw Error('RegionId of unknown type encountered')
     },
+    clearRegion(id: IRegionObjId, secure?: boolean) {
+      const region = this.regions[id]!
+      region.items.forEach((itemId) => this.exhaustItem(itemId, secure))
+    },
     createCharacterRegions(ownerId: ISeamItemId): ICharacterRegions {
       return {
         armor: this.createRegion({ w: 4, h: 6, type: 'armor', ownerId }),
@@ -227,6 +238,47 @@ export default {
     /** @public */
     toggleRegistry() {
       this.seam.registry = this.seam.registry ? null : this.registry.id
+      if (this.seam.registry) this.selectRegistrySection(this.registry.section)
+    },
+    selectRegistrySection(section: OpenConstructionSet.Data.IItem.Type) {
+      const { regionId } = this.registry
+      this.clearRegion(regionId, true)
+      const itemsList = GAMEDATA_ITEMS_LISTS[section]
+      if (!itemsList) return
+      const items = itemsList.map((itemId) => {
+        const data = GAMEDATA_ITEMS[itemId]!
+        const attrs = {
+          w: data.Values['inventory footprint width'],
+          h: data.Values['inventory footprint height'],
+          x: 0,
+          y: 0,
+          img: `src/assets/img/items/${data.Values.icon}`,
+          regionId,
+        }
+        if (data.Values.stackable && data.Values.stackable > 1) {
+          return this.createAmountItem({ ...attrs, amount: 99 })
+        }
+        if (data.Type === (GamedataItemType.Container as number)) {
+          return this.createBackpackItem(
+            { ...attrs, isOpened: false },
+            {
+              w: data.Values['storage size width'],
+              h: data.Values['storage size height'],
+              type: RegionType.Misc,
+              stack: data.Values['stackable bonus mult']
+                ? [{ type: ItemType.Misc, max: data.Values['stackable bonus mult'] }]
+                : undefined,
+              ownerId: this.registry.id,
+            }
+          )
+        }
+        return this.createItem(attrs)
+      })
+
+      const region = this.regions[regionId]!
+      this.updateRegion(regionId, { ...region, items }, true)
+      this.arrangeRegion(regionId)
+      this.registry.section = section
     },
 
     /**
@@ -809,53 +861,7 @@ export default {
         stack: [{ type: ItemType.Misc, max: 99 }],
         ownerId: id,
       })
-      this.registry = { id, regionId }
-
-      const items = [
-        this.createItem({
-          w: 7,
-          h: 1,
-          x: 0,
-          y: 0,
-          regionId: regionId,
-          img: 'src/assets/52295-rebirth.mod.913-gamedata.base.png',
-          type: ItemType.Weapon,
-        }),
-        this.createAmountItem({
-          w: 1,
-          h: 3,
-          x: 0,
-          y: 0,
-          regionId: regionId,
-          img: 'src/assets/Dried Fish.png',
-          type: ItemType.Misc,
-          amount: 0.8, // amount in registry shouldn't be greater than 1
-          scrap: true,
-        }),
-        this.createBackpackItem(
-          {
-            w: 3,
-            h: 3,
-            x: 0,
-            y: 0,
-            regionId: regionId,
-            img: 'src/assets/1288-gamedata.base.686-gamedata.base.png',
-            type: ItemType.Backpack,
-            isOpened: false,
-          },
-          {
-            w: 8,
-            h: 8,
-            type: RegionType.Misc,
-            stack: [{ type: ItemType.Misc, max: 3 }],
-            ownerId: id,
-          }
-        ),
-      ]
-
-      const region = this.regions[regionId]!
-      this.updateRegion(regionId, { ...region, items }, true)
-      this.arrangeRegion(regionId)
+      this.registry = { id, regionId, section: GamedataItemType.Weapon }
     },
   },
   created() {

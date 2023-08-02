@@ -1,5 +1,6 @@
 <script lang="ts">
 import { isAmountItemId, isBackpackItemId } from '@/shared/utils'
+import { GAMEDATA_ITEMS_SECTIONS, GAMEDATA_ITEMS_SECTIONS_LIST } from '@/shared/gamedata'
 
 import { AmountItem, BackpackItem, KItem } from './KItem'
 import KWindow from './KWindow.vue'
@@ -9,22 +10,9 @@ export default {
   inject: ['store', 'dispatch'],
   data() {
     return {
+      GAMEDATA_ITEMS_SECTIONS,
+      GAMEDATA_ITEMS_SECTIONS_LIST,
       initialised: false,
-      SECTIONS: [
-        'Weapons',
-        'Ranged Weapons',
-        'Crossbows',
-        'Armour',
-        'Bags',
-        'Materials',
-        'Placeable Groups',
-        'Nest Items',
-        'Physics Attachment',
-        'Maps',
-        'Books',
-        'Limb replacement',
-        'Other',
-      ], //! temp
     }
   },
   computed: {
@@ -34,8 +22,11 @@ export default {
     d() {
       return this.dispatch as IDispatch
     },
+    data() {
+      return this.s.registry
+    },
     region() {
-      return this.s.regions[this.s.registry.regionId]!
+      return this.s.regions[this.data.regionId]!
     },
   },
   methods: {
@@ -54,13 +45,13 @@ export default {
     <div class="wrapper">
       <div class="sections">
         <ul class="sections__content">
-          <li v-for="(name, i) in SECTIONS" :key="name">
+          <li v-for="section in GAMEDATA_ITEMS_SECTIONS_LIST" :key="section">
             <button
               type="button"
-              :class="['sections__item', !i && 'sections__item_selected']"
-              @click="() => {}"
+              :class="['sections__item', section === data.section && 'sections__item_selected']"
+              @click="d.selectRegistrySection(section)"
             >
-              {{ name }}
+              {{ GAMEDATA_ITEMS_SECTIONS[section] }}
             </button>
           </li>
         </ul>

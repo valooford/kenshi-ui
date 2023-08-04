@@ -21,6 +21,8 @@ var inventoryItemTypes = new List<ItemType>()
 var inventoryValuesKeys = new List<string>()
 {
   "icon",
+  "slot",
+  "item function",
   "inventory footprint height",
   "inventory footprint width",
   "stackable",

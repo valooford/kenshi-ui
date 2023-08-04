@@ -50,13 +50,12 @@ export default {
           }
           break
         case 'Escape':
-          if (this.s.seam.main) {
+          if (this.s.seam.registry) {
+            this.d.toggleRegistry()
+          } else if (this.s.seam.main) {
             this.d.closeSeamInventory()
           } else if (this.s.selectedCharacter) {
             this.d.resetSelectedCharacter()
-          }
-          if (this.s.seam.registry) {
-            this.d.toggleRegistry()
           }
           break
         default:

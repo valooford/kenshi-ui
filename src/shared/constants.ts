@@ -1,3 +1,5 @@
+import { ItemFuncion, ItemSlot } from './gamedata'
+
 export const CELL_SIZE = 25
 export const CELL_HALF_SIZE = CELL_SIZE / 2
 
@@ -40,6 +42,45 @@ export const InventoryRegion: EnumLikeFromUnion<IInventoryRegion> = {
   Armor: 'armor',
 }
 
+// some Misc-targeted slots might relate to character customization and were marked with (ch)
+export const ItemTypeBySlot: Record<ItemSlot, IItemType> = {
+  [ItemSlot.AttachWeapon]: ItemType.Weapon,
+  [ItemSlot.AttachBack]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachHair]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachHat]: ItemType.Head,
+  [ItemSlot.AttachEyes]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachBody]: ItemType.Armor,
+  [ItemSlot.AttachLegs]: ItemType.Pants,
+  [ItemSlot.AttachNone]: ItemType.Misc,
+  [ItemSlot.AttachShirt]: ItemType.Shirt,
+  [ItemSlot.AttachBoots]: ItemType.Boots,
+  [ItemSlot.AttachGloves]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachNeck]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachBackpack]: ItemType.Backpack,
+  [ItemSlot.AttachBeard]: ItemType.Misc, // (ch)
+  [ItemSlot.AttachBelt]: ItemType.Belt,
+  [ItemSlot.LeftArm]: ItemType.Misc,
+  [ItemSlot.RightArm]: ItemType.Misc,
+  [ItemSlot.LeftLeg]: ItemType.Misc,
+  [ItemSlot.RightLeg]: ItemType.Misc,
+}
+
+export const NON_STACKABLE_FUNCTIONS = [
+  ItemFuncion.ItemBlueprint,
+  ItemFuncion.ItemBook,
+  ItemFuncion.ItemSeveredLimb,
+]
+
+export const SCRAP_ITEM_FUNCTIONS = [
+  ItemFuncion.ItemFirstAid,
+  ItemFuncion.ItemMedRigging,
+  ItemFuncion.ItemFood,
+  ItemFuncion.ItemNarcotic,
+  ItemFuncion.ItemRobotRepair,
+  ItemFuncion.ItemAmmo,
+]
+
+//! note: this block is being used to determine TypeScript language support progression in IDE of use
 const region: IRegionBase = {} as any
 region.id
 region.type
@@ -53,6 +94,7 @@ if (region.id === ('backpack' as IBackpackRegionIdRaw)) {
   region.type
   region.items
 }
+// ---
 
 /**
  * @description

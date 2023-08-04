@@ -18,6 +18,8 @@ declare namespace OpenConstructionSet {
     export namespace IItem {
       export type Values = {
         icon?: any
+        slot?: any
+        'item function'?: any
         'inventory footprint height'?: any
         'inventory footprint width'?: any
         stackable?: any

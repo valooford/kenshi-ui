@@ -1,6 +1,13 @@
 <script lang="ts">
 import { nanoid } from 'nanoid'
-import { InventoryRegion, ItemType, RegionType } from '@/shared/constants'
+import {
+  InventoryRegion,
+  ItemType,
+  RegionType,
+  ItemTypeBySlot,
+  NON_STACKABLE_FUNCTIONS,
+  SCRAP_ITEM_FUNCTIONS,
+} from '@/shared/constants'
 import {
   isItemId,
   isAmountItemId,
@@ -15,8 +22,9 @@ import {
 import {
   GAMEDATA_ITEMS,
   GAMEDATA_ITEMS_LISTS,
-  type OpenConstructionSet,
   ItemType as GamedataItemType,
+  type OpenConstructionSet,
+  type ItemSlot,
 } from '@/shared/gamedata'
 
 type IItemsMap = [string, number][][]
@@ -89,11 +97,11 @@ export default {
     },
     updateItem(id: IItemObjId, item: IItemObj) {
       if (isItemId(id)) {
-        this.items[id] = item as IItem
+        this.items[id] = { ...item, id: id as IItemIdRaw } as IItem
       } else if (isAmountItemId(id)) {
-        this.items[id] = item as IAmountItem
+        this.items[id] = { ...item, id: id as IAmountItemIdRaw } as IAmountItem
       } else if (isBackpackItemId(id)) {
-        this.items[id] = item as IBackpackItem
+        this.items[id] = { ...item, id: id as IBackpackItemIdRaw } as IBackpackItem
       } else throw Error('ItemId of unknown type encountered')
     },
     recoverRegistryItem(item: IItemObj) {
@@ -133,6 +141,12 @@ export default {
         secure
       )
       delete this.items[id]
+
+      if (isBackpack(item)) {
+        const innerRegion = this.regions[item.innerRegionId]
+        innerRegion?.items.forEach((itemId) => this.exhaustItem(itemId))
+        delete this.regions[item.innerRegionId]
+      }
     },
     /** @public */
     openBackpack(id: IBackpackItemId) {
@@ -247,27 +261,46 @@ export default {
       if (!itemsList) return
       const items = itemsList.map((itemId) => {
         const data = GAMEDATA_ITEMS[itemId]!
-        const attrs = {
+        const attrs: Omit<IItemObj, 'id'> = {
           w: data.Values['inventory footprint width'],
           h: data.Values['inventory footprint height'],
           x: 0,
           y: 0,
           img: `src/assets/img/items/${data.Values.icon}`,
           regionId,
+          type: ItemTypeBySlot[data.Values.slot as ItemSlot],
         }
-        if (data.Values.stackable && data.Values.stackable > 1) {
-          return this.createAmountItem({ ...attrs, amount: 99 })
+        if (
+          data.Values.stackable &&
+          !NON_STACKABLE_FUNCTIONS.includes(data.Values['item function'])
+        ) {
+          return this.createAmountItem({
+            ...attrs,
+            amount: 99,
+            scrap: SCRAP_ITEM_FUNCTIONS.includes(data.Values['item function']),
+          })
         }
         if (data.Type === (GamedataItemType.Container as number)) {
+          const w = data.Values['storage size width']
+          const h = data.Values['storage size height']
+          const stackableBonusMinimum = data.Values['stackable bonus minimum'] ?? 1
+          const stackableBonusMult = data.Values['stackable bonus mult'] ?? 1
           return this.createBackpackItem(
             { ...attrs, isOpened: false },
             {
-              w: data.Values['storage size width'],
-              h: data.Values['storage size height'],
+              w,
+              h,
               type: RegionType.Misc,
-              stack: data.Values['stackable bonus mult']
-                ? [{ type: ItemType.Misc, max: data.Values['stackable bonus mult'] }]
-                : undefined,
+              //! todo: improve stack regions to account both bonuses (minimum and mult)
+              stack:
+                stackableBonusMinimum > 1 || stackableBonusMult > 1
+                  ? [
+                      {
+                        type: ItemType.Misc,
+                        max: stackableBonusMinimum * stackableBonusMult,
+                      },
+                    ]
+                  : undefined,
               ownerId: this.registry.id,
             }
           )
@@ -628,7 +661,7 @@ export default {
         ? region.items.filter((itemId) => itemId !== ignoredItemId)
         : region.items
       const itemsList = processedItems.map((itemId) => this.items[itemId]!) // itemId[] --> item[]
-      const items: IItemObj[] = []
+      const items: Record<IItemObjId, IItemObj> = {}
 
       const mapSize = region.w * region.h
       const itemsFlatMap = Array(mapSize).fill(false)
@@ -655,19 +688,19 @@ export default {
           })
           const [placedItem] = itemsList.splice(itemToPlaceIndex, 1)
           if (placedItem) {
-            items.push({
+            items[placedItem.id as IItemObjId] = {
               ...placedItem,
               x: i % region.w,
               y: Math.floor(i / region.w),
-            })
+            }
           }
         }
       })
 
       // update item positions
       if (!itemsList.length) {
-        processedItems.forEach((id, i) => {
-          this.updateItem(id, items[i]!)
+        processedItems.forEach((id) => {
+          this.updateItem(id, items[id]!)
         })
       }
     },
@@ -757,7 +790,7 @@ export default {
             region.items
               .map((itemId) => this.items[itemId]!)
               .filter(
-                ({ img }) => img === item.img && item.amount < typeStackRestriction.max
+                ({ img }) => img === item.img && amount < typeStackRestriction.max
               ) as IAmountItem[]
           ).sort((itemA, itemB) => itemB.amount - itemA.amount)
           for (let i = 0; amount && i < itemsOfSameType.length; i++) {

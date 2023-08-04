@@ -21,3 +21,4 @@ fs.readdirSync('dist/img', { withFileTypes: true }).forEach(({ name }) => {
 console.log(
   'NODE: The results were copied to the "src/assets/img/items" and "src/shared/gamedata" folders.'
 )
+console.log('NODE: Done.')

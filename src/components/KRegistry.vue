@@ -41,7 +41,7 @@ export default {
 </script>
 
 <template>
-  <KWindow :centered="true" title="Registry" @close="d.toggleRegistry">
+  <KWindow auto-focus :centered="true" title="Registry" @close="d.toggleRegistry">
     <div class="wrapper">
       <div class="sections">
         <ul class="sections__content">

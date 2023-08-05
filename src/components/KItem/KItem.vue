@@ -53,16 +53,21 @@ export default {
   },
   methods: {
     onMouseEnter(e: MouseEvent) {
-      const event = new CustomEvent('iteminfoshow', { bubbles: true, detail: this.data.stringId })
+      const event = new CustomEvent('ki-iteminfoshow', {
+        bubbles: true,
+        detail: this.data.stringId,
+      })
       e.target?.dispatchEvent(event)
     },
     onMouseLeave(e: MouseEvent) {
-      const event = new CustomEvent('iteminfohide', { bubbles: true, detail: this.data.stringId })
+      const event = new CustomEvent('ki-iteminfohide', {
+        bubbles: true,
+        detail: this.data.stringId,
+      })
       e.target?.dispatchEvent(event)
     },
     onMouseLeftDown(e: MouseEvent) {
       const el = e.target as HTMLElement
-      el.dispatchEvent(new FocusEvent('focus', { bubbles: true })) // make the current window active
       const rect = el.getBoundingClientRect()
       // find out what cell of an item are meant to be dragged
       const x = Math.floor((e.clientX - rect.left) / CELL_SIZE)
@@ -127,7 +132,6 @@ export default {
       })
     },
     onDragEnd(e: DragEvent) {
-      // ;(e.target as HTMLElement).dispatchEvent(new FocusEvent('blur', { bubbles: true })) // make the current window inactive
       const success = !!+(e.dataTransfer?.getData('dnd/success') || '0')
       if (!success) this.d.validateItemPosition(this.id)
       if (this.handleDragEnd) this.handleDragEnd()

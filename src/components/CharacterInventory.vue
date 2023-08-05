@@ -78,7 +78,7 @@ export default {
 </script>
 
 <template>
-  <KWindow :title="data.name" @drag="onWindowDrag" @close="d.closeSeamInventory">
+  <KWindow auto-focus :title="data.name" @drag="onWindowDrag" @close="d.closeSeamInventory">
     <template #left-aligned v-if="backpack?.isOpened">
       <KWindow
         title="BACKPACK"

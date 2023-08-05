@@ -20,6 +20,7 @@ export default {
       },
     },
     centered: { type: Boolean },
+    autoFocus: { type: Boolean },
   },
   emits: {
     drag: (diff: IPoint) => !!diff,
@@ -88,7 +89,12 @@ export default {
       this.pointer = { x: -1000, y: -1000 }
     },
     onFocus() {
+      if (this.focused) return
       this.focused = true
+      ;(this.$refs.window as Element).dispatchEvent(
+        new CustomEvent('ki-windowfocus', { bubbles: true })
+      )
+      document.addEventListener('ki-windowfocus', this.onBlur, { once: true })
     },
     onBlur() {
       this.focused = false
@@ -123,6 +129,7 @@ export default {
     } else {
       this.pos = { x: rect.left, y: rect.top }
     }
+    if (this.autoFocus) this.onFocus()
     this.initialized = true
   },
 }
@@ -139,18 +146,11 @@ export default {
         hoveredItemStringId && 'window_info',
       ]"
       :style="cssVariables as any"
-      @iteminfoshow="onShowItemInfo"
-      @iteminfohide="onHideItemInfo"
+      @ki-iteminfoshow="onShowItemInfo"
+      @ki-iteminfohide="onHideItemInfo"
       ref="window"
     >
-      <div
-        class="window__content"
-        tabindex="-1"
-        @focus="onFocus"
-        @blur="onBlur"
-        v-bind="$attrs"
-        ref="window__content"
-      >
+      <div class="window__content" @mousedown="onFocus" v-bind="$attrs" ref="window__content">
         <div
           class="header section"
           draggable="true"
@@ -201,13 +201,7 @@ export default {
   gap: 4px;
 }
 .window_active .window {
-  z-index: -1;
-}
-.window ~ .window {
-  /**
-   * problem: next windows are always on top even if aligned slots are active
-   * todo: consider @focus and @blur on aligned slots to upscale/reset own z-index
-   */
+  z-index: 1050;
 }
 .window__content {
   border: 4px solid #000;

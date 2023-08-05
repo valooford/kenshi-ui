@@ -51,6 +51,7 @@ declare type GetBrandedIdPrefix<T extends IBrandedId> = T extends Brand<`${infer
 // item
 interface IItemBase {
   readonly id: NotBrand<IRawId>
+  readonly stringId: string
   readonly w: number
   readonly h: number
   x: number

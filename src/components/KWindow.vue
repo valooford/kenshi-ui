@@ -2,13 +2,14 @@
 import type { PropType } from 'vue'
 
 import IconButton from './IconButton.vue'
+import ItemInfo from './ItemInfo.vue'
 
 export const DEBOUNCE_MS = 16 // ~60 fps
 const EMPTY_IMAGE = new Image()
 EMPTY_IMAGE.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
 
 export default {
-  components: { IconButton },
+  components: { IconButton, ItemInfo },
   inject: ['cssVariables'],
   props: {
     title: { type: String, required: true },
@@ -34,6 +35,8 @@ export default {
       focused: false,
       cooldown: false,
       updateRequested: false,
+      hoveredItemStringId: null as IItemObjId | null,
+      isFreeSpaceBlockedRight: false,
     }
   },
   computed: {
@@ -97,6 +100,17 @@ export default {
         windowEl.style.top = `${this.finalPos.y}px`
       })
     },
+    onShowItemInfo(e: CustomEvent) {
+      e.stopPropagation()
+      this.hoveredItemStringId = e.detail
+      const rect = (this.$refs.window as HTMLDivElement).getBoundingClientRect()
+      const right = document.documentElement.clientWidth - rect.right
+      this.isFreeSpaceBlockedRight = right < 323
+    },
+    onHideItemInfo(e: CustomEvent) {
+      e.stopPropagation()
+      this.hoveredItemStringId = null
+    },
   },
   inheritAttrs: false,
   mounted() {
@@ -122,8 +136,11 @@ export default {
         initialized && 'window_initialized',
         focused && 'window_active',
         hasAlignedSlots && 'window_has-aligned',
+        hoveredItemStringId && 'window_info',
       ]"
       :style="cssVariables as any"
+      @iteminfoshow="onShowItemInfo"
+      @iteminfohide="onHideItemInfo"
       ref="window"
     >
       <div
@@ -156,6 +173,11 @@ export default {
           <slot name="left-aligned"></slot>
         </div>
       </div>
+      <div :class="['free-space-aligned', isFreeSpaceBlockedRight && 'free-space-aligned_left']">
+        <div v-if="hoveredItemStringId" class="section free-space-aligned__inner">
+          <ItemInfo :string-id="hoveredItemStringId" />
+        </div>
+      </div>
     </div>
   </teleport>
 </template>
@@ -171,7 +193,8 @@ export default {
   /* DEBOUNCE_MS */
   transition: top linear 16ms, left linear 16ms;
 }
-.window_active {
+.window_active,
+.window_info {
   z-index: 1100;
 }
 .window_has-aligned {
@@ -230,6 +253,32 @@ export default {
   gap: 4px;
 }
 .left-aligned__inner > * {
+  pointer-events: all;
+}
+.window_initialized .free-space-aligned {
+  position: absolute;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+}
+.window_initialized .free-space-aligned__inner {
+  position: relative;
+  right: calc(-100% - 4px);
+  margin-right: 4px;
+  display: flex;
+  flex-wrap: nowrap;
+  border: 4px solid #000;
+  gap: 4px;
+}
+.window_initialized .free-space-aligned_left {
+  left: 0;
+  right: unset;
+}
+.window_initialized .free-space-aligned_left .free-space-aligned__inner {
+  left: calc(-100% - 4px);
+  right: unset;
+}
+.free-space-aligned__inner > * {
   pointer-events: all;
 }
 </style>

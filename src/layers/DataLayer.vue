@@ -74,7 +74,7 @@ export default {
         return this.createAmountItem(item)
       }
       if (isBackpack(item)) {
-        const innerRegion = this.regions[item.regionId as IRegionId]!
+        const innerRegion = this.regions[item.innerRegionId as IRegionId]!
         return this.createBackpackItem(item as IBackpackItem, innerRegion)
       }
       return this.createItem(item)
@@ -262,6 +262,7 @@ export default {
       const items = itemsList.map((itemId) => {
         const data = GAMEDATA_ITEMS[itemId]!
         const attrs: Omit<IItemObj, 'id'> = {
+          stringId: data.StringId,
           w: data.Values['inventory footprint width'],
           h: data.Values['inventory footprint height'],
           x: 0,
@@ -274,9 +275,10 @@ export default {
           data.Values.stackable &&
           !NON_STACKABLE_FUNCTIONS.includes(data.Values['item function'])
         ) {
+          const scrap = SCRAP_ITEM_FUNCTIONS.includes(data.Values['item function'])
           return this.createAmountItem({
             ...attrs,
-            amount: 99,
+            amount: scrap ? 98.4 : 99,
             scrap: SCRAP_ITEM_FUNCTIONS.includes(data.Values['item function']),
           })
         }
@@ -389,7 +391,7 @@ export default {
           isAmountItem(overlappedItem) &&
           isAmountItem(item) &&
           isAmountItem(itemToMove) &&
-          overlappedItem.img === itemToMove.img &&
+          overlappedItem.stringId === itemToMove.stringId &&
           overlappedItem.amount < typeStackRestriction.max
         ) {
           let amount = overlappedItem.amount + itemToMove.amount
@@ -790,7 +792,7 @@ export default {
             region.items
               .map((itemId) => this.items[itemId]!)
               .filter(
-                ({ img }) => img === item.img && amount < typeStackRestriction.max
+                ({ stringId }) => stringId === item.stringId && amount < typeStackRestriction.max
               ) as IAmountItem[]
           ).sort((itemA, itemB) => itemB.amount - itemA.amount)
           for (let i = 0; amount && i < itemsOfSameType.length; i++) {

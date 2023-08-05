@@ -13,6 +13,7 @@ export default {
     handleDragEnd: { type: Function as PropType<() => void> },
     handleFastMove: { type: Function as PropType<() => void> },
   },
+  emits: ['iteminfoshow', 'iteminfohide'],
   data() {
     const emptyImage = new Image()
     emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
@@ -51,6 +52,14 @@ export default {
     },
   },
   methods: {
+    onMouseEnter(e: MouseEvent) {
+      const event = new CustomEvent('iteminfoshow', { bubbles: true, detail: this.data.stringId })
+      e.target?.dispatchEvent(event)
+    },
+    onMouseLeave(e: MouseEvent) {
+      const event = new CustomEvent('iteminfohide', { bubbles: true, detail: this.data.stringId })
+      e.target?.dispatchEvent(event)
+    },
     onMouseLeftDown(e: MouseEvent) {
       const el = e.target as HTMLElement
       el.dispatchEvent(new FocusEvent('focus', { bubbles: true })) // make the current window active
@@ -167,7 +176,10 @@ export default {
       :src="data.img"
       alt=""
       draggable="false"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
       @mousedown.left="onMouseLeftDown"
+      @mousedown.right="onMouseLeave"
       @click.right="onMouseRightClick"
       @dragstart="onDragStart"
       @drag="onDrag"

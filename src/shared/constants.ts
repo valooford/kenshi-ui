@@ -69,6 +69,7 @@ export const NON_STACKABLE_FUNCTIONS = [
   ItemFuncion.ItemBlueprint,
   ItemFuncion.ItemBook,
   ItemFuncion.ItemSeveredLimb,
+  ItemFuncion.ItemContainer,
 ]
 
 export const SCRAP_ITEM_FUNCTIONS = [

@@ -1,21 +1,25 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+import iconSprite from '@/assets/img/Kenshi_UI.png'
 
 export default {
   props: {
     variant: { type: String as PropType<'close' | 'o'>, required: true },
   },
+  data() {
+    return { iconSprite }
+  },
 }
 </script>
 
 <template>
-  <button :class="['button', `button_${variant}`]" />
+  <button
+    :class="['button', `button_${variant}`]"
+    :style="{ backgroundImage: `url(${iconSprite})` }"
+  />
 </template>
 
 <style scoped>
-.button {
-  background-image: url('src/assets/Kenshi_UI.png');
-}
 /* close */
 .button_close {
   background-position: -700px -544px;
@@ -30,7 +34,6 @@ export default {
 }
 /* o */
 .button_o {
-  background-image: url('src/assets/Kenshi_UI.png');
   background-position: -642px -422px;
   width: 25px;
   height: 26px;

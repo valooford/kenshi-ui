@@ -1,10 +1,12 @@
 <script lang="ts">
+import iconSprite from '@/assets/img/Kenshi_UI.png'
+
 export default {
   data() {
-    return { initialized: false }
+    return { iconSprite, initialized: false }
   },
   methods: {
-    onMouseMove(e: MouseEvent) {
+    onMouseMove(e: PointerEvent) {
       const cursor = this.$refs.cursor as HTMLElement
       requestAnimationFrame(() => {
         cursor.style.left = `${e.pageX}px`
@@ -15,12 +17,12 @@ export default {
         cursor.style.display = 'block'
       }
     },
-    onMouseLeave(e: MouseEvent) {
+    onMouseLeave(e: PointerEvent) {
       if (e.defaultPrevented) return
       const cursor = this.$refs.cursor as HTMLElement
       cursor.style.display = 'none'
     },
-    onMouseEnter(e: MouseEvent) {
+    onMouseEnter(e: PointerEvent) {
       if (e.defaultPrevented) return
       const cursor = this.$refs.cursor as HTMLElement
       cursor.style.display = 'block'
@@ -28,20 +30,20 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('mousemove', this.onMouseMove)
-    document.addEventListener('mouseleave', this.onMouseLeave)
-    document.addEventListener('mouseenter', this.onMouseEnter)
+    window.addEventListener('pointermove', this.onMouseMove)
+    document.addEventListener('pointerleave', this.onMouseLeave)
+    document.addEventListener('pointerenter', this.onMouseEnter)
   },
   unmounted() {
-    window.removeEventListener('mousemove', this.onMouseMove)
-    document.removeEventListener('mouseleave', this.onMouseLeave)
-    document.removeEventListener('mouseenter', this.onMouseEnter)
+    window.removeEventListener('pointermove', this.onMouseMove)
+    document.removeEventListener('pointerleave', this.onMouseLeave)
+    document.removeEventListener('pointerenter', this.onMouseEnter)
   },
 }
 </script>
 
 <template>
-  <div class="cursor" ref="cursor" />
+  <div class="cursor" :style="{ backgroundImage: `url(${iconSprite})` }" ref="cursor" />
 </template>
 
 <style scoped>
@@ -50,7 +52,6 @@ export default {
   position: absolute;
   width: 25px;
   height: 25px;
-  background-image: url('src/assets/Kenshi_UI.png');
   background-position: -14px -12px;
   z-index: 1400;
   pointer-events: none;

@@ -99,7 +99,7 @@ export default {
         @close="toggleBackpack"
       >
         <div class="backpack">
-          <KRegion :id="backpack.innerRegionId" />
+          <KRegion v-if="backpack" :id="backpack.innerRegionId" />
           <div>
             <KButton size="sm" @click="onBackpackArrange">ARRANGE</KButton>
           </div>

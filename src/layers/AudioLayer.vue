@@ -2,6 +2,7 @@
 import { GAMEDATA_ITEMS, InventorySound, ItemType, MaterialType } from '@/shared/gamedata'
 import { CommonSound, SoundMilestone, BEDS, FRAMES, CANOPY } from '@/shared/constants'
 import type { IAudioDispatch } from '@/shared/interface'
+import gui from '@/assets/audio/gui.mp3'
 
 const AMBIENT_SOUND_SETTINGS = {
   startAfter: 5000,
@@ -36,7 +37,7 @@ export default {
   },
   data() {
     return {
-      audio: new Audio('src/assets/audio/gui.mp3'),
+      audio: new Audio(gui),
       timeoutId: null as number | null,
       bedsAudio: new Audio(),
       framesAudio: new Audio(),

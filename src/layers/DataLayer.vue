@@ -267,7 +267,7 @@ export default {
           h: data.Values['inventory footprint height'],
           x: 0,
           y: 0,
-          img: `src/assets/img/items/${data.Values.icon}`,
+          img: new URL(`/src/assets/img/items/${data.Values.icon}`, import.meta.url).href,
           regionId,
           type: ItemTypeBySlot[data.Values.slot as ItemSlot],
         }

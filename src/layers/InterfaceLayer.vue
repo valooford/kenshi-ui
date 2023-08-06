@@ -6,6 +6,7 @@ import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
 import KButton from '@/components/KButton.vue'
 import CustomCursor from '@/components/CustomCursor.vue'
+import KGame from '@/components/KGame.vue'
 
 export default {
   components: {
@@ -14,6 +15,7 @@ export default {
     KSeam,
     KButton,
     CustomCursor,
+    KGame,
   },
   inject: ['store', 'dispatch', 'audio'],
   data() {
@@ -44,11 +46,11 @@ export default {
       if (e.repeat) return
       switch (e.code) {
         case 'Tab':
+          e.preventDefault()
           if (!this.s.selectedCharacter) {
             this.d.toggleRegistry()
             break
           }
-          e.preventDefault()
           if (this.s.seam.main) {
             this.d.closeSeamInventory()
           } else {
@@ -75,12 +77,12 @@ export default {
   },
   mounted() {
     document.addEventListener('dragover', this.emulateDefaultCursorEverywhere)
-    // document.addEventListener('contextmenu', this.preventBrowserContextMenu)
+    document.addEventListener('contextmenu', this.preventBrowserContextMenu)
     document.addEventListener('keydown', this.onKeyDown)
   },
   unmounted() {
     document.removeEventListener('dragover', this.emulateDefaultCursorEverywhere)
-    // document.removeEventListener('contextmenu', this.preventBrowserContextMenu)
+    document.removeEventListener('contextmenu', this.preventBrowserContextMenu)
     document.removeEventListener('keydown', this.onKeyDown)
   },
 }
@@ -104,6 +106,7 @@ export default {
       </div>
       <div class="controls__right"></div>
     </div>
+    <KGame />
     <CustomCursor />
   </CssVariablesProvider>
 </template>

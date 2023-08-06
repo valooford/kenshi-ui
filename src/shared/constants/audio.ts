@@ -21,7 +21,7 @@ export const BEDS = [
   'Dunes_Music_Bank.025',
   'Dunes_Music_Bank.032',
   'Dunes_Music_Bank.054',
-].map((f) => `src/assets/audio/beds/${f}.mp3`)
+].map((f) => new URL(`/src/assets/audio/beds/${f}.mp3`, import.meta.url).href)
 
 export const FRAMES = [
   'Dunes_Music_Bank.003',
@@ -57,7 +57,7 @@ export const FRAMES = [
   'Dunes_Music_Bank.051',
   'Dunes_Music_Bank.052',
   'Dunes_Music_Bank.053',
-].map((f) => `src/assets/audio/frames/${f}.mp3`)
+].map((f) => new URL(`/src/assets/audio/frames/${f}.mp3`, import.meta.url).href)
 
 export const CANOPY = [
   'Dunes_Music_Bank.001',
@@ -76,4 +76,4 @@ export const CANOPY = [
   'Dunes_Music_Bank.035',
   'Dunes_Music_Bank.039',
   'Dunes_Music_Bank.045',
-].map((f) => `src/assets/audio/canopy/${f}.mp3`)
+].map((f) => new URL(`/src/assets/audio/canopy/${f}.mp3`, import.meta.url).href)

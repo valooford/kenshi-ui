@@ -23,7 +23,8 @@ declare namespace OpenConstructionSet {
         'inventory footprint height'?: any
         'inventory footprint width'?: any
         stackable?: any
-        'inventory Sound'?: any
+        'inventory sound'?: any
+        'material type'?: any
         description?: any
         'weight kg'?: any
         'stackable bonus minimum'?: any

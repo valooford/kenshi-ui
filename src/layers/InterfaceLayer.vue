@@ -1,5 +1,6 @@
 <script lang="ts">
-import { ItemType } from '@/shared/constants'
+import { CommonSound, ItemType } from '@/shared/constants'
+import type { IAudioDispatch } from '@/shared/interface'
 import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
@@ -12,7 +13,7 @@ export default {
     KSeam,
     KButton,
   },
-  inject: ['store', 'dispatch'],
+  inject: ['store', 'dispatch', 'audio'],
   data() {
     return { ItemType }
   },
@@ -22,6 +23,9 @@ export default {
     },
     d() {
       return this.dispatch as IDispatch
+    },
+    a() {
+      return this.audio as IAudioDispatch
     },
     charactersArr() {
       return this.s.charactersList.map((id) => this.s.characters[id]!)
@@ -56,10 +60,15 @@ export default {
             this.d.closeSeamInventory()
           } else if (this.s.selectedCharacter) {
             this.d.resetSelectedCharacter()
+            this.a.playInventorySound(CommonSound.InventoryCloseEsc)
           }
           break
         default:
       }
+    },
+    onSelectCharacter(id: ICharacterId) {
+      this.d.selectCharacter(id)
+      this.a.playTickSound()
     },
   },
   mounted() {
@@ -87,7 +96,7 @@ export default {
         <CharactersBar
           :characters="charactersArr"
           :selected="s.selectedCharacter"
-          @select="d.selectCharacter"
+          @select="onSelectCharacter"
           @trade="d.openRelatedSeamInventory"
         />
       </div>

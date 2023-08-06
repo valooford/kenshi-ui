@@ -2,9 +2,10 @@
 import type { PropType } from 'vue'
 import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
 import { emulateDragAndDropApi } from '@/shared/utils'
+import type { IAudioDispatch } from '@/shared/interface'
 
 export default {
-  inject: ['store', 'dispatch'],
+  inject: ['store', 'dispatch', 'audio'],
   props: {
     id: { type: String as PropType<string> as PropType<IItemObjId>, required: true },
     visible: { type: Boolean },
@@ -18,6 +19,7 @@ export default {
     const emptyImage = new Image()
     emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
     return {
+      stringId: null as string | null,
       isPreview: false,
       isDragging: false,
       emptyImage,
@@ -35,6 +37,9 @@ export default {
     },
     d() {
       return this.dispatch as IDispatch
+    },
+    a() {
+      return this.audio as IAudioDispatch
     },
     data() {
       return this.s.items[this.id]!
@@ -106,6 +111,8 @@ export default {
         })
       }
       e.preventDefault() // prevent user-select
+
+      this.a.playItemSound(this.stringId!, 'drag')
     },
     onDragStart(e: DragEvent) {
       if (this.handleDragStart) this.handleDragStart(e)
@@ -137,6 +144,8 @@ export default {
       if (this.handleDragEnd) this.handleDragEnd()
       this.isDragging = false
       this.cleanup()
+
+      this.a.playItemSound(this.stringId!, 'drop')
     },
     cleanup() {
       this.isPreview = false
@@ -157,7 +166,12 @@ export default {
       const all = e.shiftKey || e.ctrlKey
       this.d.onItemFastMove(this.id, { all })
       if (this.handleFastMove) this.handleFastMove()
+
+      this.a.playItemSound(this.stringId!, 'drop')
     },
+  },
+  created() {
+    this.stringId = this.data.stringId
   },
 }
 </script>

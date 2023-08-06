@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { InventoryRegion, ItemType } from '@/shared/constants'
+import { CommonSound, InventoryRegion, ItemType } from '@/shared/constants'
+import type { IAudioDispatch } from '@/shared/interface'
 
 import KWindow from './KWindow.vue'
 import KRegion from './KRegion.vue'
@@ -9,7 +10,7 @@ import CharacterGear from './CharacterGear.vue'
 
 export default {
   components: { KWindow, KRegion, KButton, CharacterGear },
-  inject: ['store', 'dispatch'],
+  inject: ['store', 'dispatch', 'audio'],
   props: {
     id: { type: String as PropType<string> as PropType<ICharacterId>, required: true },
   },
@@ -27,6 +28,9 @@ export default {
     },
     d() {
       return this.dispatch as IDispatch
+    },
+    a() {
+      return this.audio as IAudioDispatch
     },
     data() {
       return this.s.characters[this.id]!
@@ -46,10 +50,12 @@ export default {
       if (this.hasBackpack) {
         if (this.backpack!.isOpened) {
           this.d.closeBackpack(this.backpackId!)
+          this.a.playItemSound(this.backpack!.stringId, 'drop')
         } else {
           this.backpackWindowShift = { x: 0, y: 0 }
           this.isBackpackWindowPosSync = true
           this.d.openBackpack(this.backpackId!)
+          this.a.playItemSound(this.backpack!.stringId, 'drag')
         }
       }
     },
@@ -73,6 +79,12 @@ export default {
   },
   created() {
     if (this.backpackId) this.d.openBackpack(this.backpackId)
+  },
+  mounted() {
+    this.a.playInventorySound(CommonSound.InventoryOpen)
+  },
+  unmounted() {
+    this.a.playInventorySound(CommonSound.InventoryClose)
   },
 }
 </script>

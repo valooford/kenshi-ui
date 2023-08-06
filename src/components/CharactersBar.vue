@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+import { isCharacterId } from '@/shared/utils'
 
 import { CharacterContextMenu } from './ContextMenu'
 
@@ -13,8 +14,11 @@ export default {
     },
   },
   emits: {
-    select: (characterId: string) => !!characterId,
-    trade: (characterId: string) => !!characterId,
+    select: (characterId: ICharacterId) => !!characterId,
+    trade: (characterId: ICharacterId) => !!characterId,
+  },
+  data() {
+    return { isCharacterId }
   },
   methods: {
     isSelected(characterId: string) {
@@ -23,10 +27,10 @@ export default {
     isMenuDisabled(characterId: string) {
       return !this.selected || this.selected === characterId
     },
-    onSelect(characterId: string) {
+    onSelect(characterId: ICharacterId) {
       this.$emit('select', characterId)
     },
-    onTrade(characterId: string) {
+    onTrade(characterId: ICharacterId) {
       this.$emit('trade', characterId)
     },
   },
@@ -40,13 +44,13 @@ export default {
       :title="c.name"
       :disabled="isMenuDisabled(c.id)"
       class="characters-button__menu-wrapper"
-      @trade="onTrade(c.id)"
+      @trade="isCharacterId(c.id) ? onTrade(c.id) : undefined"
       :key="c.id"
     >
       <button
         :value="c.id"
         :class="['characters-button', isSelected(c.id) && 'characters-button_active']"
-        @click="onSelect(c.id)"
+        @click="isCharacterId(c.id) ? onSelect(c.id) : undefined"
       >
         <div class="characters-button__text">
           <div class="characters-button__text_centered">{{ c.name }}</div>

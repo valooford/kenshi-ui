@@ -566,6 +566,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18033-small_changes_otto.mod.18031-small_changes_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -579,6 +580,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "5346-armor_otto.mod.2311-clothes_v1.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 6,
       "weight kg": 7
     }
@@ -592,6 +594,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "steel bars.png",
       "inventory footprint height": 1,
       "inventory footprint width": 6,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -607,6 +610,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1395-gamedata.base.695-gamedata.base.1290-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 6,
       "weight kg": 10
     }
@@ -620,6 +624,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2198-gamedata.base.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 4
     }
@@ -633,6 +638,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "WhiteVest.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 0.1
     }
@@ -646,6 +652,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "549-gamedata.base.2146-gamedata.base.2173-gamedata.base.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 9,
       "weight kg": 5
     }
@@ -672,6 +679,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18962-gamedata.base.2199-gamedata.base.2173-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 3
     }
@@ -685,6 +693,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ChainMail.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 13
     }
@@ -698,6 +707,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2283-gamedata.base.2284-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 5
     }
@@ -711,6 +721,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 0.4
     }
@@ -737,6 +748,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2200-gamedata.base.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 8
     }
@@ -750,6 +762,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Standard First Aid kit.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 5,
       "item function": 1,
       "slot": 7,
       "stackable": 1,
@@ -778,6 +791,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1311-gamedata.base.695-gamedata.base.1297-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 6,
       "weight kg": 6
     }
@@ -804,6 +818,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Fuel.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 12,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -819,6 +834,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlackenedChainMail.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 13
     }
@@ -832,6 +848,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2145-gamedata.base.14519-gamedata.base.1253-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 9
     }
@@ -845,6 +862,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "684-gamedata.base.2170-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 2
     }
@@ -858,6 +876,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Medical Supplies.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "inventory sound": 5,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -873,6 +892,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Hacksaw.png",
       "inventory footprint height": 4,
       "inventory footprint width": 2,
+      "inventory sound": 14,
       "item function": 9,
       "slot": 7,
       "stackable": 1,
@@ -888,6 +908,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "554-gamedata.base.695-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 3
     }
@@ -901,6 +922,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Steel Plates.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 17,
       "item function": 0,
       "slot": 7,
       "stackable": 4,
@@ -916,6 +938,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Raw Stone.png",
       "inventory footprint height": 4,
       "inventory footprint width": 6,
+      "inventory sound": 9,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -931,6 +954,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 6,
       "weight kg": 10
     }
@@ -944,6 +968,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Raw Leather.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 4,
@@ -959,6 +984,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Hashish.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 8,
       "item function": 8,
       "slot": 7,
       "stackable": 1,
@@ -974,6 +1000,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "576-gamedata.base.686-gamedata.base.54583-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -991,6 +1018,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ChainShirtRust.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -1004,6 +1032,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2188-gamedata.base.2187-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -1030,6 +1059,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Luxury Goods.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 7,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1045,6 +1075,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2150-gamedata.base.51319-rebirth.mod.1253-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 6,
       "weight kg": 20
     }
@@ -1058,6 +1089,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2225-chris_r.mod.2199-gamedata.base.18913-color_schemes_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 2,
       "slot": 3,
       "weight kg": 4
     }
@@ -1071,6 +1103,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2185-gamedata.base.2207-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -1084,6 +1117,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2224-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 3
     }
@@ -1097,6 +1131,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Book.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 0,
       "slot": 7,
       "stackable": 4,
@@ -1112,6 +1147,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2168-gamedata.base.2162-gamedata.base.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -1125,6 +1161,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2309-clothes_v1.mod.2312-clothes_v1.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 2
     }
@@ -1138,6 +1175,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "LeatherShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 8,
       "weight kg": 1
     }
@@ -1151,6 +1189,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2229-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 2,
       "slot": 3,
       "weight kg": 4
     }
@@ -1177,6 +1216,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2148-gamedata.base.2147-gamedata.base.1254-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 15
     }
@@ -1190,6 +1230,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "MartialArtBindings.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 1
     }
@@ -1203,6 +1244,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Strawflour.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 3,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1218,6 +1260,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Water.png",
       "inventory footprint height": 5,
       "inventory footprint width": 5,
+      "inventory sound": 15,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1233,6 +1276,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2158-gamedata.base.2155-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 2
     }
@@ -1246,6 +1290,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18034-small_changes_otto.mod.18032-small_changes_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -1259,6 +1304,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1389-gamedata.base.911-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -1276,6 +1322,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Building Material.png",
       "inventory footprint height": 3,
       "inventory footprint width": 6,
+      "inventory sound": 1,
       "item function": 7,
       "slot": 7,
       "stackable": 1,
@@ -1291,6 +1338,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Raw Chain.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 17,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1306,6 +1354,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "LeatherShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 8,
       "weight kg": 2
     }
@@ -1319,6 +1368,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18911-gamedata.base.18910-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -1332,6 +1382,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2197-gamedata.base.2191-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 1
     }
@@ -1345,6 +1396,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Parchment.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1360,6 +1412,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2182-gamedata.base.2181-gamedata.base.3984-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 10
     }
@@ -1373,6 +1426,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2189-gamedata.base.2187-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 1
     }
@@ -1386,6 +1440,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 3
     }
@@ -1412,6 +1467,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Hemp.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "inventory sound": 16,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1427,6 +1483,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2156-gamedata.base.2155-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 4
     }
@@ -1440,6 +1497,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "635-gamedata.base.686-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -1457,6 +1515,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Fabrics.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1472,6 +1531,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Blueprints.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 11,
       "slot": 7,
       "stackable": 1,
@@ -1500,6 +1560,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2223-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 3
     }
@@ -1513,6 +1574,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2180-gamedata.base.2181-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 4
     }
@@ -1526,6 +1588,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2149-gamedata.base.2147-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 9
     }
@@ -1539,6 +1602,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2151-gamedata.base.2152-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 2
     }
@@ -1552,6 +1616,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1286-gamedata.base.686-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -1569,6 +1634,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ChainMailRust.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 13
     }
@@ -1582,6 +1648,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2304-clothes_v1.mod.2310-clothes_v1.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 5
     }
@@ -1595,6 +1662,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2227-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 3
     }
@@ -1608,6 +1676,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2305-clothes_v1.mod.2310-clothes_v1.mod.1367-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 6,
       "weight kg": 3
     }
@@ -1621,6 +1690,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Advanced First Aid Kit.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 5,
       "item function": 1,
       "slot": 7,
       "stackable": 1,
@@ -1636,6 +1706,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2306-clothes_v1.mod.2310-clothes_v1.mod.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 9,
       "weight kg": 5
     }
@@ -1649,6 +1720,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2122-gamedata.base.14519-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 20
     }
@@ -1662,6 +1734,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "shackles_icon.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 9,
       "weight kg": 20
     }
@@ -1675,6 +1748,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2159-gamedata.base.14519-gamedata.base.1253-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 6,
       "weight kg": 2
     }
@@ -1688,6 +1762,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2308-clothes_v1.mod.2312-clothes_v1.mod.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -1714,6 +1789,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "NinjaShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 1
     }
@@ -1740,6 +1816,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "575-gamedata.base.2146-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -1766,6 +1843,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2201-gamedata.base.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 5
     }
@@ -1779,6 +1857,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "556-gamedata.base.2155-gamedata.base.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 9,
       "weight kg": 4
     }
@@ -1792,6 +1871,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Water Jug.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 15,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1807,6 +1887,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2165-gamedata.base.2170-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 4
     }
@@ -1820,6 +1901,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2167-gamedata.base.2162-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -1833,6 +1915,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Raw Iron.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 9,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1848,6 +1931,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Advanced Splint Kit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 5,
       "item function": 2,
       "slot": 7,
       "stackable": 1,
@@ -1863,6 +1947,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1273-gamedata.base.695-gamedata.base.18912-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -1876,6 +1961,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2228-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 2,
       "slot": 3,
       "weight kg": 4
     }
@@ -1889,6 +1975,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Wheatstraw.png",
       "inventory footprint height": 5,
       "inventory footprint width": 5,
+      "inventory sound": 16,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1917,6 +2004,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2202-gamedata.base.2199-gamedata.base.52285-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 4
     }
@@ -1930,6 +2018,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Robotics Components.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "inventory sound": 11,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -1945,6 +2034,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2221-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 4
     }
@@ -1958,6 +2048,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ClothShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 1
     }
@@ -1971,6 +2062,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2154-gamedata.base.2153-gamedata.base.2173-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 2
     }
@@ -1984,6 +2076,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlackChainshirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -1997,6 +2090,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 6,
       "weight kg": 6
     }
@@ -2010,6 +2104,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18029-small_changes_otto.mod.18030-small_changes_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 1
     }
@@ -2023,6 +2118,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Basic First Aid Kit.png",
       "inventory footprint height": 1,
       "inventory footprint width": 2,
+      "inventory sound": 5,
       "item function": 1,
       "slot": 7,
       "stackable": 1,
@@ -2038,6 +2134,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2219-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 4
     }
@@ -2051,6 +2148,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2226-chris_r.mod.2199-gamedata.base.18914-color_schemes_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 4
     }
@@ -2064,6 +2162,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2193-gamedata.base.2190-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -2077,6 +2176,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ChainShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -2090,6 +2190,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "shackles_icon.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 9,
       "weight kg": 20
     }
@@ -2129,6 +2230,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2163-gamedata.base.2162-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 5
     }
@@ -2155,6 +2257,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlueprintsLarge.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 11,
       "slot": 7,
       "stackable": 1,
@@ -2170,6 +2273,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "LeatherVest.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 8,
       "weight kg": 1
     }
@@ -2183,6 +2287,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1498-gamedata.base.911-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 2,
       "stackable bonus mult": 3,
@@ -2200,6 +2305,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Rice Bowl.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -2215,6 +2321,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "3061-gamedata.base.3060-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 4
     }
@@ -2228,6 +2335,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "gas lantern icon.png",
       "inventory footprint height": 2,
       "inventory footprint width": 1,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 14,
       "stackable": 1,
@@ -2243,6 +2351,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cactus Rum.png",
       "inventory footprint height": 4,
       "inventory footprint width": 3,
+      "inventory sound": 12,
       "item function": 8,
       "slot": 7,
       "stackable": 1,
@@ -2258,6 +2367,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Bread.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -2273,6 +2383,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2222-chris_r.mod.2199-gamedata.base.42261-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 0
     }
@@ -2286,6 +2397,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2169-gamedata.base.18885-rebirth.mod.14534-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -2299,6 +2411,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1415-gamedata.base.1142-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -2312,6 +2425,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2220-chris_r.mod.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -2325,6 +2439,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Splint Kit.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 5,
       "item function": 2,
       "slot": 7,
       "stackable": 1,
@@ -2340,6 +2455,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "18911-gamedata.base.18910-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -2370,6 +2486,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "ClothShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 1
     }
@@ -2383,6 +2500,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "LeatherShirtDark.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 8,
       "weight kg": 1
     }
@@ -2396,6 +2514,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -2409,6 +2528,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2194-gamedata.base.2191-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -2422,6 +2542,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Skeleton Repair Kit.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 5,
       "item function": 12,
       "slot": 7,
       "stackable": 1,
@@ -2437,6 +2558,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2307-clothes_v1.mod.2311-clothes_v1.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 15
     }
@@ -2450,6 +2572,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1012-gamedata.base.686-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -2467,6 +2590,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2164-gamedata.base.2162-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -2480,6 +2604,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "564-gamedata.base.2190-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 1
     }
@@ -2493,6 +2618,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "4002-gamedata.base.4003-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 6,
@@ -2510,6 +2636,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1499-gamedata.base.911-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 2,
       "stackable bonus mult": 3,
@@ -2527,6 +2654,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1288-gamedata.base.686-gamedata.base.1297-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -2544,6 +2672,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2166-gamedata.base.2171-gamedata.base.14534-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 30
     }
@@ -2557,6 +2686,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "2203-gamedata.base.2199-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 6
     }
@@ -2570,6 +2700,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 9,
       "weight kg": 0.5
     }
@@ -2583,6 +2714,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Dried Fish.png",
       "inventory footprint height": 3,
       "inventory footprint width": 1,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -2598,6 +2730,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "46981-Newwworld.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -2613,6 +2746,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "46982-Newwworld.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -2628,6 +2762,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Thinfish.png",
       "inventory footprint height": 3,
       "inventory footprint width": 1,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -2643,6 +2778,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Grand Fish.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -2658,6 +2794,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "51662-Newwworld.mod.51666-Newwworld.mod.51665-Newwworld.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -2671,6 +2808,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "51663-Newwworld.mod.51661-Newwworld.mod.51664-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 1
     }
@@ -2684,6 +2822,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Carpet Fancy Rug.png",
       "inventory footprint height": 2,
       "inventory footprint width": 8,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -2699,6 +2838,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "54546-Newwworld.mod.54545-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 13,
       "item function": 14,
       "slot": 7,
       "stackable": 100,
@@ -2714,6 +2854,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "54547-Newwworld.mod.54545-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -2729,6 +2870,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "54549-Newwworld.mod.54545-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 2,
+      "inventory sound": 13,
       "item function": 14,
       "slot": 7,
       "stackable": 100,
@@ -2744,6 +2886,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "62795-Newwworld.mod.62796-Newwworld.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 2
     }
@@ -2757,6 +2900,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "63234-Newwworld.mod.2312-clothes_v1.mod.2173-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 2
     }
@@ -2770,6 +2914,8 @@ export const GAMEDATA_ITEMS = {
       "icon": "63235-Newwworld.mod.63236-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "inventory sound": 16,
+      "material type": 1,
       "slot": 5,
       "weight kg": 1
     }
@@ -2783,6 +2929,8 @@ export const GAMEDATA_ITEMS = {
       "icon": "63744-Newwworld.mod.63745-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "inventory sound": 16,
+      "material type": 1,
       "slot": 5,
       "weight kg": 1
     }
@@ -2796,6 +2944,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64888-Newwworld.mod.64889-Newwworld.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 12
     }
@@ -2809,6 +2958,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64890-Newwworld.mod.64889-Newwworld.mod.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 9,
       "weight kg": 8
     }
@@ -2822,6 +2972,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64891-Newwworld.mod.64889-Newwworld.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 6,
       "weight kg": 25
     }
@@ -2835,6 +2986,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64892-Newwworld.mod.64889-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 35
     }
@@ -2848,6 +3000,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64906-Newwworld.mod.64908-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 9
     }
@@ -2861,6 +3014,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64907-Newwworld.mod.64908-Newwworld.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 6,
       "weight kg": 6
     }
@@ -2965,6 +3119,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "95872-Newwworld.mod.95998-Newwworld.mod.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 13,
       "item function": 16,
       "slot": 7,
       "stackable": 1,
@@ -2980,6 +3135,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96000-Newwworld.mod.95999-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 5,
+      "inventory sound": 13,
       "item function": 16,
       "slot": 7,
       "stackable": 1,
@@ -3151,6 +3307,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1532813-Newwworld.mod.1532814-Newwworld.mod.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 6,
       "weight kg": 9
     }
@@ -3164,6 +3321,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1532828-Newwworld.mod.1532829-Newwworld.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 2,
       "slot": 3,
       "weight kg": 6
     }
@@ -3177,6 +3335,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533508-Newwworld.mod.1533512-Newwworld.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 20
     }
@@ -3190,6 +3349,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533509-Newwworld.mod.1533512-Newwworld.mod.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 9,
       "weight kg": 5
     }
@@ -3203,6 +3363,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533510-Newwworld.mod.1533512-Newwworld.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 3,
       "slot": 3,
       "weight kg": 6
     }
@@ -3216,6 +3377,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533511-Newwworld.mod.1533512-Newwworld.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 6,
       "weight kg": 20
     }
@@ -3229,6 +3391,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Leather Vest Hive.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 8,
       "weight kg": 1
     }
@@ -3242,6 +3405,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Carpet Economy Rug.png",
       "inventory footprint height": 2,
       "inventory footprint width": 8,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -3257,6 +3421,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light IV.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3272,6 +3437,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Birth Of The Phoenix.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3287,6 +3453,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3302,6 +3469,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3317,6 +3485,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Book Of Grace.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3332,6 +3501,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Scripture of Radiance III.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3347,6 +3517,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3362,6 +3533,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3377,6 +3549,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3392,6 +3565,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3407,6 +3581,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3422,6 +3597,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light III.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3437,6 +3613,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Scripture of Radiance IV.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3452,6 +3629,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Little Boy.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -3467,6 +3645,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3482,6 +3661,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3497,6 +3677,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3512,6 +3693,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3527,6 +3709,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3542,6 +3725,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "gas lantern icon.png",
       "inventory footprint height": 2,
       "inventory footprint width": 1,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 14,
       "stackable": 1,
@@ -3557,6 +3741,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3572,6 +3757,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3587,6 +3773,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Holy Crusade.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3602,6 +3789,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Way Of The Warrior.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -3617,6 +3805,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "49487-Dialogue.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3632,6 +3821,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light VI.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3647,6 +3837,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3662,6 +3853,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3677,6 +3869,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Scripture of Radiance II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3692,6 +3885,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3707,6 +3901,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3722,6 +3917,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3737,6 +3933,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3752,6 +3949,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Kral\u0027s Last Stand.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -3767,6 +3965,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3782,6 +3981,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Scripture of Radiance V.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3797,6 +3997,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Forbidden Sympathy.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3812,6 +4013,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Book Of Sacrifice.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3827,6 +4029,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3842,6 +4045,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3857,6 +4061,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3872,6 +4077,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3887,6 +4093,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3902,6 +4109,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3917,6 +4125,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3932,6 +4141,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3947,6 +4157,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Scripture of Radiance I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3962,6 +4173,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "A Holy Purpose.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3977,6 +4189,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -3992,6 +4205,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Shager\u0027s Overthrow.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -4007,6 +4221,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Guiding Light V.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4022,6 +4237,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "King Shager\u0027s Reign.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -4037,6 +4253,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4052,6 +4269,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4067,6 +4285,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4082,6 +4301,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4097,6 +4317,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4112,6 +4333,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4127,6 +4349,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4142,6 +4365,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4157,6 +4381,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4172,6 +4397,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4187,6 +4413,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Cannibal Plains.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4202,6 +4429,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Mass Extinction II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4217,6 +4445,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Mass Extinction III.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4232,6 +4461,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Mass Extinction IV.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4247,6 +4477,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Mass Extinction I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4262,6 +4493,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Mystery Of Skele II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4277,6 +4509,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Mystery Of Skele I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4292,6 +4525,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Okranite Theories I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4307,6 +4541,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Okranite Theories II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4322,6 +4557,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cultural Groupings And Evolution I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4337,6 +4573,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cultural Groupings And Evolution II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4352,6 +4589,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Lost Ancients II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4367,6 +4605,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Lost Ancients I.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4382,6 +4621,8 @@ export const GAMEDATA_ITEMS = {
       "icon": "51707-Dialogue.mod.2187-gamedata.base.18913-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "inventory sound": 16,
+      "material type": 0,
       "slot": 5,
       "weight kg": 1
     }
@@ -4395,6 +4636,8 @@ export const GAMEDATA_ITEMS = {
       "icon": "51746-Dialogue.mod.2187-gamedata.base.18913-gamedata.base.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "inventory sound": 16,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -4408,6 +4651,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4423,6 +4667,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4438,6 +4683,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4453,6 +4699,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4468,6 +4715,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4483,6 +4731,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly .png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4498,6 +4747,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly II.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4513,6 +4763,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly III.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4528,6 +4779,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly IV.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4543,6 +4795,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly V.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4558,6 +4811,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4573,6 +4827,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4588,6 +4843,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4603,6 +4859,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4618,6 +4875,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4633,6 +4891,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4674,6 +4933,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4689,6 +4949,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4704,6 +4965,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4719,6 +4981,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4734,6 +4997,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4749,6 +5013,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4764,6 +5029,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4779,6 +5045,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4794,6 +5061,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4809,6 +5077,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4824,6 +5093,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4839,6 +5109,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4854,6 +5125,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4869,6 +5141,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4884,6 +5157,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4899,6 +5173,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Chalice Of Fire.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -4914,6 +5189,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Mystery Sack.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -4929,6 +5205,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Membership Pack.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -4944,6 +5221,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly VI.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4959,6 +5237,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4974,6 +5253,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -4989,6 +5269,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5004,6 +5285,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5019,6 +5301,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5034,6 +5317,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5049,6 +5333,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "RagDoll_icon.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5064,6 +5349,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5092,6 +5378,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5107,6 +5394,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Gurgler Head.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "inventory sound": 10,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5122,6 +5410,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "United Weekly VII.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5137,6 +5426,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5152,6 +5442,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5167,6 +5458,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5182,6 +5474,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "98632-Dialogue.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5197,6 +5490,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5212,6 +5506,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5227,6 +5522,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533445-Dialogue.mod.54545-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5242,6 +5538,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Damaged Book.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 13,
       "slot": 7,
       "stackable": 4,
@@ -5257,6 +5554,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "shackles_icon.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 20
     }
@@ -5270,6 +5568,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Teeth.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5285,6 +5584,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cup.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 7,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5300,6 +5600,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -5313,6 +5614,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Gohan.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -5328,6 +5630,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Grind Machine.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5343,6 +5646,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Old Map.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 10,
@@ -5358,6 +5662,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Skin.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5373,6 +5678,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "43948-rebirth.mod.4003-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 5,
@@ -5390,6 +5696,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5405,6 +5712,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Raw Meat.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 19,
       "item function": 15,
       "slot": 7,
       "stackable": 1,
@@ -5420,6 +5728,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Pearl Cup.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5435,6 +5744,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Hinge.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5450,6 +5760,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Claw.png",
       "inventory footprint height": 2,
       "inventory footprint width": 1,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5465,6 +5776,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Meatwrap.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -5480,6 +5792,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "docs.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -5493,6 +5806,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Wooden Bowl.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 7,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5508,6 +5822,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Small Emperor Statue .png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5523,6 +5838,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Pearl Urn.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5538,6 +5854,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5553,6 +5870,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Pearl Sword Holder.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5568,6 +5886,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "45555-changes_otto.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 3,
       "stackable bonus mult": 3,
@@ -5585,6 +5904,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "bad food.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5600,6 +5920,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Motor.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5615,6 +5936,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "42021-rebirth.mod.2312-clothes_v1.mod.18913-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 2
     }
@@ -5628,6 +5950,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Capacitor.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5643,6 +5966,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "46036-rebirth.mod.686-gamedata.base.1297-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -5660,6 +5984,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Skeleton Muscle.png",
       "inventory footprint height": 1,
       "inventory footprint width": 5,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5675,6 +6000,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Copper.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 9,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5690,6 +6016,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "45556-changes_otto.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -5703,6 +6030,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Empty Rum Bottle.png",
       "inventory footprint height": 4,
       "inventory footprint width": 3,
+      "inventory sound": 12,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5718,6 +6046,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "iron plates.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "inventory sound": 1,
       "item function": 7,
       "slot": 7,
       "stackable": 1,
@@ -5733,6 +6062,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Dustwich.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -5748,6 +6078,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Tools.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 9,
       "slot": 7,
       "stackable": 1,
@@ -5763,6 +6094,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cactus.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5778,6 +6110,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Chewsticks.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -5793,6 +6126,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 0.4
     }
@@ -5806,6 +6140,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5821,6 +6156,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5836,6 +6172,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cotton.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 16,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5851,6 +6188,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem2.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "stackable": 1,
       "weight kg": 0
     }
@@ -5864,6 +6202,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Leviathan Pearl.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 17,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5879,6 +6218,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Foodcube.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -5894,6 +6234,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "AI Core.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5909,6 +6250,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Riceweed.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5924,6 +6266,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "46037-rebirth.mod.686-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -5941,6 +6284,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Carbon.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 9,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -5956,6 +6300,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "foul meat.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 19,
       "item function": 15,
       "slot": 7,
       "stackable": 1,
@@ -5971,6 +6316,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -5986,6 +6332,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Ration Pack.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -6001,6 +6348,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -6014,6 +6362,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Press.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6029,6 +6378,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -6042,6 +6392,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Horn.png",
       "inventory footprint height": 3,
       "inventory footprint width": 1,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6057,6 +6408,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "46042-rebirth.mod.5263-lanterns_otto.mod.2173-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 3,
       "stackable bonus mult": 3,
@@ -6074,6 +6426,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlueprintsLargered.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 11,
       "slot": 7,
       "stackable": 4,
@@ -6089,6 +6442,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "45554-changes_otto.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 4,
       "inventory footprint width": 5,
+      "inventory sound": 0,
       "slot": 12,
       "stackable bonus minimum": 1,
       "stackable bonus mult": 1,
@@ -6106,6 +6460,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Electrical Components.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 11,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6121,6 +6476,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "42060-rebirth.mod.2312-clothes_v1.mod.2173-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 2
     }
@@ -6134,6 +6490,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Gears.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6149,6 +6506,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Fog Prince Head.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "inventory sound": 10,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6164,6 +6522,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Damaged Book.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 4,
@@ -6179,6 +6538,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6194,6 +6554,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Skeleton Eye.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6209,6 +6570,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Ceramic Bowl.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 7,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6224,6 +6586,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "42052-rebirth.mod.2311-clothes_v1.mod.2173-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 15
     }
@@ -6237,6 +6600,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Cooked Vegetables.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -6252,6 +6616,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Bloodrum.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 12,
       "item function": 8,
       "slot": 7,
       "stackable": 1,
@@ -6267,6 +6632,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Greenfruit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6282,6 +6648,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Wrench.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6297,6 +6664,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Dried Meat.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -6312,6 +6680,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "44921-rebirth.mod.5263-lanterns_otto.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6327,6 +6696,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Grog.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 12,
       "item function": 8,
       "slot": 7,
       "stackable": 1,
@@ -6342,6 +6712,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Pearl Vase.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6357,6 +6728,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Generator Core.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 11,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6372,6 +6744,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Dried Gristle Flaps.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -6387,6 +6760,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Power Core.png",
       "inventory footprint height": 2,
       "inventory footprint width": 6,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6402,6 +6776,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "The Holy Flame.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6417,6 +6792,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Empty Grog Can.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6432,6 +6808,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -6445,6 +6822,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6460,6 +6838,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Sake.png",
       "inventory footprint height": 3,
       "inventory footprint width": 2,
+      "inventory sound": 12,
       "item function": 8,
       "slot": 7,
       "stackable": 1,
@@ -6475,6 +6854,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Ancient Science Book.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 0,
       "slot": 7,
       "stackable": 4,
@@ -6490,6 +6870,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "42260-rebirth.mod.2311-clothes_v1.mod.42261-rebirth.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 6,
       "weight kg": 7
     }
@@ -6503,6 +6884,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "copper plates.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "inventory sound": 17,
       "item function": 7,
       "slot": 7,
       "stackable": 1,
@@ -6518,6 +6900,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Horn of the Megaraptor.png",
       "inventory footprint height": 5,
       "inventory footprint width": 2,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -6533,6 +6916,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Human Teeth.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 6,
       "item function": 15,
       "slot": 7,
       "stackable": 1,
@@ -6548,6 +6932,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6563,6 +6948,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6578,6 +6964,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "stackable": 1,
       "weight kg": 1
     }
@@ -6591,6 +6978,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "stackable": 1,
       "weight kg": 1
     }
@@ -6604,6 +6992,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "stackable": 1,
       "weight kg": 1
     }
@@ -6617,6 +7006,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -6630,6 +7020,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "docs.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "stackable": 1,
       "weight kg": 1
     }
@@ -6643,6 +7034,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "51640-rebirth.mod.2152-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 2
     }
@@ -6656,6 +7048,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "51642-rebirth.mod.2312-clothes_v1.mod.1533581-rebirth.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 5,
       "weight kg": 2
     }
@@ -6669,6 +7062,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "NinjaShirt.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 8,
       "weight kg": 1
     }
@@ -6682,6 +7076,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "51708-rebirth.mod.14519-gamedata.base.1253-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 20
     }
@@ -6695,6 +7090,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6710,6 +7106,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -6933,6 +7330,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "53299-rebirth.mod.2181-gamedata.base.2173-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 9
     }
@@ -6946,6 +7344,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "53301-rebirth.mod.2181-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 9
     }
@@ -6972,6 +7371,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "54582-rebirth.mod.2199-gamedata.base.54583-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 4
     }
@@ -6985,6 +7385,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "55393-rebirth.mod.55394-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -6998,6 +7399,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "55395-rebirth.mod.55394-rebirth.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "material type": 1,
       "slot": 3,
       "weight kg": 1
     }
@@ -7011,6 +7413,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "56042-rebirth.mod.2147-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 5
     }
@@ -7024,6 +7427,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Megacrab Ganglion.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 17,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7039,6 +7443,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "SleepingBag01_Icon.png",
       "inventory footprint height": 3,
       "inventory footprint width": 5,
+      "inventory sound": 2,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7054,6 +7459,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7069,6 +7475,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7084,6 +7491,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7099,6 +7507,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Ancient Nutri-Rations.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 4,
       "item function": 3,
       "slot": 7,
       "stackable": 1,
@@ -7114,6 +7523,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "62178-rebirth.mod.3060-gamedata.base.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 4
     }
@@ -7127,6 +7537,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "inv_trousers_u.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -7140,6 +7551,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7155,6 +7567,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Damaged Book.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7170,6 +7583,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "64923-rebirth.mod.2312-clothes_v1.mod.16862-gamedata.base.png",
       "inventory footprint height": 4,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 6,
       "weight kg": 1
     }
@@ -7222,6 +7636,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "95781-rebirth.mod.96003-Newwworld.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 4,
+      "inventory sound": 13,
       "item function": 16,
       "slot": 7,
       "stackable": 1,
@@ -7237,6 +7652,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7291,6 +7707,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96014-rebirth.mod.96015-rebirth.mod.png",
       "inventory footprint height": 1,
       "inventory footprint width": 3,
+      "inventory sound": 13,
       "item function": 16,
       "slot": 7,
       "stackable": 1,
@@ -7319,6 +7736,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "108-limbs.mod.96009-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7334,6 +7752,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "110-limbs.mod.96009-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7349,6 +7768,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "109-limbs.mod.96009-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7364,6 +7784,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "111-limbs.mod.96009-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7379,6 +7800,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "112-limbs.mod.96010-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7394,6 +7816,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "114-limbs.mod.96010-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7409,6 +7832,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "113-limbs.mod.96010-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7424,6 +7848,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "115-limbs.mod.96010-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7439,6 +7864,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Human Left Arm.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7454,6 +7880,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Human Left Leg.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7469,6 +7896,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Human Right Arm.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7484,6 +7912,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Human Right Leg.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7499,6 +7928,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Shek Left Arm.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7514,6 +7944,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Shek Left Leg.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7529,6 +7960,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Shek Right Arm.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7544,6 +7976,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Severed Shek Right Leg.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7559,6 +7992,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -7572,6 +8006,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -7585,6 +8020,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Letter.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7600,6 +8036,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96901-limbs.mod.96905-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7615,6 +8052,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96906-limbs.mod.96910-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7630,6 +8068,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96911-limbs.mod.96915-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7645,6 +8084,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96902-limbs.mod.96905-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7660,6 +8100,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96907-limbs.mod.96910-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7675,6 +8116,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96912-limbs.mod.96915-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7690,6 +8132,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96903-limbs.mod.96905-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7705,6 +8148,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96908-limbs.mod.96910-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7720,6 +8164,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96913-limbs.mod.96915-limbs.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7735,6 +8180,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96904-limbs.mod.96905-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7750,6 +8196,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96909-limbs.mod.96910-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7765,6 +8212,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "96914-limbs.mod.96915-limbs.mod.png",
       "inventory footprint height": 7,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 17,
       "slot": 7,
       "stackable": 1,
@@ -7780,6 +8228,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Crossbow Components.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7795,6 +8244,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "springbars.png",
       "inventory footprint height": 1,
       "inventory footprint width": 4,
+      "inventory sound": 13,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7823,6 +8273,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Skel Rep Kit.png",
       "inventory footprint height": 2,
       "inventory footprint width": 3,
+      "inventory sound": 5,
       "item function": 12,
       "slot": 7,
       "stackable": 1,
@@ -7838,6 +8289,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Skin GW.png",
       "inventory footprint height": 3,
       "inventory footprint width": 6,
+      "inventory sound": 6,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7853,6 +8305,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "98562-rebirth.mod.2199-gamedata.base.1255-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 0
     }
@@ -7866,6 +8319,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "98563-rebirth.mod.2199-gamedata.base.1255-gamedata.base.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 0,
       "slot": 3,
       "weight kg": 0
     }
@@ -7879,6 +8333,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "book1.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 2,
       "item function": 13,
       "slot": 7,
       "stackable": 1,
@@ -7894,6 +8349,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem2.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -7907,6 +8363,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -7920,6 +8377,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlueprintsLargegreen.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 11,
       "slot": 7,
       "stackable": 1,
@@ -7935,6 +8393,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "BlueprintsLargeyellow.png",
       "inventory footprint height": 1,
       "inventory footprint width": 1,
+      "inventory sound": 18,
       "item function": 11,
       "slot": 7,
       "stackable": 1,
@@ -7950,6 +8409,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7965,6 +8425,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7980,6 +8441,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -7995,6 +8457,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -8010,6 +8473,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -8023,6 +8487,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -8038,6 +8503,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533849-rebirth.mod.1533854-rebirth.mod.png",
       "inventory footprint height": 6,
       "inventory footprint width": 4,
+      "material type": 3,
       "slot": 5,
       "weight kg": 30
     }
@@ -8051,6 +8517,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1533852-rebirth.mod.1533853-rebirth.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "material type": 2,
       "slot": 3,
       "weight kg": 6
     }
@@ -8064,6 +8531,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit2.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -8079,6 +8547,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "CPU Unit.png",
       "inventory footprint height": 3,
       "inventory footprint width": 3,
+      "inventory sound": 14,
       "item function": 0,
       "slot": 7,
       "stackable": 1,
@@ -8094,6 +8563,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "mapitem.png",
       "inventory footprint height": 2,
       "inventory footprint width": 2,
+      "inventory sound": 18,
       "stackable": 1,
       "weight kg": 0.2
     }
@@ -8107,6 +8577,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Chain Shirt Hive.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -8120,6 +8591,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1534057-Newwworld Plus.mod.1534059-Newwworld Plus.mod.png",
       "inventory footprint height": 5,
       "inventory footprint width": 4,
+      "material type": 1,
       "slot": 5,
       "weight kg": 5
     }
@@ -8133,6 +8605,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "1534055-Newwworld Plus.mod.1534056-Newwworld Plus.mod.png",
       "inventory footprint height": 3,
       "inventory footprint width": 4,
+      "material type": 0,
       "slot": 3,
       "weight kg": 1
     }
@@ -8146,6 +8619,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Chain Shirt Blackened Hive.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -8159,6 +8633,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Chain Shirt Rusted Hive.png",
       "inventory footprint height": 2,
       "inventory footprint width": 4,
+      "material type": 2,
       "slot": 8,
       "weight kg": 10
     }
@@ -8172,6 +8647,7 @@ export const GAMEDATA_ITEMS = {
       "icon": "Animal Claw.png",
       "inventory footprint height": 2,
       "inventory footprint width": 1,
+      "inventory sound": 4,
       "item function": 0,
       "slot": 7,
       "stackable": 1,

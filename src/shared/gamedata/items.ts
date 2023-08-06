@@ -185,3 +185,36 @@ export enum ItemFuncion {
   ItemAmmo,
   ItemSeveredLimb,
 }
+
+export enum InventorySound {
+  Backpack,
+  BuildingMaterial,
+  Fabric,
+  Flour,
+  Food,
+  Kits,
+  Leather,
+  Luxury,
+  Narcotics,
+  Ore,
+  Potato,
+  RoboticComponent,
+  Rum,
+  SteelBar,
+  Tools,
+  Water,
+  Wheat,
+  ArmorPlating,
+  Blueprints,
+  Meat,
+  // custom
+  Misc,
+  Weapon,
+}
+
+export enum MaterialType {
+  MaterialCloth,
+  MaterialLeather,
+  MaterialChain,
+  MaterialMetalPlate,
+}

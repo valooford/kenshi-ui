@@ -3,6 +3,7 @@ import type { PropType } from 'vue'
 
 import IconButton from './IconButton.vue'
 import ItemInfo from './ItemInfo.vue'
+import { emulateDragAndDropApi } from '@/shared/utils'
 
 export const DEBOUNCE_MS = 16 // ~60 fps
 const EMPTY_IMAGE = new Image()
@@ -69,6 +70,20 @@ export default {
   methods: {
     onClose() {
       this.$emit('close')
+    },
+    onMouseLeftDown(e: MouseEvent) {
+      // emulate Drag-and-Drop API
+      // motivation: custom cursor
+      emulateDragAndDropApi({
+        element: e.target as Element,
+        elementPointX: e.clientX,
+        elementPointY: e.clientY,
+        screenX: e.clientX,
+        screenY: e.clientY,
+        shiftKey: e.shiftKey,
+        iWillRelease: true,
+      })
+      e.preventDefault()
     },
     onDragStart(e: DragEvent) {
       this.pointer = { x: e.clientX, y: e.clientY }
@@ -153,7 +168,7 @@ export default {
       <div class="window__content" @mousedown="onFocus" v-bind="$attrs" ref="window__content">
         <div
           class="header section"
-          draggable="true"
+          @mousedown.left="onMouseLeftDown"
           @dragstart="onDragStart"
           @drag="onDrag"
           @dragend="onDragEnd"

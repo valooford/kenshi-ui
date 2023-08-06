@@ -102,7 +102,6 @@ export default {
   line-height: 18px;
   letter-spacing: 0.02em;
   white-space: pre;
-  cursor: pointer;
 }
 .sections__item_selected {
   color: var(--color-goodBright);

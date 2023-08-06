@@ -15,7 +15,6 @@ export default {
 <style scoped>
 .button {
   background-image: url('src/assets/Kenshi_UI.png');
-  cursor: pointer;
 }
 /* close */
 .button_close {

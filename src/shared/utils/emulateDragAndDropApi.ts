@@ -29,7 +29,15 @@ export const emulateDragAndDropApi = ({
     const { clientX: pClientX, clientY: pClientY } = e
     const clientX = pClientX + pointerShift.x
     const clientY = pClientY + pointerShift.y
-    element?.dispatchEvent(new DragEvent('drag', { clientX, clientY, bubbles: true }))
+    element?.dispatchEvent(
+      new DragEvent('drag', {
+        clientX,
+        clientY,
+        screenX: clientX,
+        screenY: clientY,
+        bubbles: true,
+      })
+    )
     const newElementToOver = document.elementFromPoint(clientX, clientY)
     if (elementToOver !== newElementToOver) {
       elementToOver?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))

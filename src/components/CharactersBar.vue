@@ -100,7 +100,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #313131;
-  cursor: pointer;
 }
 .characters-button:before {
   /* overlap the text if it's near the edge */

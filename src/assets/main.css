@@ -28,6 +28,10 @@
 #root {
   height: 100vh;
   font-family: Exo2, sans-serif;
+  overflow: hidden;
+}
+#root * {
+  cursor: none;
 }
 
 ::-webkit-scrollbar {

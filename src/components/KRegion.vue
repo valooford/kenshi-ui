@@ -190,6 +190,8 @@ export default {
           // enables cells to be picked with document.elementFromPoint() calls
           const itemsWrapperEl = this.$refs.itemsWrapper as HTMLElement
           itemsWrapperEl.style.pointerEvents = 'none'
+          // emulate Drag-and-Drop API
+          // motivation: continuous (re)placement logic
           await emulateDragAndDropApi({
             element: elementToEmulateDraggingOn,
             elementPointX: elementPointX!,

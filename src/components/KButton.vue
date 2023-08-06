@@ -26,7 +26,6 @@ export default {
   background-image: linear-gradient(to bottom, #2c2c2c 50%, #272727 50%);
   box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
   border: 3px solid #000;
-  cursor: pointer;
 }
 .button_sm {
   padding: 0 12px;
@@ -40,7 +39,6 @@ export default {
 }
 .button:disabled {
   color: #000;
-  cursor: default;
 }
 .button:hover:not(:disabled) {
   color: var(--color-title);

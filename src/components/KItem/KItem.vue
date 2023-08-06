@@ -99,6 +99,7 @@ export default {
       // (not the preview one) will enable us to use native Drag-and-Drop once again.
       if (!e.defaultPrevented) {
         // emulate Drag-and-Drop API
+        // motivation: increase drop area by casting ray from item center, not the cursor itself --> UX improvement
         emulateDragAndDropApi({
           element: el,
           elementPointX: e.clientX,

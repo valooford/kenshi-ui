@@ -5,6 +5,7 @@ import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
 import KButton from '@/components/KButton.vue'
+import CustomCursor from '@/components/CustomCursor.vue'
 
 export default {
   components: {
@@ -12,6 +13,7 @@ export default {
     CssVariablesProvider,
     KSeam,
     KButton,
+    CustomCursor,
   },
   inject: ['store', 'dispatch', 'audio'],
   data() {
@@ -102,6 +104,7 @@ export default {
       </div>
       <div class="controls__right"></div>
     </div>
+    <CustomCursor />
   </CssVariablesProvider>
 </template>
 

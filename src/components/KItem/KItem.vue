@@ -226,7 +226,7 @@ export default {
         alt=""
         draggable="false"
         :style="{
-          width,
+          minWidth: width, // prevent horizontal narrowing when moving off the right edge of the page
           height,
         }"
       />

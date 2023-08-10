@@ -96,7 +96,7 @@ declare type IBackpackItemIdRaw = `IBackpackItem_${string}`
 declare type IBackpackItemId = Brand<IBackpackItemIdRaw, IBackpackItem>
 declare interface IBackpackItem extends IItemBase {
   readonly id: NotBrand<IBackpackItemIdRaw>
-  readonly innerRegionId: IRegionId
+  readonly innerRegionId: IBackpackInnerRegionId
   isOpened: boolean
 }
 
@@ -187,8 +187,8 @@ type WithTypeMappedItems<
     : ConstructRegionItemMap<IRegionIdRaw, RegionType, IItemObjId>) // default
 // -------------
 
-type IRegionObjId = IRegionId | IBackpackRegionId
-type IRegionObjIdRaw = IRegionIdRaw | IBackpackRegionIdRaw
+type IRegionObjId = IRegionId | IBackpackRegionId | IBackpackInnerRegionId
+type IRegionObjIdRaw = IRegionIdRaw | IBackpackRegionIdRaw | IBackpackInnerRegionIdRaw
 
 // - basic region
 declare type IRegionIdRaw = `IRegion_${string}`
@@ -204,6 +204,14 @@ declare type IBackpackRegionId = Brand<IBackpackRegionIdRaw, 'IBackpackRegion'>
 declare type IBackpackRegion = IRegionBase & {
   readonly id: NotBrand<IBackpackRegionIdRaw>
   readonly type: 'backpack'
+}
+
+// - backpack inner region
+declare type IBackpackInnerRegionIdRaw = `IBackpackInnerRegion_${string}`
+declare type IBackpackInnerRegionId = Brand<IBackpackInnerRegionIdRaw, 'IBackpackInnerRegion'>
+declare type IBackpackInnerRegion = IRegionBase & {
+  readonly id: NotBrand<IBackpackInnerRegionIdRaw>
+  readonly type: Exclude<IRegionType, keyof IRegionAndItemIdByRegionTypeMap>
 }
 
 // inventory owner
@@ -260,6 +268,7 @@ declare interface IStore {
     // [id: Brand<string, any>]: never
     [id: IRegionId]: IRegion
     [id: IBackpackRegionId]: IBackpackRegion
+    [id: IBackpackInnerRegionId]: IRegion
   }
   characters: {
     // [id: Brand<string, any>]: never

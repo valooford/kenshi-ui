@@ -6,7 +6,7 @@ export default {}
   <div class="gear">
     <div>
       <em class="text">Total Weight:</em>
-      <em class="text">43/57<br />-Weightless</em>
+      <em class="text">0/57<br />-Weightless</em>
     </div>
     <div>
       <em class="text">Disguise:</em>

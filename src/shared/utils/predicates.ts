@@ -18,6 +18,7 @@ export const isBackpack = (item: IItemObj): item is IBackpackItem =>
 
 export const isRegionId = isCertainId<IRegionId>('IRegion_')
 export const isBackpackRegionId = isCertainId<IBackpackRegionId>('IBackpackRegion_')
+export const isBackpackInnerRegionId = isCertainId<IBackpackInnerRegionId>('IBackpackInnerRegion_')
 
 export const isCharacterId = isCertainId<ICharacterId>('ICharacter_')
 export const isRegistryId = (id: any): id is IRegistryId => id === 'IRegistry_id'

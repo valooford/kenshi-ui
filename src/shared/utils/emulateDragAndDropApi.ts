@@ -7,6 +7,7 @@ interface IEmulateDragAndDropApiParameters {
   pointerShift?: IPoint
   shiftKey?: boolean
   iWillRelease: boolean
+  disableDragover?: boolean
 }
 
 /** @description Initiates drag events on overlapped elements while listening for respective mouse events */
@@ -19,6 +20,7 @@ export const emulateDragAndDropApi = ({
   pointerShift = { x: 0, y: 0 },
   shiftKey = false,
   iWillRelease,
+  disableDragover,
 }: IEmulateDragAndDropApiParameters) => {
   const dataTransfer = new DataTransfer()
   dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
@@ -38,13 +40,15 @@ export const emulateDragAndDropApi = ({
         bubbles: true,
       })
     )
-    const newElementToOver = document.elementFromPoint(clientX, clientY)
-    if (elementToOver !== newElementToOver) {
-      elementToOver?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
-      newElementToOver?.dispatchEvent(new DragEvent('dragenter', { dataTransfer, bubbles: true }))
-      elementToOver = newElementToOver
+    if (!disableDragover) {
+      const newElementToOver = document.elementFromPoint(clientX, clientY)
+      if (elementToOver !== newElementToOver) {
+        elementToOver?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
+        newElementToOver?.dispatchEvent(new DragEvent('dragenter', { dataTransfer, bubbles: true }))
+        elementToOver = newElementToOver
+      }
+      elementToOver?.dispatchEvent(new DragEvent('dragover', { clientX, clientY, bubbles: true }))
     }
-    elementToOver?.dispatchEvent(new DragEvent('dragover', { clientX, clientY, bubbles: true }))
   }
 
   const mouseDropEvent = iWillRelease ? 'mouseup' : 'mousedown'
@@ -59,30 +63,34 @@ export const emulateDragAndDropApi = ({
     })
   )
 
-  const overlappedElement = document.elementFromPoint(screenX, screenY) //! maybe inaccurate, because it's not the item's center
-  overlappedElement?.dispatchEvent(new DragEvent('dragenter', { dataTransfer, bubbles: true }))
+  if (!disableDragover) {
+    const overlappedElement = document.elementFromPoint(screenX, screenY) //! maybe inaccurate, because it's not the item's center
+    overlappedElement?.dispatchEvent(new DragEvent('dragenter', { dataTransfer, bubbles: true }))
+  }
 
   return new Promise<void>((resolve) => {
     const onMouseDropEvent = (e: MouseEvent) => {
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener(mouseDropEvent, onMouseDropEvent)
       setTimeout(() => {
-        const elementToDrop = document.elementFromPoint(
-          e.clientX + pointerShift.x,
-          e.clientY + pointerShift.y
-        )
-        elementToDrop?.dispatchEvent(
-          new DragEvent('drop', {
-            clientX: e.clientX + pointerShift.x,
-            clientY: e.clientY + pointerShift.y,
-            dataTransfer,
-            bubbles: true,
-            // setting cancelable=true is crucial because it allows to check
-            // defaultPrevented property to see if the drop was successful
-            cancelable: true,
-          })
-        )
-        elementToDrop?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
+        if (!disableDragover) {
+          const elementToDrop = document.elementFromPoint(
+            e.clientX + pointerShift.x,
+            e.clientY + pointerShift.y
+          )
+          elementToDrop?.dispatchEvent(
+            new DragEvent('drop', {
+              clientX: e.clientX + pointerShift.x,
+              clientY: e.clientY + pointerShift.y,
+              dataTransfer,
+              bubbles: true,
+              // setting cancelable=true is crucial because it allows to check
+              // defaultPrevented property to see if the drop was successful
+              cancelable: true,
+            })
+          )
+          elementToDrop?.dispatchEvent(new DragEvent('dragleave', { bubbles: true }))
+        }
         element?.dispatchEvent(new DragEvent('dragend', { dataTransfer, bubbles: true }))
         resolve()
       }, 0)

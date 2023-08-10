@@ -16,6 +16,7 @@ import {
   isBackpack,
   isRegionId,
   isBackpackRegionId,
+  isBackpackInnerRegionId,
   isCharacterId,
   isRegistryId,
 } from '@/shared/utils'
@@ -74,7 +75,7 @@ export default {
         return this.createAmountItem(item)
       }
       if (isBackpack(item)) {
-        const innerRegion = this.regions[item.innerRegionId as IRegionId]!
+        const innerRegion = this.regions[item.innerRegionId]!
         return this.createBackpackItem(item as IBackpackItem, innerRegion)
       }
       return this.createItem(item)
@@ -91,7 +92,7 @@ export default {
     ): IBackpackItemId {
       const rawId = `IBackpackItem_${nanoid()}` as const
       const id = rawId as IBackpackItemId
-      const innerRegionId = this.createRegion(regionAttrs)
+      const innerRegionId = this.createBackpackInnerRegion(regionAttrs)
       this.items[id] = { ...attrs, id: rawId, type: ItemType.Backpack, innerRegionId }
       return id
     },
@@ -172,6 +173,14 @@ export default {
       this.regions[id] = { ...attrs, id: rawId, items: [] }
       return id
     },
+    createBackpackInnerRegion(
+      attrs: Omit<IBackpackInnerRegion, 'id' | 'items'>
+    ): IBackpackInnerRegionId {
+      const rawId = `IBackpackInnerRegion_${nanoid()}` as const
+      const id = rawId as IBackpackInnerRegionId
+      this.regions[id] = { ...attrs, id: rawId as any, items: [] } //! temp: any
+      return id
+    },
     updateRegion(id: IRegionObjId, region: IRegionObj, secure?: boolean) {
       if (id === this.registry.regionId && !secure) return // prevent the unwanted updates of registry region
 
@@ -179,6 +188,8 @@ export default {
         this.regions[id] = region as IRegion
       } else if (isBackpackRegionId(id)) {
         this.regions[id] = region as IBackpackRegion
+      } else if (isBackpackInnerRegionId(id)) {
+        this.regions[id] = region as IBackpackInnerRegion
       } else throw Error('RegionId of unknown type encountered')
     },
     clearRegion(id: IRegionObjId, secure?: boolean) {
@@ -339,7 +350,11 @@ export default {
         pos.x < 0 ||
         pos.y < 0 ||
         pos.x + item.w > region.w ||
-        pos.y + item.h > region.h
+        pos.y + item.h > region.h ||
+        // or non-empty backpack placing inside another backpack
+        (isBackpack(item) &&
+          isBackpackInnerRegionId(regionId) &&
+          this.regions[item.innerRegionId]!.items.length)
       )
         return { success: false }
 
@@ -780,6 +795,14 @@ export default {
       const region = this.regions[regionId]!
       const item = this.items[id]!
 
+      // if non-empty backpack placing inside another backpack
+      if (
+        isBackpack(item) &&
+        isBackpackInnerRegionId(regionId) &&
+        this.regions[item.innerRegionId]!.items.length
+      )
+        return 1
+
       if (isAmountItem(item)) {
         const itemType = item.type || ItemType.Misc
         const typeStackRestriction = region.stack?.find(({ type }) => type === itemType)
@@ -883,7 +906,7 @@ export default {
       return null
     },
     initCharacters() {
-      this.createCharacter('Character 1')
+      this.selectCharacter(this.createCharacter('Character 1'))
       this.createCharacter('Character 2')
       this.createCharacter('Character 3')
     },

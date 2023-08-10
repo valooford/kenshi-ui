@@ -7,6 +7,12 @@ import KSeam from '@/components/KSeam.vue'
 import KButton from '@/components/KButton.vue'
 import CustomCursor from '@/components/CustomCursor.vue'
 import KGame from '@/components/KGame.vue'
+import BriefInfo from '@/components/BriefInfo.vue'
+import ConditionInfo from '@/components/ConditionInfo.vue'
+import OutpostInfo from '@/components/OutpostInfo.vue'
+import GameControls from '@/components/GameControls.vue'
+import CharacterBehavior from '@/components/CharacterBehavior.vue'
+import NavMenu from '@/components/NavMenu.vue'
 
 export default {
   components: {
@@ -16,6 +22,12 @@ export default {
     KButton,
     CustomCursor,
     KGame,
+    BriefInfo,
+    ConditionInfo,
+    OutpostInfo,
+    GameControls,
+    CharacterBehavior,
+    NavMenu,
   },
   inject: ['store', 'dispatch', 'audio'],
   data() {
@@ -45,6 +57,22 @@ export default {
     onKeyDown(e: KeyboardEvent) {
       if (e.repeat) return
       switch (e.code) {
+        case 'Digit1':
+        case 'Digit2':
+        case 'Digit3':
+        case 'Digit4':
+        case 'Digit5':
+        case 'Digit6':
+        case 'Digit7':
+        case 'Digit8':
+        case 'Digit9':
+        case 'Digit0': {
+          const index = (+e.code.charAt(e.code.length - 1) || 10) - 1
+          if (index < this.s.charactersList.length) {
+            this.onSelectCharacter(this.s.charactersList[index]!)
+          }
+          break
+        }
         case 'Tab':
           e.preventDefault()
           if (!this.s.selectedCharacter) {
@@ -89,40 +117,37 @@ export default {
 </script>
 
 <template>
-  <CssVariablesProvider class="menu">
-    <KSeam />
-    <div class="items-container">
-      <KButton size="default" @click="d.toggleRegistry">REGISTRY</KButton>
-    </div>
-    <div class="controls">
-      <div class="controls__left"></div>
-      <div class="controls__flex">
-        <CharactersBar
-          :characters="charactersArr"
-          :selected="s.selectedCharacter"
-          @select="onSelectCharacter"
-          @trade="d.openRelatedSeamInventory"
-        />
-      </div>
-      <div class="controls__right"></div>
-    </div>
+  <CssVariablesProvider class="container">
     <KGame />
+    <KSeam />
+    <div class="layout">
+      <BriefInfo />
+      <ConditionInfo />
+      <CharactersBar
+        :characters="charactersArr"
+        :selected="s.selectedCharacter"
+        @select="onSelectCharacter"
+        @trade="d.openRelatedSeamInventory"
+      />
+      <NavMenu />
+      <GameControls>
+        <CharacterBehavior />
+        <template #outpost>
+          <KButton size="default" @click="d.toggleRegistry">REGISTRY</KButton>
+          <OutpostInfo />
+        </template>
+      </GameControls>
+    </div>
     <CustomCursor />
   </CssVariablesProvider>
 </template>
 
 <style scoped>
-.menu {
+.container {
   position: relative;
   height: 100%;
 }
-.items-container {
-  position: absolute;
-  right: 0;
-  bottom: 255px;
-  padding: 4px;
-}
-.controls {
+.layout {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -132,39 +157,8 @@ export default {
   gap: 4px;
   pointer-events: none;
 }
-.controls > * {
+.layout > * {
   pointer-events: all;
-}
-.controls__left {
-  position: relative;
-  overflow: hidden;
-
-  /* temp: must be content-determined */
-  min-width: 556px;
-  min-height: 322px;
-}
-.controls__right {
-  position: relative;
-  overflow: hidden;
-
-  /* temp: must be content-determined */
-  min-width: 564px;
-  min-height: 255px;
-}
-.controls__left:before,
-.controls__right:before {
-  content: '';
-  position: absolute;
-  top: min(-50vw, -50vh);
-  left: min(-50vw, -50vh);
-  width: max(200vw, 200vh);
-  height: max(200vw, 200vh);
-  background-size: 20px 20px;
-  background-image: linear-gradient(to right, #151515 0 25%, #1d1d1d 25% 75%, #151515 75% 100%);
-  transform: rotate(50deg);
-}
-.controls__flex {
-  flex: 1 1;
 }
 </style>
 

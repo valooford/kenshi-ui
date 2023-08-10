@@ -73,7 +73,7 @@ export default {
 <style scoped>
 .context-menu {
   position: fixed;
-  width: v-bind(MENU_WIDTH + 'px');
+  width: v-bind('`${MENU_WIDTH}px`');
   padding: 4px;
   background-color: #1d1d1d;
   border: 4px solid #000;

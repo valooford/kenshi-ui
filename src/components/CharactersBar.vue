@@ -62,6 +62,7 @@ export default {
 
 <style scoped>
 .characters {
+  flex: 1 1;
   position: relative;
   height: 166px;
   padding: 10px 12px 20px;

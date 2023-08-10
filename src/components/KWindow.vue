@@ -1,11 +1,11 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+import { emulateDragAndDropApi, throttle } from '@/shared/utils'
 
 import IconButton from './IconButton.vue'
 import ItemInfo from './ItemInfo.vue'
-import { emulateDragAndDropApi } from '@/shared/utils'
 
-export const DEBOUNCE_MS = 16 // ~60 fps
+export const THROTTLE_MS = 16 // ~60 fps
 const EMPTY_IMAGE = new Image()
 EMPTY_IMAGE.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
 
@@ -30,15 +30,15 @@ export default {
   },
   data() {
     return {
+      THROTTLE_MS,
       cssVariables: this.cssVariables,
       pos: { x: -1000, y: -1000 } as IPoint,
       pointer: { x: -1000, y: -1000 } as IPoint,
       initialized: false,
       focused: false,
-      cooldown: false,
-      updateRequested: false,
       hoveredItemStringId: null as IItemObjId | null,
       isFreeSpaceBlockedRight: false,
+      updatePosThrottled: throttle(this.updatePos as () => void, THROTTLE_MS),
     }
   },
   computed: {
@@ -52,19 +52,7 @@ export default {
   watch: {
     finalPos(newPos: IPoint, prevPos: IPoint) {
       if (newPos.x === prevPos.x && newPos.y === prevPos.y) return
-      if (this.cooldown) {
-        this.updateRequested = true
-        return
-      }
-      this.updatePos()
-      this.cooldown = true
-      setTimeout(() => {
-        this.cooldown = false
-        if (this.updateRequested) {
-          this.updateRequested = false
-          this.updatePos()
-        }
-      }, DEBOUNCE_MS)
+      this.updatePosThrottled()
     },
   },
   methods: {
@@ -82,6 +70,7 @@ export default {
         screenY: e.clientY,
         shiftKey: e.shiftKey,
         iWillRelease: true,
+        disableDragover: true,
       })
       e.preventDefault()
     },
@@ -116,9 +105,12 @@ export default {
     },
     updatePos() {
       const windowEl = this.$refs.window as HTMLDivElement
+      const x = this.finalPos.x
+      const y = this.finalPos.y
+
       requestAnimationFrame(() => {
-        windowEl.style.left = `${this.finalPos.x}px`
-        windowEl.style.top = `${this.finalPos.y}px`
+        windowEl.style.left = `${x}px`
+        windowEl.style.top = `${y}px`
       })
     },
     onShowItemInfo(e: CustomEvent) {
@@ -205,7 +197,7 @@ export default {
 }
 .window_initialized {
   position: fixed;
-  /* DEBOUNCE_MS */
+  /* THROTTLE_MS */
   transition: top linear 16ms, left linear 16ms;
 }
 .window_active,

@@ -17,6 +17,12 @@ export default {
         cursor.style.display = 'block'
       }
     },
+    //! todo: catch scrolling with mouse and move the cursor accordingly
+    // onScrollDrag(e: Event) {
+    //   setTimeout(() => {
+    //     // ...
+    //   }, 0)
+    // },
     onMouseLeave(e: PointerEvent) {
       if (e.defaultPrevented) return
       const cursor = this.$refs.cursor as HTMLElement
@@ -30,12 +36,14 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener('pointermove', this.onMouseMove)
+    document.addEventListener('pointermove', this.onMouseMove)
+    // document.addEventListener('scroll', this.onScrollDrag, { capture: true })
     document.addEventListener('pointerleave', this.onMouseLeave)
     document.addEventListener('pointerenter', this.onMouseEnter)
   },
   unmounted() {
-    window.removeEventListener('pointermove', this.onMouseMove)
+    document.removeEventListener('pointermove', this.onMouseMove)
+    // document.removeEventListener('scroll', this.onScrollDrag, { capture: true })
     document.removeEventListener('pointerleave', this.onMouseLeave)
     document.removeEventListener('pointerenter', this.onMouseEnter)
   },

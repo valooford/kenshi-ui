@@ -1,16 +1,15 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { emulateDragAndDropApi, throttle } from '@/shared/utils'
-
-import IconButton from './IconButton.vue'
-import ItemInfo from './ItemInfo.vue'
+import { SpriteIconButton } from '@/ui/SpriteIcon'
+import KText from '@/ui/KText.vue'
 
 export const THROTTLE_MS = 16 // ~60 fps
 const EMPTY_IMAGE = new Image()
 EMPTY_IMAGE.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs='
 
 export default {
-  components: { IconButton, ItemInfo },
+  components: { SpriteIconButton, KText },
   inject: ['cssVariables'],
   props: {
     title: { type: String, required: true },
@@ -36,7 +35,7 @@ export default {
       pointer: { x: -1000, y: -1000 } as IPoint,
       initialized: false,
       focused: false,
-      hoveredItemStringId: null as IItemObjId | null,
+      hoveredObjectId: null as IItemObjId | null,
       isFreeSpaceBlockedRight: false,
       updatePosThrottled: throttle(this.updatePos as () => void, THROTTLE_MS),
     }
@@ -115,14 +114,14 @@ export default {
     },
     onShowItemInfo(e: CustomEvent) {
       e.stopPropagation()
-      this.hoveredItemStringId = e.detail
+      this.hoveredObjectId = e.detail
       const rect = (this.$refs.window as HTMLDivElement).getBoundingClientRect()
       const right = document.documentElement.clientWidth - rect.right
       this.isFreeSpaceBlockedRight = right < 323
     },
     onHideItemInfo(e: CustomEvent) {
       e.stopPropagation()
-      this.hoveredItemStringId = null
+      this.hoveredObjectId = null
     },
   },
   inheritAttrs: false,
@@ -150,7 +149,7 @@ export default {
         initialized && 'window_initialized',
         focused && 'window_active',
         hasAlignedSlots && 'window_has-aligned',
-        hoveredItemStringId && 'window_info',
+        hoveredObjectId && 'window_info',
       ]"
       :style="cssVariables as any"
       @ki-iteminfoshow="onShowItemInfo"
@@ -165,10 +164,10 @@ export default {
           @drag="onDrag"
           @dragend="onDragEnd"
         >
-          {{ title }}
+          <KText variant="alt">{{ title }}</KText>
           <div class="header__buttons">
-            <!-- <IconButton variant="o" /> -->
-            <IconButton variant="close" @click="onClose" />
+            <!-- <SpriteIconButton variant="o" /> -->
+            <SpriteIconButton variant="close" @click="onClose" />
           </div>
         </div>
         <div class="section">
@@ -177,12 +176,12 @@ export default {
       </div>
       <div class="left-aligned">
         <div class="left-aligned__inner">
-          <slot name="left-aligned"></slot>
+          <slot name="left-aligned" />
         </div>
       </div>
       <div :class="['free-space-aligned', isFreeSpaceBlockedRight && 'free-space-aligned_left']">
-        <div v-if="hoveredItemStringId" class="section free-space-aligned__inner">
-          <ItemInfo :string-id="hoveredItemStringId" />
+        <div v-if="hoveredObjectId" class="section free-space-aligned__inner">
+          <slot name="free-space-aligned" :id="hoveredObjectId" />
         </div>
       </div>
     </div>
@@ -220,11 +219,7 @@ export default {
 .header {
   position: relative;
   line-height: 30px;
-  color: #9c9c9c;
   text-align: center;
-  font-family: Sentencia, sans-serif;
-  font-size: 17px;
-  text-shadow: 1px 1px 1px #000;
   background-image: linear-gradient(to bottom, #2c2c2c 50%, #272727 50%);
   border-bottom: 5px solid #000;
   user-select: none;

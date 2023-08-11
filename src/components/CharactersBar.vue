@@ -1,11 +1,12 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { isCharacterId } from '@/shared/utils'
+import KText from '@/ui/KText.vue'
 
-import { CharacterContextMenu } from './ContextMenu'
+import CharacterContextMenu from './CharacterContextMenu.vue'
 
 export default {
-  components: { CharacterContextMenu },
+  components: { CharacterContextMenu, KText },
   props: {
     characters: { type: Array as PropType<ICharacter[]>, required: true },
     selected: {
@@ -53,7 +54,9 @@ export default {
         @click="isCharacterId(c.id) ? onSelect(c.id) : undefined"
       >
         <div class="characters-button__text">
-          <div class="characters-button__text_centered">{{ c.name }}</div>
+          <div class="characters-button__text_centered">
+            <KText color="label">{{ c.name }}</KText>
+          </div>
         </div>
       </button>
     </CharacterContextMenu>
@@ -129,13 +132,6 @@ export default {
   position: absolute;
   left: 50%;
   bottom: 2px;
-  color: #fff;
-  font-family: Exo2, sans-serif;
-  font-size: 87%;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
 }
 .characters-button__text_centered {
   position: relative;

@@ -1,6 +1,5 @@
 <script lang="ts">
-import type { IContextMenuItem } from './interface'
-import ContextMenu from './ContextMenu.vue'
+import ContextMenu, { type IContextMenuItem } from '@/ui/ContextMenu'
 
 export enum CharacterContextMenuAction {
   Trade = 'trade',

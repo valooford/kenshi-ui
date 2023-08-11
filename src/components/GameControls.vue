@@ -1,12 +1,13 @@
 <script lang="ts">
 import KBox from '@/ui/KBox.vue'
 import KText from '@/ui/KText.vue'
+import { SpriteIconButton } from '@/ui/SpriteIcon'
 import iconSprite from '@/assets/img/Kenshi_UI.png'
-
-import IconButton from './IconButton.vue'
+import RunningModeSelector from './RunningModeSelector.vue'
+import FloorSelector from './FloorSelector.vue'
 
 export default {
-  components: { IconButton, KBox, KText },
+  components: { SpriteIconButton, KBox, KText, RunningModeSelector, FloorSelector },
   data() {
     return { iconSprite }
   },
@@ -20,10 +21,10 @@ export default {
     </div>
     <div class="controls">
       <div class="time">
-        <IconButton variant="pause" />
-        <IconButton variant="normal" selected />
-        <IconButton variant="faster" />
-        <IconButton variant="fastest" />
+        <SpriteIconButton variant="pause" />
+        <SpriteIconButton variant="normal" selected />
+        <SpriteIconButton variant="faster" />
+        <SpriteIconButton variant="fastest" />
       </div>
       <KBox class="info">
         <div class="pair">
@@ -36,23 +37,13 @@ export default {
         </div>
       </KBox>
       <KBox class="construction">
-        <IconButton variant="construction" />
+        <SpriteIconButton variant="construction" />
       </KBox>
-      <div class="floor">
-        <div class="floor__content">
-          <IconButton variant="rhombus" />
-          <IconButton variant="arrow-top" class="floor__up" />
-          <IconButton variant="arrow-bottom" class="floor__down" />
-          <KText class="floor__text">Floor 0</KText>
-        </div>
-      </div>
       <div class="running">
-        <div class="runnung__content">
-          <IconButton variant="rhombus" />
-          <IconButton variant="arrow-left" class="running__prev" />
-          <IconButton variant="arrow-right" class="running__next" />
-          <IconButton variant="run-together" class="running__icon" />
-        </div>
+        <RunningModeSelector />
+      </div>
+      <div class="floor">
+        <FloorSelector />
       </div>
     </div>
     <div class="children">
@@ -81,6 +72,7 @@ export default {
   gap: 5px;
 }
 .time {
+  display: flex;
   width: 200px;
   padding: 8px 0 6px 8px;
   background-image: v-bind('`url("${iconSprite}")`');
@@ -105,49 +97,10 @@ export default {
   left: -101px;
   top: -10px;
 }
-.runnung__content {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.running__prev {
-  position: absolute;
-  transform: scale(0.8);
-  left: 6px;
-}
-.running__next {
-  position: absolute;
-  transform: scale(0.8);
-  right: 6px;
-}
-.running__icon {
-  position: absolute;
-  transform: scale(0.7);
-}
 .floor {
   position: absolute;
   left: -61px;
   top: -78px;
-}
-.floor__content {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.floor__up {
-  position: absolute;
-  transform: scale(0.8);
-  top: 6px;
-}
-.floor__down {
-  position: absolute;
-  transform: scale(0.8);
-  bottom: 6px;
-}
-.floor__text {
-  position: absolute;
 }
 .children {
   align-self: stretch;

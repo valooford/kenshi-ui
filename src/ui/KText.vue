@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 
 type ITextVariant = 'default' | 'alt'
-type ITextColor = 'default' | 'title' | 'greyed' | 'good' | 'bad'
+type ITextColor = 'default' | 'label' | 'title' | 'attendant' | 'greyed' | 'good' | 'bad'
 
 export default {
   props: {
@@ -37,9 +37,20 @@ export default {
 .text_alt {
   font-family: Sentencia, sans-serif;
   font-size: 17px;
+  text-transform: uppercase;
+}
+.text_label {
+  color: #fff;
+  font-size: 87%;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
 }
 .text_title {
   color: var(--color-title);
+}
+.text_attendant {
+  color: var(--color-main);
 }
 .text_greyed {
   color: var(--color-greyed);

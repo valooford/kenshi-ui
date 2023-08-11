@@ -1,12 +1,14 @@
 <script lang="ts">
 import { isAmountItemId, isBackpackItemId } from '@/shared/utils'
 import { GAMEDATA_ITEMS_SECTIONS, GAMEDATA_ITEMS_SECTIONS_LIST } from '@/shared/gamedata'
+import KText from '@/ui/KText.vue'
+import KWindow from '@/ui/KWindow.vue'
 
 import { AmountItem, BackpackItem, KItem } from './KItem'
-import KWindow from './KWindow.vue'
+import ItemInfo from './ItemInfo.vue'
 
 export default {
-  components: { KWindow, KItem, AmountItem, BackpackItem },
+  components: { KWindow, KItem, AmountItem, BackpackItem, KText, ItemInfo },
   inject: ['store', 'dispatch'],
   data() {
     return {
@@ -42,16 +44,17 @@ export default {
 
 <template>
   <KWindow auto-focus :centered="true" title="Registry" @close="d.toggleRegistry">
+    <template v-slot:free-space-aligned="slotProps">
+      <ItemInfo :string-id="slotProps.id" />
+    </template>
     <div class="wrapper">
       <div class="sections">
         <ul class="sections__content">
           <li v-for="section in GAMEDATA_ITEMS_SECTIONS_LIST" :key="section">
-            <button
-              type="button"
-              :class="['sections__item', section === data.section && 'sections__item_selected']"
-              @click="d.selectRegistrySection(section)"
-            >
-              {{ GAMEDATA_ITEMS_SECTIONS[section] }}
+            <button type="button" class="sections__item" @click="d.selectRegistrySection(section)">
+              <KText :color="section === data.section ? 'good' : 'default'">{{
+                GAMEDATA_ITEMS_SECTIONS[section]
+              }}</KText>
             </button>
           </li>
         </ul>
@@ -93,18 +96,11 @@ export default {
   overflow: auto;
 }
 .sections__item {
-  display: block;
   width: 100%;
-  color: #9c9c9c;
-  font-family: Exo2, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 18px;
-  letter-spacing: 0.02em;
   white-space: pre;
 }
-.sections__item_selected {
-  color: var(--color-goodBright);
+.text {
+  line-height: 18px;
 }
 .items {
   flex: 1;

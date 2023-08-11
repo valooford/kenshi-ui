@@ -1,11 +1,11 @@
 <script lang="ts">
 import KBox from '@/ui/KBox.vue'
 import KText from '@/ui/KText.vue'
-
-import KButton from './KButton.vue'
+import KButton from '@/ui/KButton.vue'
+import RadioButton from '@/ui/RadioButton.vue'
 
 export default {
-  components: { KButton, KBox, KText },
+  components: { KButton, KBox, KText, RadioButton },
   inject: ['store'],
   computed: {
     s() {
@@ -23,13 +23,13 @@ export default {
     <div class="container">
       <template v-if="character">
         <div class="radio-buttons">
-          <KButton type="radio">BLOCK</KButton>
-          <KButton type="radio">HOLD</KButton>
-          <KButton type="radio">PASSIVE</KButton>
-          <KButton type="radio">JOBS</KButton>
-          <KButton type="radio" is-selected>RANGED</KButton>
-          <KButton type="radio">TAUNT</KButton>
-          <KButton type="radio">SNEAK</KButton>
+          <RadioButton>BLOCK</RadioButton>
+          <RadioButton>HOLD</RadioButton>
+          <RadioButton>PASSIVE</RadioButton>
+          <RadioButton>JOBS</RadioButton>
+          <RadioButton>RANGED</RadioButton>
+          <RadioButton>TAUNT</RadioButton>
+          <RadioButton>SNEAK</RadioButton>
         </div>
         <div class="jobs">
           <div class="jobs__current">

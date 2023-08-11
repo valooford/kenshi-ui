@@ -8,8 +8,8 @@ import {
   emulateDragAndDropApi,
 } from '@/shared/utils'
 import { CELL_SIZE } from '@/shared/constants'
+import KCell from '@/ui/KCell.vue'
 
-import KCell from './KCell.vue'
 import KItem from './KItem/KItem.vue'
 import AmountItem from './KItem/AmountItem.vue'
 import BackpackItem from './KItem/BackpackItem.vue'

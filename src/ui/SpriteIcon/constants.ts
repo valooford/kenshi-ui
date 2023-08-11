@@ -1,40 +1,6 @@
-<script lang="ts">
-import type { PropType } from 'vue'
-import iconSprite from '@/assets/img/Kenshi_UI.png'
+import type { IIconParameters, IIconVariant } from './interface'
 
-interface IIconParameters {
-  w: number
-  h: number
-  x: number
-  y: number
-  hover?: { x: number; y: number }
-  active?: { x: number; y: number }
-  selected?: { x: number; y: number }
-}
-
-type IIconVariant =
-  | 'close'
-  | 'o'
-  | 'expand-less'
-  | 'expand-more'
-  | 'pause'
-  | 'normal'
-  | 'faster'
-  | 'fastest'
-  | 'construction'
-  | 'checkbox-off'
-  | 'checkbox-on'
-  | 'arrow-left'
-  | 'arrow-right'
-  | 'arrow-top'
-  | 'arrow-bottom'
-  | 'rhombus'
-  | 'walk'
-  | 'jog'
-  | 'run'
-  | 'run-together'
-
-const ICONS: Record<IIconVariant, IIconParameters> = {
+export const ICONS: Record<IIconVariant, IIconParameters> = {
   close: { w: 25, h: 26, x: 700, y: 544, hover: { x: 736, y: 544 }, active: { x: 772, y: 544 } },
   o: { w: 25, h: 26, x: 642, y: 422, hover: { x: 678, y: 422 }, active: { x: 714, y: 422 } },
   'expand-less': {
@@ -137,46 +103,3 @@ const ICONS: Record<IIconVariant, IIconParameters> = {
   run: { w: 44, h: 44, x: 1203, y: 768 },
   'run-together': { w: 44, h: 44, x: 1253, y: 768 },
 }
-
-export default {
-  props: {
-    variant: { type: String as PropType<IIconVariant>, required: true },
-    selected: { type: Boolean },
-  },
-  data() {
-    return { iconSprite }
-  },
-  computed: {
-    icon() {
-      return ICONS[this.variant]
-    },
-  },
-}
-</script>
-
-<template>
-  <button
-    :class="['button', selected && 'button_selected']"
-    :style="{ backgroundImage: `url(${iconSprite})` }"
-  />
-</template>
-
-<style scoped>
-.button {
-  background-position: v-bind('`${-icon.x}px`') v-bind('`${-icon.y}px`');
-  width: v-bind('`${icon.w}px`');
-  height: v-bind('`${icon.h}px`');
-}
-.button:hover {
-  background-position: v-bind('`${-(icon.hover || icon).x}px`')
-    v-bind('`${-(icon.hover || icon).y}px`');
-}
-.button:active {
-  background-position: v-bind('`${-(icon.active || icon).x}px`')
-    v-bind('`${-(icon.active || icon).y}px`');
-}
-.button_selected {
-  background-position: v-bind('`${-(icon.selected || icon).x}px`')
-    v-bind('`${-(icon.selected || icon).y}px`');
-}
-</style>

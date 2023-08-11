@@ -4,8 +4,6 @@ import type { IAudioDispatch } from '@/shared/interface'
 import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
-import KButton from '@/components/KButton.vue'
-import CustomCursor from '@/components/CustomCursor.vue'
 import KGame from '@/components/KGame.vue'
 import BriefInfo from '@/components/BriefInfo.vue'
 import ConditionInfo from '@/components/ConditionInfo.vue'
@@ -13,6 +11,8 @@ import OutpostInfo from '@/components/OutpostInfo.vue'
 import GameControls from '@/components/GameControls.vue'
 import CharacterBehavior from '@/components/CharacterBehavior.vue'
 import NavMenu from '@/components/NavMenu.vue'
+import CustomCursor from '@/ui/CustomCursor.vue'
+import KButton from '@/ui/KButton.vue'
 
 export default {
   components: {

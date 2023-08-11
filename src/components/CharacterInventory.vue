@@ -2,14 +2,16 @@
 import type { PropType } from 'vue'
 import { CommonSound, InventoryRegion, ItemType } from '@/shared/constants'
 import type { IAudioDispatch } from '@/shared/interface'
+import KButton from '@/ui/KButton.vue'
+import KText from '@/ui/KText.vue'
+import KWindow from '@/ui/KWindow.vue'
 
-import KWindow from './KWindow.vue'
 import KRegion from './KRegion.vue'
-import KButton from './KButton.vue'
 import CharacterGear from './CharacterGear.vue'
+import ItemInfo from './ItemInfo.vue'
 
 export default {
-  components: { KWindow, KRegion, KButton, CharacterGear },
+  components: { KWindow, KRegion, KButton, CharacterGear, KText, ItemInfo },
   inject: ['store', 'dispatch', 'audio'],
   props: {
     id: { type: String as PropType<string> as PropType<ICharacterId>, required: true },
@@ -91,6 +93,9 @@ export default {
 
 <template>
   <KWindow auto-focus :title="data.name" @drag="onWindowDrag" @close="d.closeSeamInventory">
+    <template v-slot:free-space-aligned="slotProps">
+      <ItemInfo :string-id="slotProps.id" />
+    </template>
     <template #left-aligned v-if="backpack?.isOpened">
       <KWindow
         title="BACKPACK"
@@ -98,6 +103,9 @@ export default {
         @move="onBackpackWindowMove"
         @close="toggleBackpack"
       >
+        <template v-slot:free-space-aligned="slotProps">
+          <ItemInfo :string-id="slotProps.id" />
+        </template>
         <div class="backpack">
           <KRegion v-if="backpack" :id="backpack.innerRegionId" />
           <div>
@@ -114,47 +122,49 @@ export default {
             <KButton size="lg" disabled>LIMBS</KButton>
           </div>
           <div class="stuff__group stuff__backpack">
-            <div class="region-label">-Backpack-</div>
+            <div class="region-label"><KText variant="alt">-Backpack-</KText></div>
             <KRegion :id="data.regions[InventoryRegion.Backpack]" />
           </div>
         </div>
         <div class="stuff__rows">
           <div class="stuff__group stuff__weapon1">
-            <div class="region-label region-label_start">Weapon I</div>
+            <div class="region-label region-label_start"><KText variant="alt">Weapon I</KText></div>
             <KRegion :id="data.regions[InventoryRegion.Weapon1]" />
           </div>
           <div class="stuff__row">
             <div class="stuff__group">
-              <div class="region-label region-label_start">Weapon II</div>
+              <div class="region-label region-label_start">
+                <KText variant="alt">Weapon II</KText>
+              </div>
               <KRegion :id="data.regions[InventoryRegion.Weapon2]" />
             </div>
             <div class="stuff__group">
-              <div class="region-label">Belt</div>
+              <div class="region-label"><KText variant="alt">Belt</KText></div>
               <KRegion :id="data.regions[InventoryRegion.Belt]" />
             </div>
           </div>
           <div class="stuff__row">
             <div class="stuff__group">
               <div class="stuff__group stuff__shirt">
-                <div class="region-label">Shirt</div>
+                <div class="region-label"><KText variant="alt">Shirt</KText></div>
                 <KRegion :id="data.regions[InventoryRegion.Shirt]" />
               </div>
               <div class="stuff__group">
-                <div class="region-label">Pants</div>
+                <div class="region-label"><KText variant="alt">Pants</KText></div>
                 <KRegion :id="data.regions[InventoryRegion.Pants]" />
               </div>
               <div class="stuff__group">
-                <div class="region-label">Boots</div>
+                <div class="region-label"><KText variant="alt">Boots</KText></div>
                 <KRegion :id="data.regions[InventoryRegion.Boots]" />
               </div>
             </div>
             <div class="stuff__group">
               <div class="stuff__group">
-                <div class="region-label">Head</div>
+                <div class="region-label"><KText variant="alt">Head</KText></div>
                 <KRegion :id="data.regions[InventoryRegion.Head]" />
               </div>
               <div class="stuff__group">
-                <div class="region-label">Armor</div>
+                <div class="region-label"><KText variant="alt">Armor</KText></div>
                 <KRegion :id="data.regions[InventoryRegion.Armor]" />
               </div>
             </div>
@@ -166,7 +176,7 @@ export default {
           <CharacterGear />
         </div>
         <div class="common_inventory stuff__group">
-          <div class="region-label">Inventory</div>
+          <div class="region-label"><KText variant="alt">Inventory</KText></div>
           <KRegion :id="data.regions[InventoryRegion.Inventory]" />
         </div>
         <div class="common_buttons">
@@ -184,13 +194,6 @@ export default {
   width: 487px;
   gap: 10px;
   padding: 9px 8px;
-}
-.region-label {
-  color: #9c9c9c;
-  font-family: Sentencia, sans-serif;
-  font-size: 17px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
 .stuff {
   flex: 1 1 256px;

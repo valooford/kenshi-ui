@@ -1,13 +1,17 @@
 <script lang="ts">
 import type { PropType } from 'vue'
+import KButton from '@/ui/KButton.vue'
+import KText from '@/ui/KText.vue'
 
-import KButton from '../KButton.vue'
-import type { IContextMenuItem } from './interface'
+export interface IContextMenuItem {
+  id: string
+  title: string
+}
 
 const MENU_WIDTH = 238
 
 export default {
-  components: { KButton },
+  components: { KButton, KText },
   inject: ['cssVariables'],
   props: {
     title: { type: String, required: true },
@@ -55,7 +59,7 @@ export default {
   </div>
   <teleport v-if="open" to="#root">
     <div class="context-menu" :style="[{ top: `${pY}px`, left: `${pX}px` }, cssVars]" ref="menu">
-      <div class="title">{{ title }}</div>
+      <KText>{{ title }}</KText>
       <div class="items">
         <KButton
           v-for="item in items"
@@ -80,14 +84,10 @@ export default {
   box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
   z-index: 1300;
 }
-.title {
-  color: #9c9c9c;
+.text {
+  display: block;
   text-align: center;
-  font-family: Exo2, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
   line-height: 25px;
-  letter-spacing: 0.02em;
 }
 .items {
   display: flex;

@@ -1,7 +1,6 @@
 <script lang="ts">
 import KBox from '@/ui/KBox.vue'
-
-import KButton from './KButton.vue'
+import KButton from '@/ui/KButton.vue'
 
 export default {
   components: { KBox, KButton },

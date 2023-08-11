@@ -1,11 +1,10 @@
 <script lang="ts">
 import KBox from '@/ui/KBox.vue'
 import KText from '@/ui/KText.vue'
-
-import IconButton from './IconButton.vue'
+import { SpriteIconButton } from '@/ui/SpriteIcon'
 
 export default {
-  components: { KBox, KText, IconButton },
+  components: { KBox, KText, SpriteIconButton },
   inject: ['store'],
   data() {
     return { isExpanded: false }
@@ -94,7 +93,10 @@ export default {
           </ul>
         </div>
         <div v-if="character" class="expand">
-          <IconButton :variant="isExpanded ? 'expand-less' : 'expand-more'" @click="toggleExpand" />
+          <SpriteIconButton
+            :variant="isExpanded ? 'expand-less' : 'expand-more'"
+            @click="toggleExpand"
+          />
         </div>
         <ul class="stats">
           <template v-if="character">

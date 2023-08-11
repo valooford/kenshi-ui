@@ -1,5 +1,6 @@
 <script lang="ts">
 import { GAMEDATA_ITEMS } from '@/shared/gamedata'
+import KText from '@/ui/KText.vue'
 
 export default {
   props: {
@@ -10,18 +11,19 @@ export default {
       return GAMEDATA_ITEMS[this.stringId]!
     },
   },
+  components: { KText },
 }
 </script>
 
 <template>
   <div class="info">
-    <div class="text name">{{ data.Name }}</div>
-    <div class="text text__pair" v-if="data.Values['weight kg']">
-      <span>-Weight</span>
-      <span>{{ data.Values['weight kg'] }} kg</span>
+    <KText color="title">{{ data.Name }}</KText>
+    <div class="pair" v-if="data.Values['weight kg']">
+      <KText color="attendant">-Weight</KText>
+      <KText color="attendant">{{ data.Values['weight kg'] }} kg</KText>
     </div>
-    <div class="text" v-if="data.Values.description">----------------</div>
-    <div class="text">{{ data.Values.description }}</div>
+    <KText color="attendant" v-if="data.Values.description">----------------</KText>
+    <KText color="attendant">{{ data.Values.description }}</KText>
   </div>
 </template>
 
@@ -32,18 +34,9 @@ export default {
 }
 .text {
   display: block;
-  color: var(--color-main);
-  font-family: Exo2, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  letter-spacing: 0.02em;
 }
-.text__pair {
+.pair {
   display: flex;
   justify-content: space-between;
-}
-.name {
-  color: var(--color-title);
 }
 </style>

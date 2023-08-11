@@ -3,7 +3,6 @@ import type { PropType } from 'vue'
 
 export default {
   props: {
-    type: { type: String as PropType<'default' | 'radio'>, default: 'default' },
     size: { type: String as PropType<'default' | 'sm' | 'md' | 'lg'>, default: 'default' },
     fullWidth: { type: Boolean },
     isSelected: { type: Boolean },
@@ -16,12 +15,11 @@ export default {
     :class="[
       'button',
       `button_${size}`,
-      type !== 'default' && `button_${type}`,
       fullWidth && 'button_full-width',
       isSelected && 'button_selected',
     ]"
   >
-    <div v-if="type === 'radio'" class="mark" />
+    <slot name="before"></slot>
     <div class="children">
       <slot></slot>
     </div>
@@ -50,26 +48,20 @@ export default {
 .button:disabled {
   color: #000;
 }
-.button:hover:not(:disabled) {
+.button:not(:disabled):hover {
   color: var(--color-title);
 }
-.button:hover:not(:disabled) .mark {
-  background-color: var(--color-title);
+.button:not(:disabled):active {
+  color: #66502b;
 }
 .button_default .children {
   padding: 0 5px;
-}
-.button:active .mark {
-  background-color: #3e311a;
 }
 .button_full-width {
   flex: 1;
 }
 .button_selected {
   color: #b0ad98;
-}
-.button_selected.button_radio .mark {
-  background-color: #b0ad98;
 }
 .button_sm .children {
   padding: 0 12px;
@@ -85,16 +77,6 @@ export default {
 }
 .button_lg .children {
   padding: 10px 12px 9px;
-}
-.button_radio {
-  line-height: 19px;
-}
-.mark {
-  width: 6px;
-  height: 6px;
-  margin: 6px;
-  background-color: #666666;
-  border-radius: 3px;
 }
 .children {
   flex: 1;

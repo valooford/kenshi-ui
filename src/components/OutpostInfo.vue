@@ -1,10 +1,9 @@
 <script lang="ts">
 import KBox from '@/ui/KBox.vue'
 import KText from '@/ui/KText.vue'
+import KCheckbox from '@/ui/KCheckbox.vue'
 
-import IconButton from './IconButton.vue'
-
-export default { components: { KText, KBox, IconButton } }
+export default { components: { KText, KBox, KCheckbox } }
 </script>
 
 <template>
@@ -16,7 +15,7 @@ export default { components: { KText, KBox, IconButton } }
       <div class="content">
         <div class="pair">
           <KText>Open to public:</KText>
-          <IconButton variant="checkbox-off" />
+          <KCheckbox />
         </div>
         <div class="pair">
           <KText>Research:</KText>

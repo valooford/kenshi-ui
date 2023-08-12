@@ -2,7 +2,7 @@
 import type { PropType } from 'vue'
 import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
 import { emulateDragAndDropApi } from '@/shared/utils'
-import type { IAudioDispatch } from '@/shared/interface'
+import type { IAudioContext } from '@/shared/interface'
 
 export default {
   inject: ['store', 'dispatch', 'audio'],
@@ -39,7 +39,7 @@ export default {
       return this.dispatch as IDispatch
     },
     a() {
-      return this.audio as IAudioDispatch
+      return this.audio as IAudioContext
     },
     data() {
       return this.s.items[this.id]!

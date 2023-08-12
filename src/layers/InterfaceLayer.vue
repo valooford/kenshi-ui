@@ -1,6 +1,6 @@
 <script lang="ts">
-import { CommonSound, ItemType } from '@/shared/constants'
-import type { IAudioDispatch } from '@/shared/interface'
+import { CommonSound, GameSpeed, ItemType } from '@/shared/constants'
+import type { IAudioContext } from '@/shared/interface'
 import CharactersBar from '@/components/CharactersBar.vue'
 import CssVariablesProvider from '@/components/CssVariablesProvider.vue'
 import KSeam from '@/components/KSeam.vue'
@@ -11,15 +11,15 @@ import OutpostInfo from '@/components/OutpostInfo.vue'
 import GameControls from '@/components/GameControls.vue'
 import CharacterBehavior from '@/components/CharacterBehavior.vue'
 import NavMenu from '@/components/NavMenu.vue'
+import ExtraFunctionality from '@/components/ExtraFunctionality.vue'
 import CustomCursor from '@/ui/CustomCursor.vue'
-import KButton from '@/ui/KButton.vue'
+import KPaused from '@/ui/KPaused.vue'
 
 export default {
   components: {
     CharactersBar,
     CssVariablesProvider,
     KSeam,
-    KButton,
     CustomCursor,
     KGame,
     BriefInfo,
@@ -28,10 +28,12 @@ export default {
     GameControls,
     CharacterBehavior,
     NavMenu,
+    KPaused,
+    ExtraFunctionality,
   },
   inject: ['store', 'dispatch', 'audio'],
   data() {
-    return { ItemType }
+    return { ItemType, GameSpeed }
   },
   computed: {
     s() {
@@ -41,7 +43,7 @@ export default {
       return this.dispatch as IDispatch
     },
     a() {
-      return this.audio as IAudioDispatch
+      return this.audio as IAudioContext
     },
     charactersArr() {
       return this.s.charactersList.map((id) => this.s.characters[id]!)
@@ -92,7 +94,48 @@ export default {
             this.d.closeSeamInventory()
           } else if (this.s.selectedCharacter) {
             this.d.resetSelectedCharacter()
-            this.a.playInventorySound(CommonSound.InventoryCloseEsc)
+            this.a.playCommonSound(CommonSound.InventoryCloseEsc)
+          }
+          break
+        case 'Space':
+          e.preventDefault() // prevent interaction with game speed-related buttons
+          if (this.s.gameParameters.gameSpeed === GameSpeed.Pause) {
+            this.d.revertGameSpeed()
+            this.a.playCommonSound(CommonSound.TimeStart)
+          } else {
+            this.d.setGameSpeed(GameSpeed.Pause)
+            this.a.playCommonSound(CommonSound.TimeStop)
+          }
+          break
+        case 'F2':
+          if (this.s.gameParameters.gameSpeed !== GameSpeed.Normal) {
+            if (this.s.gameParameters.gameSpeed === GameSpeed.Pause) {
+              this.a.playCommonSound(CommonSound.TimeStart)
+            } else {
+              this.a.playTickSound()
+            }
+            this.d.setGameSpeed(GameSpeed.Normal)
+          }
+          break
+        case 'F3':
+          e.preventDefault()
+          if (this.s.gameParameters.gameSpeed !== GameSpeed.Faster) {
+            if (this.s.gameParameters.gameSpeed === GameSpeed.Pause) {
+              this.a.playCommonSound(CommonSound.TimeStart)
+            } else {
+              this.a.playTickSound()
+            }
+            this.d.setGameSpeed(GameSpeed.Faster)
+          }
+          break
+        case 'F4':
+          if (this.s.gameParameters.gameSpeed !== GameSpeed.Fastest) {
+            if (this.s.gameParameters.gameSpeed === GameSpeed.Pause) {
+              this.a.playCommonSound(CommonSound.TimeStart)
+            } else {
+              this.a.playTickSound()
+            }
+            this.d.setGameSpeed(GameSpeed.Fastest)
           }
           break
         default:
@@ -119,6 +162,7 @@ export default {
 <template>
   <CssVariablesProvider class="container">
     <KGame />
+    <KPaused v-if="s.gameParameters.gameSpeed === GameSpeed.Pause" />
     <KSeam />
     <div class="layout">
       <BriefInfo />
@@ -133,7 +177,7 @@ export default {
       <GameControls>
         <CharacterBehavior />
         <template #outpost>
-          <KButton size="default" @click="d.toggleRegistry">REGISTRY</KButton>
+          <ExtraFunctionality />
           <OutpostInfo />
         </template>
       </GameControls>
@@ -161,5 +205,3 @@ export default {
   pointer-events: all;
 }
 </style>
-
-<style></style>

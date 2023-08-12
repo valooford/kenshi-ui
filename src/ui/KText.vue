@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 
-type ITextVariant = 'default' | 'alt'
+type ITextVariant = 'default' | 'alt' | 'huge'
 type ITextColor = 'default' | 'label' | 'title' | 'attendant' | 'greyed' | 'good' | 'bad'
 
 export default {
@@ -38,6 +38,13 @@ export default {
   font-family: Sentencia, sans-serif;
   font-size: 17px;
   text-transform: uppercase;
+}
+.text_huge {
+  color: #ded8cc;
+  font-family: MailartRubberstamp, sans-serif;
+  font-size: 76px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 .text_label {
   color: #fff;

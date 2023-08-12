@@ -1,7 +1,7 @@
 <script lang="ts">
 import { GAMEDATA_ITEMS, InventorySound, ItemType, MaterialType } from '@/shared/gamedata'
 import { CommonSound, SoundMilestone, BEDS, FRAMES, CANOPY } from '@/shared/constants'
-import type { IAudioDispatch } from '@/shared/interface'
+import type { IAudioContext } from '@/shared/interface'
 import gui from '@/assets/audio/gui.mp3'
 
 const AMBIENT_SOUND_SETTINGS = {
@@ -23,20 +23,24 @@ const AMBIENT_SOUND_SETTINGS = {
   canopyLeftMinThreshold: 10000,
   attemptFramesEvery: 15000,
   attemptCanopyEvery: 15000,
+  defaultVolume: 0.5,
 }
 
 export default {
   provide() {
     return {
       audio: {
+        ambientVolume: this.ambientVolume,
+        setAmbientVolume: this.setAmbientVolume,
         playTickSound: this.playTickSound,
-        playInventorySound: this.playInventorySound,
+        playCommonSound: this.playCommonSound,
         playItemSound: this.playItemSound,
-      } as IAudioDispatch,
+      } as IAudioContext,
     }
   },
   data() {
     return {
+      ambientVolume: { value: 0.5 },
       audio: new Audio(gui),
       timeoutId: null as number | null,
       bedsAudio: new Audio(),
@@ -61,7 +65,7 @@ export default {
       this.audio.currentTime = SoundMilestone.Common + CommonSound.Tick
       this.play()
     },
-    playInventorySound(sound: Parameters<IAudioDispatch['playInventorySound']>[0]) {
+    playCommonSound(sound: Parameters<IAudioContext['playCommonSound']>[0]) {
       this.audio.currentTime = SoundMilestone.Common + sound
       this.play()
     },
@@ -93,6 +97,21 @@ export default {
       this.play()
     },
     // Ambient sound
+    setAmbientVolume(volume = AMBIENT_SOUND_SETTINGS.defaultVolume) {
+      if (this.ambientVolume.value && !volume) {
+        // mute
+        this.bedsAudio.pause()
+        this.framesAudio.pause()
+        this.canopyAudio.pause()
+      } else if (!this.ambientVolume.value && volume) {
+        // umnute
+        this.scheduleNextAmbientSoundPlay()
+      }
+      this.ambientVolume.value = volume
+      this.bedsAudio.volume = volume
+      this.framesAudio.volume = volume
+      this.canopyAudio.volume = volume
+    },
     async playAmbientSound() {
       try {
         this.isAmbientScheduled = false
@@ -150,6 +169,7 @@ export default {
     },
     async onFramesSoundEnd() {
       this.isFramesInactive = true
+      if (!this.ambientVolume.value) return
       await Promise.resolve(0)
       if (this.isBedsInactive && this.isCanopyInactive) {
         this.scheduleNextAmbientSoundPlay()
@@ -185,6 +205,7 @@ export default {
     },
     async onCanopySoundEnd() {
       this.isCanopyInactive = true
+      if (!this.ambientVolume.value) return
       if (this.isBedsInactive && this.isFramesInactive) {
         this.scheduleNextAmbientSoundPlay()
         return
@@ -200,6 +221,7 @@ export default {
     },
   },
   created() {
+    this.setAmbientVolume()
     this.bedsAudio.addEventListener('ended', this.onBedsSoundEnd)
     this.framesAudio.addEventListener('ended', this.onFramesSoundEnd)
     this.canopyAudio.addEventListener('ended', this.onCanopySoundEnd)
@@ -209,6 +231,11 @@ export default {
       AMBIENT_SOUND_SETTINGS.startAfter,
       AMBIENT_SOUND_SETTINGS.startMaxDelay
     )
+  },
+  beforeUnmount() {
+    this.bedsAudio.removeEventListener('ended', this.onBedsSoundEnd)
+    this.framesAudio.removeEventListener('ended', this.onFramesSoundEnd)
+    this.canopyAudio.removeEventListener('ended', this.onCanopySoundEnd)
   },
 }
 </script>

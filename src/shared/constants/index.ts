@@ -1,8 +1,10 @@
 export * from './audio'
 export * from './cssVariables'
+export * from './enums'
 export * from './enumCounterparts'
 export * from './lists'
 export * from './maps'
+export * from './time'
 
 //! note: this block is being used to determine TypeScript language support progression in IDE of use
 const region: IRegionBase = {} as any

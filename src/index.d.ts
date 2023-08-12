@@ -257,6 +257,13 @@ declare interface ISeam {
 
 // store
 declare interface IStore {
+  gameParameters: {
+    gameSpeed: number
+    gameSpeedCf: number
+    gamePrevSpeed: number
+    time: number
+    gameTime: number
+  }
   items: {
     // on the contrary, the prohibition of branded keys
     // [id: Brand<string, any>]: never
@@ -285,6 +292,8 @@ declare type IRegionObj = IStore['regions'][keyof IStore['regions']]
 
 // dispatch actions
 declare interface IDispatch {
+  setGameSpeed: (speed: number) => void
+  revertGameSpeed: () => void
   selectCharacter: (id: ICharacterId) => void
   resetSelectedCharacter: () => void
   openMainSeamInventory: () => void

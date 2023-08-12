@@ -5,8 +5,10 @@ import {
   ItemType,
   RegionType,
   ItemTypeBySlot,
+  GameSpeed,
   NON_STACKABLE_FUNCTIONS,
   SCRAP_ITEM_FUNCTIONS,
+  HOUR_MS,
 } from '@/shared/constants'
 import {
   isItemId,
@@ -30,11 +32,16 @@ import {
 
 type IItemsMap = [string, number][][]
 
+const GAME_SPEED_CF = 360 // 1 min IRL = 6h ingame
+const INITIAL_GAME_TIME = (14 * HOUR_MS) / GAME_SPEED_CF // 2 p.m.
+
 export default {
   provide() {
     return {
       store: this.$data,
       dispatch: {
+        setGameSpeed: this.setGameSpeed,
+        revertGameSpeed: this.revertGameSpeed,
         selectCharacter: this.selectCharacter,
         resetSelectedCharacter: this.resetSelectedCharacter,
         openMainSeamInventory: this.openMainSeamInventory,
@@ -53,16 +60,38 @@ export default {
   },
   data() {
     return {
+      gameParameters: {
+        gameSpeed: GameSpeed.Normal,
+        gameSpeedCf: GAME_SPEED_CF,
+        gamePrevSpeed: GameSpeed.Normal,
+        time: Date.now(),
+        gameTime: INITIAL_GAME_TIME,
+      },
       items: {},
       regions: {},
       characters: {},
-      charactersList: [],
+      charactersList: [] as ICharacterId[],
       selectedCharacter: null,
       seam: { main: null, related: null },
       registry: {},
-    } as unknown as IStore
+    } as IStore
   },
   methods: {
+    // game parameters
+    setGameSpeed(speed: GameSpeed) {
+      if (!speed) {
+        this.gameParameters.gamePrevSpeed = this.gameParameters.gameSpeed
+      }
+      const dn = Date.now()
+      this.gameParameters.gameTime +=
+        (dn - this.gameParameters.time) * this.gameParameters.gameSpeed
+      this.gameParameters.gameSpeed = speed
+      this.gameParameters.time = dn
+    },
+    revertGameSpeed() {
+      this.setGameSpeed(this.gameParameters.gamePrevSpeed)
+    },
+
     // item
     createItem(attrs: Omit<IItem, 'id'>): IItemId {
       const rawId = `IItem_${nanoid()}` as const

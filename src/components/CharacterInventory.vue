@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { CommonSound, InventoryRegion, ItemType } from '@/shared/constants'
-import type { IAudioDispatch } from '@/shared/interface'
+import type { IAudioContext } from '@/shared/interface'
 import KButton from '@/ui/KButton.vue'
 import KText from '@/ui/KText.vue'
 import KWindow from '@/ui/KWindow.vue'
@@ -32,7 +32,7 @@ export default {
       return this.dispatch as IDispatch
     },
     a() {
-      return this.audio as IAudioDispatch
+      return this.audio as IAudioContext
     },
     data() {
       return this.s.characters[this.id]!
@@ -83,10 +83,10 @@ export default {
     if (this.backpackId) this.d.openBackpack(this.backpackId)
   },
   mounted() {
-    this.a.playInventorySound(CommonSound.InventoryOpen)
+    this.a.playCommonSound(CommonSound.InventoryOpen)
   },
   unmounted() {
-    this.a.playInventorySound(CommonSound.InventoryClose)
+    this.a.playCommonSound(CommonSound.InventoryClose)
   },
 }
 </script>

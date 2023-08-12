@@ -1,15 +1,31 @@
 <script lang="ts">
 // import background from '@/assets/img/background.jpg'
 import timelapse from '@/assets/video/background-timelapse.mp4'
+import { DAY_S, GameSpeed } from '@/shared/constants'
 
 const BLUR_RADIUS = 4
-const PLAYBACK_RATE = 0.5
 const VIDEO_WIDTH = 1280
 const VIDEO_HEIGHT = 720
 
 export default {
+  inject: ['store', 'audio'],
   data() {
-    return { timelapse, BLUR_RADIUS }
+    return { timelapse, BLUR_RADIUS, initialized: false, playbackRateCf: 1 }
+  },
+  computed: {
+    s() {
+      return this.store as IStore
+    },
+    gameSpeed() {
+      return this.s.gameParameters.gameSpeed
+    },
+  },
+  watch: {
+    gameSpeed(speed: number) {
+      if (!this.initialized) return
+      const timelapse = this.$refs.game as HTMLVideoElement
+      timelapse.playbackRate = speed * this.playbackRateCf
+    },
   },
   mounted() {
     // const gameCanvas = this.$refs.game as HTMLCanvasElement
@@ -67,7 +83,18 @@ export default {
     const shiftY = -BLUR_RADIUS - Math.max(0, (timelapse.height - h) / 2)
     timelapse.style.left = `${shiftX}px`
     timelapse.style.top = `${shiftY}px`
-    timelapse.playbackRate = PLAYBACK_RATE
+
+    const timelapseTargetDurationS = DAY_S / this.s.gameParameters.gameSpeedCf
+
+    timelapse.addEventListener(
+      'loadeddata',
+      () => {
+        this.initialized = true
+        this.playbackRateCf = timelapse.duration / timelapseTargetDurationS
+        timelapse.playbackRate = GameSpeed.Normal * this.playbackRateCf
+      },
+      { once: true }
+    )
   },
 }
 </script>

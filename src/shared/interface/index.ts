@@ -1,9 +1,16 @@
 import type { CommonSound } from '../constants'
 
-export interface IAudioDispatch {
+export interface IAudioContext {
+  ambientVolume: { value: number }
+  setAmbientVolume: (volume: number) => void
   playTickSound: () => void
-  playInventorySound: (
-    sound: CommonSound.InventoryOpen | CommonSound.InventoryClose | CommonSound.InventoryCloseEsc
+  playCommonSound: (
+    sound:
+      | CommonSound.TimeStart
+      | CommonSound.TimeStop
+      | CommonSound.InventoryOpen
+      | CommonSound.InventoryClose
+      | CommonSound.InventoryCloseEsc
   ) => void
   playItemSound: (stringId: string, type: 'drag' | 'drop') => void
 }

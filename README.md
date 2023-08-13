@@ -1,14 +1,14 @@
 # Kenshi UI
 
-<div style="margin: 0 auto 2rem; text-align: center; white-space: pre-wrap;">
+<pre align="center">
 Imagine managing inventory to the sound of a dark ambient music, while watching
 the day turns into night and vice versa, and so on, right in your browser.
 Well, that's what it's all about.
-</div>
+</pre>
 
 ![](docs/social-preview.png?raw=true)
 
-<div style="text-align: center;"><a href="https://valooford.github.io/kenshi-ui/">View Demo »</a></div>
+<div align="center"><a href="https://valooford.github.io/kenshi-ui/">View Demo »</a></div>
 
 ## About
 

@@ -9,6 +9,7 @@ import {
   NON_STACKABLE_FUNCTIONS,
   SCRAP_ITEM_FUNCTIONS,
   HOUR_MS,
+  CELL_SIZE,
 } from '@/shared/constants'
 import {
   isItemId,
@@ -67,6 +68,10 @@ export default {
         time: Date.now(),
         gameTime: INITIAL_GAME_TIME,
       },
+      uiParameters: {
+        rem: 1,
+        cellSize: CELL_SIZE,
+      },
       items: {},
       regions: {},
       characters: {},
@@ -90,6 +95,15 @@ export default {
     },
     revertGameSpeed() {
       this.setGameSpeed(this.gameParameters.gamePrevSpeed)
+    },
+
+    // ui parameters
+    updateSizings() {
+      const rem = parseFloat(
+        window.getComputedStyle(document.documentElement, null).getPropertyValue('font-size')
+      )
+      this.uiParameters.rem = rem
+      this.uiParameters.cellSize = CELL_SIZE * rem
     },
 
     // item
@@ -938,6 +952,13 @@ export default {
       this.selectCharacter(this.createCharacter('Character 1'))
       this.createCharacter('Character 2')
       this.createCharacter('Character 3')
+      this.createCharacter('Character 4')
+      this.createCharacter('Character 5')
+      this.createCharacter('Character 6')
+      this.createCharacter('Character 7')
+      this.createCharacter('Character 8')
+      this.createCharacter('Character 9')
+      this.createCharacter('Character 10')
     },
     initRegistry() {
       const id = 'IRegistry_id' as IRegistryId
@@ -954,6 +975,13 @@ export default {
   created() {
     this.initCharacters()
     this.initRegistry()
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateSizings)
+    this.updateSizings()
+  },
+  unmounted() {
+    window.removeEventListener('resize', this.updateSizings)
   },
 }
 </script>

@@ -1,4 +1,5 @@
 export * from './emulateDragAndDropApi'
 export * from './indexToCoords'
+export * from './mobileCheck'
 export * from './predicates'
 export * from './throttle'

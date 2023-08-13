@@ -44,6 +44,14 @@ export default {
       }
       this.d.setGameSpeed(speed)
     },
+    onVisibilityChange() {
+      if (document.hidden) {
+        this.d.setGameSpeed(GameSpeed.Pause)
+      }
+    },
+  },
+  created() {
+    document.addEventListener('visibilitychange', this.onVisibilityChange)
   },
   mounted() {
     const dayEl = this.$refs.day as HTMLElement
@@ -69,6 +77,7 @@ export default {
     if (typeof this.intervalId === 'number') {
       clearInterval(this.intervalId)
     }
+    document.removeEventListener('visibilitychange', this.onVisibilityChange)
   },
 }
 </script>
@@ -79,6 +88,12 @@ export default {
       <slot name="outpost" />
     </div>
     <div class="controls">
+      <div class="running">
+        <RunningModeSelector />
+      </div>
+      <div class="floor">
+        <FloorSelector />
+      </div>
       <div class="time-controls">
         <SpriteIconButton
           variant="pause"
@@ -114,12 +129,6 @@ export default {
       <KBox class="construction">
         <SpriteIconButton variant="construction" />
       </KBox>
-      <div class="running">
-        <RunningModeSelector />
-      </div>
-      <div class="floor">
-        <FloorSelector />
-      </div>
     </div>
     <div class="children">
       <slot />
@@ -132,52 +141,81 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
-  width: 483px;
+  gap: 4rem;
+  width: 483rem;
 }
 .outpost {
   display: flex;
   align-items: flex-end;
-  gap: 5px;
+  gap: 5rem;
 }
 .controls {
   position: relative;
   align-self: stretch;
   display: flex;
-  gap: 5px;
+  gap: 5rem;
 }
 .time-controls {
   display: flex;
-  width: 200px;
-  padding: 8px 0 6px 8px;
+  width: 200rem;
+  padding: 8rem 0 6rem 8rem;
   background-image: v-bind('`url("${iconSprite}")`');
-  background-position: -1423px -735px;
+  background-size: 1920rem 1080rem;
+  background-position: -1423rem -735rem;
 }
 .info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px 8px;
+  gap: 4rem;
+  padding: 4rem 8rem;
 }
 .pair {
   display: flex;
   justify-content: space-between;
+  gap: 16rem;
 }
 .construction {
-  padding: 4px 4px 2px;
+  padding: 4rem 4rem 2rem;
 }
 .running {
   position: absolute;
-  left: -101px;
-  top: -10px;
+  left: -101rem;
+  top: -10rem;
 }
 .floor {
   position: absolute;
-  left: -61px;
-  top: -78px;
+  left: -61rem;
+  top: -78rem;
 }
 .children {
   align-self: stretch;
+}
+
+@media (max-width: 1060px) {
+  .wrapper {
+    width: auto;
+  }
+  .outpost {
+    flex-direction: column;
+  }
+  .controls {
+    width: 256rem;
+    justify-content: flex-start;
+    align-self: flex-end;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+  }
+  .running,
+  .floor {
+    position: static;
+  }
+  .info {
+    flex: unset;
+    gap: 0;
+  }
+  .children {
+    align-self: unset;
+  }
 }
 </style>

@@ -1,5 +1,8 @@
 export const CELL_SIZE = 25
-export const CELL_HALF_SIZE = CELL_SIZE / 2
+
+export const BREAKPOINT_LG = 1320
+export const BREAKPOINT_MD = 1060
+export const BREAKPOINT_SM = 700
 
 /**
  * @description
@@ -13,7 +16,7 @@ export const cssVariables = css`
   /**
    * sizings
   */
-  --cell-size: ${CELL_SIZE}px;
+  --cell-size: ${CELL_SIZE}rem;
 
   /**
    * colors (src: data/gui/colours/kenshi_colours.xml)

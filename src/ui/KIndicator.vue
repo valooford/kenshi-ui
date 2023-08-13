@@ -25,7 +25,7 @@ export default {
 .indicator {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 8rem;
 }
 .bar {
   flex: 1;
@@ -33,6 +33,6 @@ export default {
   background: linear-gradient(to bottom, #004f00 50%, #003806 50%);
 }
 .value {
-  width: 24px;
+  width: 24rem;
 }
 </style>

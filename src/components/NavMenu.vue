@@ -45,9 +45,9 @@ export default {
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  margin: 0 1px;
-  padding: 3px 3px 4px;
-  box-shadow: inset 0 -2px 0 #1d1d1d;
+  gap: 1rem;
+  margin: 0 1rem;
+  padding: 3rem 3rem 4rem;
+  box-shadow: inset 0 -2rem 0 #1d1d1d;
 }
 </style>

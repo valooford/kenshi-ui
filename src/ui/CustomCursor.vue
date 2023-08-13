@@ -7,6 +7,7 @@ export default {
   },
   methods: {
     onMouseMove(e: PointerEvent) {
+      if (e.pointerType !== 'mouse') return
       const cursor = this.$refs.cursor as HTMLElement
       requestAnimationFrame(() => {
         cursor.style.left = `${e.pageX}px`
@@ -36,6 +37,8 @@ export default {
     },
   },
   mounted() {
+    // note: pointer* events being handled instead of mouse* ones because there is a case
+    //       when pointer shows up on touch which is an unwanted behavior
     document.addEventListener('pointermove', this.onMouseMove)
     // document.addEventListener('scroll', this.onScrollDrag, { capture: true })
     document.addEventListener('pointerleave', this.onMouseLeave)
@@ -51,16 +54,18 @@ export default {
 </script>
 
 <template>
-  <div class="cursor" :style="{ backgroundImage: `url(${iconSprite})` }" ref="cursor" />
+  <div class="cursor" ref="cursor" />
 </template>
 
 <style scoped>
 .cursor {
   display: none;
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background-position: -14px -12px;
+  width: 25rem;
+  height: 25rem;
+  background-image: v-bind('`url("${iconSprite}")`');
+  background-size: 1920rem 1080rem;
+  background-position: -14rem -12rem;
   z-index: 1400;
   pointer-events: none;
 }

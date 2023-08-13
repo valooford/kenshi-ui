@@ -2,11 +2,12 @@
 import type { PropType } from 'vue'
 import { isCharacterId } from '@/shared/utils'
 import KText from '@/ui/KText.vue'
+import KBox from '@/ui/KBox.vue'
 
 import CharacterContextMenu from './CharacterContextMenu.vue'
 
 export default {
-  components: { CharacterContextMenu, KText },
+  components: { CharacterContextMenu, KText, KBox },
   props: {
     characters: { type: Array as PropType<ICharacter[]>, required: true },
     selected: {
@@ -39,36 +40,59 @@ export default {
 </script>
 
 <template>
-  <div class="characters">
-    <CharacterContextMenu
-      v-for="c in characters"
-      :title="c.name"
-      :disabled="isMenuDisabled(c.id)"
-      class="characters-button__menu-wrapper"
-      @trade="isCharacterId(c.id) ? onTrade(c.id) : undefined"
-      :key="c.id"
-    >
-      <button
-        :value="c.id"
-        :class="['characters-button', isSelected(c.id) && 'characters-button_active']"
-        @click="isCharacterId(c.id) ? onSelect(c.id) : undefined"
+  <KBox>
+    <div class="characters">
+      <CharacterContextMenu
+        v-for="c in characters"
+        :title="c.name"
+        :disabled="isMenuDisabled(c.id)"
+        class="characters-button__menu-wrapper"
+        @trade="isCharacterId(c.id) ? onTrade(c.id) : undefined"
+        :key="c.id"
       >
-        <div class="characters-button__text">
-          <div class="characters-button__text_centered">
-            <KText color="label">{{ c.name }}</KText>
+        <button
+          :value="c.id"
+          :class="['characters-button', isSelected(c.id) && 'characters-button_active']"
+          @click="isCharacterId(c.id) ? onSelect(c.id) : undefined"
+        >
+          <div class="characters-button__text">
+            <div class="characters-button__text_centered">
+              <KText color="label">{{ c.name }}</KText>
+            </div>
           </div>
-        </div>
-      </button>
-    </CharacterContextMenu>
-  </div>
+        </button>
+      </CharacterContextMenu>
+    </div>
+  </KBox>
 </template>
 
 <style scoped>
+.box {
+  position: relative;
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10rem 12rem 5rem;
+  border-bottom: none;
+  box-shadow: inset 0 -2rem 0 #1d1d1d;
+  overflow: hidden;
+}
+.box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 18rem;
+  right: 12rem;
+  width: 20rem;
+  background-image: linear-gradient(to left, #1d1d1d 0, transparent 100%);
+  z-index: 1;
+}
 .characters {
   flex: 1 1;
   position: relative;
-  height: 166px;
-  padding: 10px 12px 20px;
+  height: 166rem;
+  padding-right: 20rem;
+  padding-bottom: 12rem;
   /**
    * @todo
    * character buttons must be square with size within the range of 65 to 125 px
@@ -77,16 +101,13 @@ export default {
    */
   /* here is grid-based attempt */
   /* display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(65px, 125px));
+  grid-template-columns: repeat(auto-fill, minmax(65rem, 125rem));
   grid-template-rows: repeat(2, auto); */
   display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  background-color: #1d1d1d;
-  border: 4px solid #000;
-  border-bottom: none;
-  box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
-  overflow: hidden;
+  gap: 3rem;
+  flex-wrap: no-wrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .characters:before {
   /* hide the box shadow at the bottom */
@@ -95,9 +116,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background-color: #1d1d1d;
-  box-shadow: inset 2px 0 2px -2px #fff, inset -2px 0 2px -2px #fff;
+  height: 2rem;
 }
 .characters-button {
   display: block;
@@ -113,28 +132,33 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  border: 3px solid #000;
+  border: 3rem solid #000;
   z-index: 1;
 }
 .characters-button_active:before {
-  border-width: 1px;
-  box-shadow: inset 0 0 0 2px #ababab;
+  border-width: 1rem;
+  box-shadow: inset 0 0 0 2rem #ababab;
 }
 /* https://vue-loader.vuejs.org/guide/scoped-css.html#deep-selectors */
 .characters :deep(.characters-button__menu-wrapper) {
   position: relative;
-  flex: 1 1 0;
-  max-width: 125px;
-  min-width: 65px;
+  min-width: 120rem;
+  height: 120rem;
   overflow: hidden;
 }
 .characters-button__text {
   position: absolute;
   left: 50%;
-  bottom: 2px;
+  bottom: 2rem;
 }
 .characters-button__text_centered {
   position: relative;
   left: -50%;
+}
+
+@media (max-width: 1060px) {
+  .box {
+    max-width: 80%;
+  }
 }
 </style>

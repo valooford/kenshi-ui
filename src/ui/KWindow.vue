@@ -10,7 +10,7 @@ EMPTY_IMAGE.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAA
 
 export default {
   components: { SpriteIconButton, KText },
-  inject: ['cssVariables'],
+  inject: ['store', 'cssVariables'],
   props: {
     title: { type: String, required: true },
     shift: {
@@ -31,8 +31,8 @@ export default {
     return {
       THROTTLE_MS,
       cssVariables: this.cssVariables,
-      pos: { x: -1000, y: -1000 } as IPoint,
-      pointer: { x: -1000, y: -1000 } as IPoint,
+      pos: { x: -9999, y: -9999 } as IPoint,
+      pointer: { x: -9999, y: -9999 } as IPoint,
       initialized: false,
       focused: false,
       hoveredObjectId: null as IItemObjId | null,
@@ -41,6 +41,9 @@ export default {
     }
   },
   computed: {
+    rem() {
+      return (this.store as IStore).uiParameters.rem
+    },
     finalPos(): IPoint {
       return { x: this.pos.x + this.shift.x, y: this.pos.y + this.shift.y }
     },
@@ -58,7 +61,8 @@ export default {
     onClose() {
       this.$emit('close')
     },
-    onMouseLeftDown(e: MouseEvent) {
+    onPointerMainDown(e: PointerEvent) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return // LMB/touch only
       // emulate Drag-and-Drop API
       // motivation: custom cursor
       emulateDragAndDropApi({
@@ -89,7 +93,7 @@ export default {
     },
     onDragEnd() {
       this.$emit('move')
-      this.pointer = { x: -1000, y: -1000 }
+      this.pointer = { x: -9999, y: -9999 }
     },
     onFocus() {
       if (this.focused) return
@@ -117,7 +121,7 @@ export default {
       this.hoveredObjectId = e.detail
       const rect = (this.$refs.window as HTMLDivElement).getBoundingClientRect()
       const right = document.documentElement.clientWidth - rect.right
-      this.isFreeSpaceBlockedRight = right < 323
+      this.isFreeSpaceBlockedRight = right < 323 * this.rem
     },
     onHideItemInfo(e: CustomEvent) {
       e.stopPropagation()
@@ -156,10 +160,10 @@ export default {
       @ki-iteminfohide="onHideItemInfo"
       ref="window"
     >
-      <div class="window__content" @mousedown="onFocus" v-bind="$attrs" ref="window__content">
+      <div class="window__content" @pointerdown="onFocus" v-bind="$attrs" ref="window__content">
         <div
           class="header section"
-          @mousedown.left="onMouseLeftDown"
+          @pointerdown="onPointerMainDown"
           @dragstart="onDragStart"
           @drag="onDrag"
           @dragend="onDragEnd"
@@ -204,34 +208,37 @@ export default {
   z-index: 1100;
 }
 .window_has-aligned {
-  gap: 4px;
+  gap: 4rem;
 }
 .window_active .window {
   z-index: 1050;
 }
 .window__content {
-  border: 4px solid #000;
+  border: 4rem solid #000;
 }
 .section {
   background-color: #1d1d1d;
-  box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
+  box-shadow: inset 0 0 1rem #000, inset 0 0 2rem #fff;
 }
 .header {
   position: relative;
-  line-height: 30px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35rem;
   background-image: linear-gradient(to bottom, #2c2c2c 50%, #272727 50%);
-  border-bottom: 5px solid #000;
+  border-bottom: 5rem solid #000;
   user-select: none;
+  touch-action: none;
 }
 .header__buttons {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 6px;
+  right: 6rem;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 5rem;
 }
 .window_initialized .left-aligned {
   position: absolute;
@@ -242,11 +249,11 @@ export default {
 .window_initialized .left-aligned__inner {
   position: relative;
   left: calc(-100%);
-  margin-right: 4px;
+  margin-right: 4rem;
   display: flex;
   flex-wrap: nowrap;
   white-space: nowrap;
-  gap: 4px;
+  gap: 4rem;
 }
 .left-aligned__inner > * {
   pointer-events: all;
@@ -259,19 +266,19 @@ export default {
 }
 .window_initialized .free-space-aligned__inner {
   position: relative;
-  right: calc(-100% - 4px);
-  margin-right: 4px;
+  right: calc(-100% - 4rem);
+  margin-right: 4rem;
   display: flex;
   flex-wrap: nowrap;
-  border: 4px solid #000;
-  gap: 4px;
+  border: 4rem solid #000;
+  gap: 4rem;
 }
 .window_initialized .free-space-aligned_left {
   left: 0;
   right: unset;
 }
 .window_initialized .free-space-aligned_left .free-space-aligned__inner {
-  left: calc(-100% - 4px);
+  left: calc(-100% - 4rem);
   right: unset;
 }
 .free-space-aligned__inner > * {

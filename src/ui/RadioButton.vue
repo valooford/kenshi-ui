@@ -38,7 +38,7 @@ export default {
   display: none;
 }
 .button {
-  line-height: 19px;
+  line-height: 19rem;
 }
 .button:not(:disabled):hover .mark {
   background-color: var(--color-title);
@@ -47,11 +47,11 @@ export default {
   background-color: #66502b;
 }
 .mark {
-  width: 6px;
-  height: 6px;
-  margin: 6px;
+  width: 6rem;
+  height: 6rem;
+  margin: 6rem;
   background-color: #666666;
-  border-radius: 3px;
+  border-radius: 3rem;
 }
 .mark_selected {
   background-color: #b0ad98;

@@ -71,16 +71,16 @@ export default {
   transform: scale(0.8);
 }
 .selector__prev {
-  left: 6px;
+  left: 6rem;
 }
 .selector__next {
-  right: 6px;
+  right: 6rem;
 }
 .selector__up {
-  top: 6px;
+  top: 6rem;
 }
 .selector__down {
-  bottom: 6px;
+  bottom: 6rem;
 }
 .selector__value {
   position: absolute;

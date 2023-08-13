@@ -27,12 +27,12 @@ export default { components: { KText } }
 
 <style scoped>
 .gear {
-  margin: 1px 4px 0 0;
-  padding: 6px 18px 32px 10px;
+  margin: 1rem 4rem 0 0;
+  padding: 6rem 18rem 32rem 10rem;
   background-color: #151515;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2);
-  border: 1px solid #000;
-  border-radius: 2px;
+  box-shadow: inset 0 0 0 1rem rgb(255 255 255 / 0.2);
+  border: 1rem solid #000;
+  border-radius: 2rem;
 }
 .text {
   display: block;

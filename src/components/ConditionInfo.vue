@@ -44,25 +44,36 @@ export default {
 
 <style scoped>
 .container {
-  width: 296px;
+  width: 296rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4rem;
 }
 .box_bottom {
   border-bottom: none;
 }
 .title {
-  min-height: 34px;
-  padding: 7px 8px;
+  min-height: 34rem;
+  padding: 7rem 8rem;
 }
 .indicators {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-height: 227px;
-  margin: 0 1px;
-  padding: 8px 10px 0 8px;
-  box-shadow: inset 0 -2px 0 #1d1d1d;
+  gap: 4rem;
+  min-height: 227rem;
+  margin: 0 1rem;
+  padding: 8rem 10rem 0 8rem;
+  box-shadow: inset 0 -2rem 0 #1d1d1d;
+}
+
+@media (max-width: 1320px) {
+  .container {
+    width: 100%;
+  }
+}
+@media (max-width: 1060px) {
+  .box_bottom {
+    border-bottom: 4rem solid #000;
+  }
 }
 </style>

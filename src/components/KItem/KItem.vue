@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import { CELL_SIZE, CELL_HALF_SIZE } from '@/shared/constants'
 import { emulateDragAndDropApi } from '@/shared/utils'
 import type { IAudioContext } from '@/shared/interface'
 
@@ -25,8 +24,8 @@ export default {
       emptyImage,
       gX: 0,
       gY: 0,
-      pX: -1000,
-      pY: -1000,
+      pX: -9999,
+      pY: -9999,
       vecO: null as IPoint | null,
       cleanupEventName: null as string | null,
     }
@@ -41,18 +40,22 @@ export default {
     a() {
       return this.audio as IAudioContext
     },
+    cellSize() {
+      return this.s.uiParameters.cellSize
+    },
     data() {
       return this.s.items[this.id]!
     },
     width() {
-      return `${this.data.w * CELL_SIZE}px`
+      return `${this.data.w * this.cellSize}px`
     },
     height() {
-      return `${this.data.h * CELL_SIZE}px`
+      return `${this.data.h * this.cellSize}px`
     },
     pivot() {
-      const x = this.pX - this.gX * CELL_SIZE - CELL_HALF_SIZE
-      const y = this.pY - this.gY * CELL_SIZE - CELL_HALF_SIZE
+      const cellHalfSize = this.cellSize / 2
+      const x = this.pX - this.gX * this.cellSize - cellHalfSize
+      const y = this.pY - this.gY * this.cellSize - cellHalfSize
       return { x, y }
     },
   },
@@ -64,19 +67,26 @@ export default {
       })
       e.target?.dispatchEvent(event)
     },
-    onMouseLeave(e: MouseEvent) {
+    onMouseLeave(e: MouseEvent | PointerEvent) {
       const event = new CustomEvent('ki-iteminfohide', {
         bubbles: true,
         detail: this.data.stringId,
       })
       e.target?.dispatchEvent(event)
     },
-    onMouseLeftDown(e: MouseEvent) {
+    onPointerDown(e: PointerEvent) {
+      if (e.pointerType === 'mouse' && e.button === 2) {
+        this.onMouseLeave(e)
+      } else {
+        this.onMouseLeftDown(e)
+      }
+    },
+    onMouseLeftDown(e: PointerEvent) {
       const el = e.target as HTMLElement
       const rect = el.getBoundingClientRect()
       // find out what cell of an item are meant to be dragged
-      const x = Math.floor((e.clientX - rect.left) / CELL_SIZE)
-      const y = Math.floor((e.clientY - rect.top) / CELL_SIZE)
+      const x = Math.floor((e.clientX - rect.left) / this.cellSize)
+      const y = Math.floor((e.clientY - rect.top) / this.cellSize)
       this.isPreview = true
       this.gX = x
       this.gY = y
@@ -88,8 +98,9 @@ export default {
         y: this.pivot.y + rect.height / 2 - this.pY,
       }
 
-      const buttonHeld = !!e.detail
-      this.cleanupEventName = buttonHeld ? 'mouseup' : 'mousedown'
+      // note: works differently with mouse* events
+      const buttonHeld = !e.detail
+      this.cleanupEventName = buttonHeld ? 'pointerup' : 'pointerdown'
       setTimeout(() => {
         document.addEventListener(this.cleanupEventName!, this.cleanup)
       }, 0)
@@ -152,8 +163,8 @@ export default {
       this.isPreview = false
       this.gX = 0
       this.gY = 0
-      this.pX = -1000
-      this.pY = -1000
+      this.pX = -9999
+      this.pY = -9999
       this.vecO = null
       document.removeEventListener(this.cleanupEventName!, this.cleanup)
       this.cleanupEventName = null
@@ -197,9 +208,8 @@ export default {
       draggable="false"
       @mouseenter="onMouseEnter"
       @mouseleave="onMouseLeave"
-      @mousedown.left="onMouseLeftDown"
-      @mousedown.right="onMouseLeave"
       @click.right="onMouseRightClick"
+      @pointerdown="onPointerDown"
       @dragstart="onDragStart"
       @drag="onDrag"
       @dragend="onDragEnd"
@@ -227,6 +237,7 @@ export default {
         draggable="false"
         :style="{
           minWidth: width, // prevent horizontal narrowing when moving off the right edge of the page
+          width,
           height,
         }"
       />
@@ -239,6 +250,7 @@ export default {
 .item {
   position: absolute;
   user-select: none;
+  touch-action: none;
 }
 .item_dragging {
   visibility: hidden;
@@ -250,6 +262,7 @@ export default {
   position: fixed;
   pointer-events: none;
   user-select: none;
+  touch-action: none;
   z-index: 1200;
 }
 .preview__content {

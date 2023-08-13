@@ -191,21 +191,21 @@ export default {
 .wrapper {
   display: flex;
   justify-content: space-between;
-  width: 487px;
-  gap: 10px;
-  padding: 9px 8px;
+  width: 487rem;
+  gap: 10rem;
+  padding: 9rem 8rem;
 }
 .stuff {
-  flex: 1 1 256px;
+  flex: 1 1 256rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .stuff__rows {
-  margin-left: 8px;
+  margin-left: 8rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4rem;
 }
 .stuff__row {
   display: flex;
@@ -214,33 +214,33 @@ export default {
 .stuff__buttons {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4rem;
 }
 .stuff__group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 8rem;
 }
 .stuff__backpack {
-  margin-right: 2px;
-  gap: 4px;
+  margin-right: 2rem;
+  gap: 4rem;
 }
 .region-label_start {
   margin-inline-end: auto;
-  margin-inline-start: 7px;
+  margin-inline-start: 7rem;
 }
 .stuff__weapon1 .region-label {
-  margin-top: -15px;
+  margin-top: -15rem;
 }
 .stuff__shirt .region-label {
-  margin-top: -22px;
+  margin-top: -22rem;
 }
 .common {
-  flex: 1 1 200px;
+  flex: 1 1 200rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 10rem;
 }
 .common__gear {
   flex: 1;
@@ -253,10 +253,10 @@ export default {
   justify-content: center;
 }
 .backpack {
-  padding: 12px 16px 6px 12px;
+  padding: 12rem 16rem 6rem 12rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 10rem;
 }
 </style>

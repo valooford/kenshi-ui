@@ -264,6 +264,10 @@ declare interface IStore {
     time: number
     gameTime: number
   }
+  uiParameters: {
+    rem: number
+    cellSize: number
+  }
   items: {
     // on the contrary, the prohibition of branded keys
     // [id: Brand<string, any>]: never

@@ -102,7 +102,7 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 5px;
+  height: 5rem;
   -webkit-appearance: none;
   appearance: none;
   pointer-events: none;
@@ -110,7 +110,7 @@ export default {
 .scrap::-webkit-progress-bar {
   background-color: #000;
   background-clip: padding-box;
-  border: 1px solid transparent;
+  border: 1rem solid transparent;
   border-top: none;
 }
 .scrap::-webkit-progress-value {
@@ -119,8 +119,9 @@ export default {
 .count {
   position: absolute;
   right: 0;
-  bottom: 5px;
+  bottom: 5rem;
   color: #fff;
+  font-size: 15rem;
   font-weight: 600;
   pointer-events: none;
 }

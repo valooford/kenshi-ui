@@ -42,7 +42,14 @@ export default {
   height: 100vh;
   display: flex;
   align-items: flex-start;
-  gap: 4px;
-  padding: 56px;
+  gap: 4rem;
+  padding: 56rem;
+}
+
+@media (max-width: 700px) {
+  .seam {
+    flex-direction: column;
+    padding: 80rem 3% 0;
+  }
 }
 </style>

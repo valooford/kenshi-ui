@@ -34,16 +34,17 @@ export default {
   color: #666666;
   text-align: center;
   font-family: Sentencia, sans-serif;
-  font-size: 17px;
-  line-height: 20px;
+  font-size: 17rem;
+  line-height: 20rem;
   letter-spacing: 0.001em;
   background: linear-gradient(to bottom, #2c2c2c 50%, #272727 50%);
-  box-shadow: inset 0 0 1px #000, inset 0 0 2px #fff;
-  border: 3px solid #000;
+  box-shadow: inset 0 0 1rem #000, inset 0 0 2rem #fff;
+  border: 3rem solid #000;
+  user-select: none;
 }
 .button:active {
   background: #272727;
-  box-shadow: inset 0 0 1px #000, inset 0 0 2px var(--color-title);
+  box-shadow: inset 0 0 1rem #000, inset 0 0 2rem var(--color-title);
 }
 .button:disabled {
   color: #000;
@@ -55,7 +56,7 @@ export default {
   color: #66502b;
 }
 .button_default .children {
-  padding: 0 5px;
+  padding: 0 5rem;
 }
 .button_full-width {
   flex: 1;
@@ -64,19 +65,19 @@ export default {
   color: #b0ad98;
 }
 .button_sm .children {
-  padding: 0 12px;
+  padding: 0 12rem;
   font-family: Exo2, sans-serif;
-  font-size: 14px;
-  line-height: 15px;
+  font-size: 14rem;
+  line-height: 15rem;
   font-weight: 600;
 }
 .button_md .children {
-  line-height: 19px;
-  padding: 0 7px;
-  font-size: 20px;
+  line-height: 19rem;
+  padding: 0 7rem;
+  font-size: 20rem;
 }
 .button_lg .children {
-  padding: 10px 12px 9px;
+  padding: 10rem 12rem 9rem;
 }
 .children {
   flex: 1;

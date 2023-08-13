@@ -7,7 +7,6 @@ import {
   isItemId,
   emulateDragAndDropApi,
 } from '@/shared/utils'
-import { CELL_SIZE } from '@/shared/constants'
 import KCell from '@/ui/KCell.vue'
 
 import KItem from './KItem/KItem.vue'
@@ -40,6 +39,9 @@ export default {
     },
     d() {
       return this.dispatch as IDispatch
+    },
+    cellSize() {
+      return this.s.uiParameters.cellSize
     },
     data() {
       return this.s.regions[this.id]!
@@ -89,10 +91,9 @@ export default {
 
     onDragOver(e: DragEvent) {
       if (!this.screenCoords || !this.hoverItem) return
-      // разбиваем область на сетку размером CELL_SIZE и ищем неокругленные координаты центра
       // split the region into cells of CELL_SIZE and find item center zero-based coordinates
-      const centerX = (e.clientX - this.screenCoords.x) / CELL_SIZE
-      const centerY = (e.clientY - this.screenCoords.y) / CELL_SIZE
+      const centerX = (e.clientX - this.screenCoords.x) / this.cellSize
+      const centerY = (e.clientY - this.screenCoords.y) / this.cellSize
       // find the top left cell center rounded coordinates
       const topLeftCellX = Math.floor(centerX - this.hoverItem.w / 2 + 0.5)
       const topLeftCellY = Math.floor(centerY - this.hoverItem.h / 2 + 0.5)
@@ -155,8 +156,8 @@ export default {
       let elementPointX: number | null = null
       let elementPointY: number | null = null
       if (lastCoords && this.screenCoords) {
-        elementPointX = this.screenCoords.x + (lastCoords.x + 0.5) * CELL_SIZE
-        elementPointY = this.screenCoords.y + (lastCoords.y + 0.5) * CELL_SIZE
+        elementPointX = this.screenCoords.x + (lastCoords.x + 0.5) * this.cellSize
+        elementPointY = this.screenCoords.y + (lastCoords.y + 0.5) * this.cellSize
 
         const overlappedItemElement = (this.$refs.itemBoxes as HTMLDivElement[])[lastIndex!]!
         overlappedItemElement.style.pointerEvents = 'all'
@@ -164,8 +165,8 @@ export default {
         overlappedItemElement.style.pointerEvents = ''
       } else if (isContinuous) {
         // always catch top-left cell
-        elementPointX = this.hoverItem.oX! - this.hoverItem.gX * CELL_SIZE
-        elementPointY = this.hoverItem.oY! - this.hoverItem.gY * CELL_SIZE
+        elementPointX = this.hoverItem.oX! - this.hoverItem.gX * this.cellSize
+        elementPointY = this.hoverItem.oY! - this.hoverItem.gY * this.cellSize
 
         this.onDragLeave() // cleanup --> allow pointer events on items
 
@@ -177,15 +178,15 @@ export default {
       if (elementToEmulateDraggingOn) {
         // let the previous item to catch the 'drop' event on the document
         setTimeout(async () => {
-          const mousedownEvent = new MouseEvent('mousedown', {
+          const pointerDownEvent = new PointerEvent('pointerdown', {
             clientX: elementPointX!,
             clientY: elementPointY!,
             bubbles: true,
             detail: +!!iWillRelease, // 0 - drag ends when button pressed, 1 - when released
             cancelable: true, // allows to preventDefault()
           })
-          mousedownEvent.preventDefault() // signalize that we will emulate dragging by ourselves
-          elementToEmulateDraggingOn?.dispatchEvent(mousedownEvent)
+          pointerDownEvent.preventDefault() // signalize that we will emulate dragging by ourselves
+          elementToEmulateDraggingOn?.dispatchEvent(pointerDownEvent)
 
           // enables cells to be picked with document.elementFromPoint() calls
           const itemsWrapperEl = this.$refs.itemsWrapper as HTMLElement

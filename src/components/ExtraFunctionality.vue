@@ -60,22 +60,25 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
-  width: 160px;
+  gap: 4rem;
+  width: 160rem;
 }
 .volume {
+  align-self: stretch;
   display: flex;
-  gap: 4px;
-  padding: 5px;
+  align-items: center;
+  gap: 4rem;
+  padding: 5rem;
 }
 .volume__icon {
-  height: 32px;
-  object-fit: none;
+  width: 32rem;
+  height: 32rem;
+  object-fit: cover;
 }
 .volume__icon_off {
   box-sizing: content-box;
-  width: 22px;
-  padding-right: 10px;
-  object-position: calc(50% + 2px) 50%;
+  width: 22rem;
+  padding-right: 10rem;
+  object-position: calc(50% + 2rem) 50%;
 }
 </style>

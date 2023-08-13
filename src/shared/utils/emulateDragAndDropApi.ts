@@ -26,7 +26,7 @@ export const emulateDragAndDropApi = ({
   dataTransfer.setData(`dnd/button-will-release`, `${iWillRelease ? 0 : 1}`)
 
   let elementToOver: Element | null
-  const onMouseMove = (e: MouseEvent) => {
+  const onPointerMove = (e: PointerEvent) => {
     e.preventDefault() // prevent user-select
     const { clientX: pClientX, clientY: pClientY } = e
     const clientX = pClientX + pointerShift.x
@@ -51,7 +51,7 @@ export const emulateDragAndDropApi = ({
     }
   }
 
-  const mouseDropEvent = iWillRelease ? 'mouseup' : 'mousedown'
+  const pointerDropEvent = iWillRelease ? 'pointerup' : 'pointerdown'
 
   element?.dispatchEvent(
     new DragEvent('dragstart', {
@@ -69,9 +69,9 @@ export const emulateDragAndDropApi = ({
   }
 
   return new Promise<void>((resolve) => {
-    const onMouseDropEvent = (e: MouseEvent) => {
-      document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener(mouseDropEvent, onMouseDropEvent)
+    const onMouseDropEvent = (e: PointerEvent) => {
+      document.removeEventListener('pointermove', onPointerMove)
+      document.removeEventListener(pointerDropEvent, onMouseDropEvent)
       setTimeout(() => {
         if (!disableDragover) {
           const elementToDrop = document.elementFromPoint(
@@ -96,12 +96,12 @@ export const emulateDragAndDropApi = ({
       }, 0)
     }
 
-    // prevent handling the freshly programmatically triggered 'mousedown' event
+    // prevent handling the freshly programmatically triggered 'pointerdown' event
     setTimeout(() => {
-      // to continue dragging immediately (do not wait for mouse movements)
-      onMouseMove(new MouseEvent('mousemove', { clientX: screenX, clientY: screenY }))
-      document.addEventListener('mousemove', onMouseMove)
-      document.addEventListener(mouseDropEvent, onMouseDropEvent)
+      // to continue dragging immediately (do not wait for pointer movements)
+      onPointerMove(new PointerEvent('pointermove', { clientX: screenX, clientY: screenY }))
+      document.addEventListener('pointermove', onPointerMove)
+      document.addEventListener(pointerDropEvent, onMouseDropEvent)
     }, 0)
   })
 }

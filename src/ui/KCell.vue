@@ -16,11 +16,11 @@ export default {
   width: var(--cell-size);
   height: var(--cell-size);
   background-color: #3d3938;
-  box-shadow: inset 0 0 0 1px #1c1c1c, inset 0 0 8px #222, inset 0 0 8px #222;
+  box-shadow: inset 0 0 0 1rem #1c1c1c, inset 0 0 8rem #222, inset 0 0 8rem #222;
   pointer-events: none;
 }
 .hover {
-  box-shadow: inset 0 0 4px rgba(51, 51, 51, 0.3);
+  box-shadow: inset 0 0 4rem rgba(51, 51, 51, 0.3);
 }
 .hover:before {
   display: block;

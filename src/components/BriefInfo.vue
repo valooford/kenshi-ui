@@ -33,7 +33,7 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="brief-container">
     <KBox v-if="character" class="box_wide">
       <div class="title">
         <KText color="title">{{ character.name }}</KText>
@@ -132,11 +132,11 @@ export default {
 </template>
 
 <style scoped>
-.container {
-  width: 256px;
+.brief-container {
+  width: 256rem;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4rem;
 }
 .box_wide {
   align-self: flex-start;
@@ -148,18 +148,18 @@ export default {
 .title {
   display: flex;
   justify-content: space-between;
-  width: 396px;
-  padding: 6px;
+  width: 396rem;
+  padding: 6rem;
 }
 .pair {
   display: flex;
   justify-content: space-between;
 }
 .state {
-  min-height: 106px;
-  margin-top: 1px;
-  padding: 6px 10px 20px;
-  box-shadow: inset 2px 0 0 #1d1d1d;
+  min-height: 106rem;
+  margin-top: 1rem;
+  padding: 6rem 10rem 20rem;
+  box-shadow: inset 2rem 0 0 #1d1d1d;
 }
 .collapse {
   height: 0;
@@ -167,14 +167,14 @@ export default {
   overflow: hidden;
 }
 .collapse_expanded {
-  height: 170px;
+  height: 170rem;
 }
 .collapse__content {
-  min-height: 170px;
-  margin-right: 1px;
-  padding: 16px 12px 31px;
-  border-top: 3px solid #000;
-  box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.1), inset 2px 0 0 #1d1d1d;
+  min-height: 170rem;
+  margin-right: 1rem;
+  padding: 16rem 12rem 31rem;
+  border-top: 3rem solid #000;
+  box-shadow: inset 0 1rem 1rem rgb(255 255 255 / 0.1), inset 2rem 0 0 #1d1d1d;
 }
 .expand {
   height: 0;
@@ -183,10 +183,23 @@ export default {
   align-items: center;
 }
 .stats {
-  min-height: 166px;
-  margin-right: 1px;
-  padding: 16px 12px 27px;
-  border-top: 3px solid #000;
-  box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.1), inset 2px -2px 0 #1d1d1d;
+  min-height: 166rem;
+  margin-right: 1rem;
+  padding: 16rem 12rem 27rem;
+  border-top: 3rem solid #000;
+  box-shadow: inset 0 1rem 1rem rgb(255 255 255 / 0.1), inset 2rem -2rem 0 #1d1d1d;
+}
+
+@media (max-width: 1320px) {
+  .box_wide {
+    align-self: unset;
+  }
+  .title {
+    width: auto;
+  }
+  .box_bottom {
+    border-left: 4rem solid #000;
+    border-bottom: 4rem solid #000;
+  }
 }
 </style>

@@ -16,12 +16,12 @@ export default { components: { KBox, KText } }
 <style scoped>
 .paused-container {
   position: fixed;
-  top: 6px;
+  top: 6rem;
   left: 50%;
 }
 .box {
   position: relative;
   left: -50%;
-  padding: 48px 42px 16px;
+  padding: 48rem 42rem 16rem;
 }
 </style>

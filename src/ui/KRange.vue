@@ -11,15 +11,32 @@ export default {
 </template>
 
 <style scoped>
+/* reset styles for input[type=range] */
 .range {
+  -webkit-appearance: none; /* Allows custom slider to be made */
+  appearance: none;
   width: 100%;
-  accent-color: #b0ad98;
+  background: transparent;
 }
 .range::-webkit-slider-thumb {
-  margin-top: -6px;
+  -webkit-appearance: none;
+}
+
+/* custom styles for range */
+.range::-webkit-slider-thumb {
+  position: relative;
+  top: 9rem;
+  height: 15rem;
+  width: 15rem;
+  border-radius: 7.5rem;
+  background-color: #b0ad98;
+  margin-top: -14rem; /* Chrome-specific */
+  cursor: pointer;
 }
 .range::-webkit-slider-runnable-track {
-  height: 5px;
+  width: 100%;
+  height: 5rem;
   background-color: #595553;
+  cursor: pointer;
 }
 </style>

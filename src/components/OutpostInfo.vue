@@ -44,32 +44,32 @@ export default { components: { KText, KBox, KCheckbox } }
 .container {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 6px 3px 8px;
+  gap: 2rem;
+  padding: 6rem 3rem 8rem;
 }
 .title {
-  margin: 0 5px;
-  padding: 4px;
+  margin: 0 5rem;
+  padding: 4rem;
   text-align: center;
   background-color: #151515;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2);
-  border: 1px solid #000;
-  border-radius: 2px;
+  box-shadow: inset 0 0 0 1rem rgb(255 255 255 / 0.2);
+  border: 1rem solid #000;
+  border-radius: 2rem;
 }
 .content {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 0 6px;
+  gap: 7rem;
+  padding: 0 6rem;
 }
 .pair {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 8rem;
 }
 .progress {
-  width: 140px;
+  width: 140rem;
   text-align: center;
   background: linear-gradient(to bottom, #004f00 50%, #003806 50%);
 }

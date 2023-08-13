@@ -33,20 +33,21 @@ export default {
 <style scoped>
 .icon {
   display: block;
-  background-position: v-bind('`${-icon.x}px`') v-bind('`${-icon.y}px`');
-  width: v-bind('`${icon.w}px`');
-  height: v-bind('`${icon.h}px`');
+  background-position: v-bind('`${-icon.x}rem`') v-bind('`${-icon.y}rem`');
+  background-size: 1920rem 1080rem;
+  width: v-bind('`${icon.w}rem`');
+  height: v-bind('`${icon.h}rem`');
 }
 .icon:hover {
-  background-position: v-bind('`${-(icon.hover || icon).x}px`')
-    v-bind('`${-(icon.hover || icon).y}px`');
+  background-position: v-bind('`${-(icon.hover || icon).x}rem`')
+    v-bind('`${-(icon.hover || icon).y}rem`');
 }
 .icon:active {
-  background-position: v-bind('`${-(icon.active || icon).x}px`')
-    v-bind('`${-(icon.active || icon).y}px`');
+  background-position: v-bind('`${-(icon.active || icon).x}rem`')
+    v-bind('`${-(icon.active || icon).y}rem`');
 }
 .icon_selected {
-  background-position: v-bind('`${-(icon.selected || icon).x}px`')
-    v-bind('`${-(icon.selected || icon).y}px`');
+  background-position: v-bind('`${-(icon.selected || icon).x}rem`')
+    v-bind('`${-(icon.selected || icon).y}rem`');
 }
 </style>

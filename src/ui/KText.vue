@@ -25,32 +25,32 @@ export default {
 .text {
   display: inline;
   color: #9c9c9c;
-  line-height: 20px;
+  line-height: 20rem;
   letter-spacing: 0.02em;
-  text-shadow: 1px 1px 1px #000;
+  text-shadow: 1rem 1rem 1rem #000;
 }
 .text_default {
   font-family: Exo2, sans-serif;
-  font-size: 14px;
+  font-size: 14rem;
   font-weight: 600;
 }
 .text_alt {
   font-family: Sentencia, sans-serif;
-  font-size: 17px;
+  font-size: 17rem;
   text-transform: uppercase;
 }
 .text_huge {
   color: #ded8cc;
   font-family: MailartRubberstamp, sans-serif;
-  font-size: 76px;
+  font-size: 76rem;
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
 .text_label {
   color: #fff;
-  font-size: 87%;
+  font-size: 15rem;
   font-weight: 400;
-  line-height: 20px;
+  line-height: 20rem;
   white-space: nowrap;
 }
 .text_title {

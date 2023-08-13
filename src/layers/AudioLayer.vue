@@ -1,7 +1,8 @@
 <script lang="ts">
-import { GAMEDATA_ITEMS, InventorySound, ItemType, MaterialType } from '@/shared/gamedata'
+import { mobileCheck } from '@/shared/utils'
 import { CommonSound, SoundMilestone, BEDS, FRAMES, CANOPY } from '@/shared/constants'
 import type { IAudioContext } from '@/shared/interface'
+import { GAMEDATA_ITEMS, InventorySound, ItemType, MaterialType } from '@/shared/gamedata'
 import gui from '@/assets/audio/gui.mp3'
 
 const AMBIENT_SOUND_SETTINGS = {
@@ -40,7 +41,8 @@ export default {
   },
   data() {
     return {
-      ambientVolume: { value: 0.5 },
+      ambientVolume: { value: AMBIENT_SOUND_SETTINGS.defaultVolume },
+      prevAmbientVolume: AMBIENT_SOUND_SETTINGS.defaultVolume,
       audio: new Audio(gui),
       timeoutId: null as number | null,
       bedsAudio: new Audio(),
@@ -73,7 +75,11 @@ export default {
       const item = GAMEDATA_ITEMS[stringId]!
       let inventorySound: InventorySound | undefined = item.Values['inventory sound']
       if (inventorySound === undefined) {
-        if (item.Type === (ItemType.Weapon as number)) inventorySound = InventorySound.Weapon
+        if (
+          item.Type === (ItemType.Weapon as number) ||
+          item.Type === (ItemType.Crossbow as number)
+        )
+          inventorySound = InventorySound.Weapon
         else {
           const materialType: MaterialType | undefined = item.Values['material type']
           switch (materialType) {
@@ -111,6 +117,15 @@ export default {
       this.bedsAudio.volume = volume
       this.framesAudio.volume = volume
       this.canopyAudio.volume = volume
+    },
+    onVisibilityChange() {
+      if (!mobileCheck()) return // keep playing ambient music in background for non-mobile devices
+      if (document.hidden) {
+        this.prevAmbientVolume = this.ambientVolume.value
+        this.setAmbientVolume(0)
+      } else {
+        this.setAmbientVolume(this.prevAmbientVolume)
+      }
     },
     async playAmbientSound() {
       try {
@@ -225,6 +240,7 @@ export default {
     this.bedsAudio.addEventListener('ended', this.onBedsSoundEnd)
     this.framesAudio.addEventListener('ended', this.onFramesSoundEnd)
     this.canopyAudio.addEventListener('ended', this.onCanopySoundEnd)
+    document.addEventListener('visibilitychange', this.onVisibilityChange)
   },
   mounted() {
     this.scheduleNextAmbientSoundPlay(
@@ -236,6 +252,7 @@ export default {
     this.bedsAudio.removeEventListener('ended', this.onBedsSoundEnd)
     this.framesAudio.removeEventListener('ended', this.onFramesSoundEnd)
     this.canopyAudio.removeEventListener('ended', this.onCanopySoundEnd)
+    document.removeEventListener('visibilitychange', this.onVisibilityChange)
   },
 }
 </script>

@@ -29,8 +29,10 @@ export default {
 
 <style scoped>
 .info {
-  width: 315px;
-  padding: 16px 7px;
+  width: 315rem;
+  /* might happen: rem being transformed into pixels somehow (vue bug?); fix: */
+  /* width: v-bind('`315rem`'); */
+  padding: 16rem 7rem;
 }
 .text {
   display: block;

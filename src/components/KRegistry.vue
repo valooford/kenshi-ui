@@ -43,7 +43,7 @@ export default {
 </script>
 
 <template>
-  <KWindow auto-focus :centered="true" title="Registry" @close="d.toggleRegistry">
+  <KWindow auto-focus centered title="Registry" @close="d.toggleRegistry">
     <template v-slot:free-space-aligned="slotProps">
       <ItemInfo :string-id="slotProps.id" />
     </template>
@@ -75,24 +75,24 @@ export default {
 <style scoped>
 .wrapper {
   display: flex;
-  width: 986px;
-  height: 396px;
-  gap: 10px;
-  padding: 9px 8px;
+  width: 986rem;
+  height: 396rem;
+  gap: 10rem;
+  padding: 9rem 8rem;
 }
 .wrapper > * {
   background-color: #151515;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.2);
-  border: 1px solid #000;
-  border-radius: 2px;
+  box-shadow: inset 0 0 0 1rem rgb(255 255 255 / 0.2);
+  border: 1rem solid #000;
+  border-radius: 2rem;
 }
 .sections {
-  width: 234px;
-  padding: 19px 6px 15px 11px;
+  width: 234rem;
+  padding: 19rem 6rem 15rem 11rem;
 }
 .sections__content {
   height: 100%;
-  padding: 0px 6px 0 0;
+  padding: 0rem 6rem 0 0;
   overflow: auto;
 }
 .sections__item {
@@ -100,11 +100,11 @@ export default {
   white-space: pre;
 }
 .text {
-  line-height: 18px;
+  line-height: 18rem;
 }
 .items {
   flex: 1;
-  padding: 10px;
+  padding: 10rem;
 }
 .items__content {
   position: relative;

@@ -1,8 +1,9 @@
 :root {
-  font-size: 15px;
+  font-size: max(calc(100vw / 1920), calc(100vh / 1080));
 }
 
 body {
+  position: fixed; /* Always show address bar on mobile */
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

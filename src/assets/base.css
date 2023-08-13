@@ -4,6 +4,7 @@
 
 body {
   position: fixed; /* Always show address bar on mobile */
+  width: 100%;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

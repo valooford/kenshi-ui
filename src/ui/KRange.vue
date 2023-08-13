@@ -31,12 +31,10 @@ export default {
   border-radius: 7.5rem;
   background-color: #b0ad98;
   margin-top: -14rem; /* Chrome-specific */
-  cursor: pointer;
 }
 .range::-webkit-slider-runnable-track {
   width: 100%;
   height: 5rem;
   background-color: #595553;
-  cursor: pointer;
 }
 </style>

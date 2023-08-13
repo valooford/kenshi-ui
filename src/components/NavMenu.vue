@@ -40,6 +40,7 @@ export default {
 
 <style scoped>
 .box_bottom {
+  min-height: 165rem;
   border-bottom: none;
 }
 .buttons {

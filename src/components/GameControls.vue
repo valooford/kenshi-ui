@@ -45,7 +45,7 @@ export default {
       this.d.setGameSpeed(speed)
     },
     onVisibilityChange() {
-      if (document.hidden) {
+      if (document.hidden && this.s.gameParameters.gameSpeed) {
         this.d.setGameSpeed(GameSpeed.Pause)
       }
     },

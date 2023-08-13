@@ -1,6 +1,6 @@
 {
-  "name": "kenshi-inventory",
-  "version": "0.1.0",
+  "name": "kenshi-ui",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
@@ -9,7 +9,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prettier:write": "npx prettier --write .",
-    "item-loader:run": "cd src/helpers/kenshi-inventory.items-loader && dotnet run --property WarningLevel=0 && node collectOutput.mjs"
+    "item-loader:run": "cd src/helpers/kenshi-ui.items-loader && dotnet run --property WarningLevel=0 && node collectOutput.mjs"
   },
   "dependencies": {
     "nanoid": "^4.0.2",

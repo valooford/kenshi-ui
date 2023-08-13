@@ -1,5 +1,5 @@
 /*
-This file is auto-generated with kenshi-inventory.items-loader utility.
+This file is auto-generated with kenshi-ui.items-loader utility.
 */
 
 export const GAMEDATA_ITEMS_LISTS = {
